@@ -8,33 +8,33 @@
       <div class="nav-list">
         <div class="nav-item">
           <router-link to="/">
-            <v-icon label="home-icone">
-              <v-icon name="circle" scale="3"/>
-              <v-icon name="home" scale="1.5" inverse/>
+            <v-icon label="home-icon">
+              <v-icon name="regular/circle" scale="3"/>
+              <v-icon name="home" scale="1.5"/>
             </v-icon>
           </router-link>
         </div>
         <div class="nav-item">
           <router-link to="/config-list">
-            <v-icon label="home-icone">
-              <v-icon name="circle" scale="3"/>
-              <v-icon name="list-ul" scale="1.5" inverse/>
+            <v-icon label="list-icon">
+              <v-icon name="regular/circle" scale="3"/>
+              <v-icon name="list-ul" scale="1.5"/>
             </v-icon>
           </router-link>
         </div>
         <div class="nav-item">
           <router-link to="/favorites">
-            <v-icon label="home-icone">
-              <v-icon name="circle" scale="3"/>
-              <v-icon name="heart" scale="1.5" inverse/>
+            <v-icon label="fav-icon">
+              <v-icon name="regular/circle" scale="3"/>
+              <v-icon name="heart" scale="1.5"/>
             </v-icon>
           </router-link>
         </div>
         <div class="nav-item">
           <router-link to="/settings">
-            <v-icon label="home-icone">
-              <v-icon name="circle" scale="3"/>
-              <v-icon name="cog" scale="1.5" inverse/>
+            <v-icon label="setting-icon">
+              <v-icon name="regular/circle" scale="3"/>
+              <v-icon name="cog" scale="1.5"/>
             </v-icon>
           </router-link>
         </div>
@@ -50,7 +50,7 @@ import 'vue-awesome/icons/home';
 import 'vue-awesome/icons/list-ul';
 import 'vue-awesome/icons/heart';
 import 'vue-awesome/icons/cog';
-import 'vue-awesome/icons/circle';
+import 'vue-awesome/icons/regular/circle';
 
 @Component({
   components: { 'v-icon': Icon }
