@@ -1,5 +1,7 @@
 <template>
-  <p>Settings works!</p>
+  <div class="settings">
+    <p>Settings works!</p>
+  </div>
 </template>
 
 <script lang="ts">

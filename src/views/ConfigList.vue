@@ -1,5 +1,7 @@
 <template>
-  <p>Config-List works!</p>
+  <div class="config-list">
+    <p>Config-List works!</p>
+  </div>
 </template>
 
 <script lang="ts">

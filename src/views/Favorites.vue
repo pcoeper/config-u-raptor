@@ -1,5 +1,7 @@
 <template>
-  <p>Favorites works!</p>
+  <div class="favorites">
+    <p>Favorites works!</p>
+  </div>
 </template>
 
 <script lang="ts">

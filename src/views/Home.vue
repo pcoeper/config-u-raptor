@@ -1,5 +1,7 @@
 <template>
-  <p>Home works!</p>
+  <div class="home">
+    <p>Home works!</p>
+  </div>
 </template>
 
 <script lang="ts">
