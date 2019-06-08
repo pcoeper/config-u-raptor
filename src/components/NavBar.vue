@@ -7,16 +7,36 @@
     <nav>
       <div class="nav-list">
         <div class="nav-item">
-          <router-link to="/">Home</router-link>
+          <router-link to="/">
+            <v-icon label="home-icone">
+              <v-icon name="circle" scale="3"/>
+              <v-icon name="home" scale="1.5" inverse/>
+            </v-icon>
+          </router-link>
         </div>
         <div class="nav-item">
-          <router-link to="/config-list">Config-List</router-link>
+          <router-link to="/config-list">
+            <v-icon label="home-icone">
+              <v-icon name="circle" scale="3"/>
+              <v-icon name="list-ul" scale="1.5" inverse/>
+            </v-icon>
+          </router-link>
         </div>
         <div class="nav-item">
-          <router-link to="/favorites">Favorites</router-link>
+          <router-link to="/favorites">
+            <v-icon label="home-icone">
+              <v-icon name="circle" scale="3"/>
+              <v-icon name="heart" scale="1.5" inverse/>
+            </v-icon>
+          </router-link>
         </div>
         <div class="nav-item">
-          <router-link to="/settings">Settings</router-link>
+          <router-link to="/settings">
+            <v-icon label="home-icone">
+              <v-icon name="circle" scale="3"/>
+              <v-icon name="cog" scale="1.5" inverse/>
+            </v-icon>
+          </router-link>
         </div>
       </div>
     </nav>
@@ -25,8 +45,16 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import Icon from 'vue-awesome/components/Icon.vue';
+import 'vue-awesome/icons/home';
+import 'vue-awesome/icons/list-ul';
+import 'vue-awesome/icons/heart';
+import 'vue-awesome/icons/cog';
+import 'vue-awesome/icons/circle';
 
-@Component
+@Component({
+  components: { 'v-icon': Icon }
+})
 export default class NavBar extends Vue {}
 </script>
 
