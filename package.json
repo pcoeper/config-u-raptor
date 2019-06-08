@@ -1,0 +1,18 @@
+{
+  "name": "config-u-raptor",
+  "version": "1.0.0",
+  "main": "main.ts",
+  "repository": "https://git.sw.salt-and-pepper.eu/pcoeper/config-u-raptor.git",
+  "author": "Patrick Cöper <p.coeper@salt-and-pepper.eu>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "electron ./dist/main.js"
+  },
+  "dependencies": {
+    "electron": "^5.0.3"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.1"
+  }
+}
