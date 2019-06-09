@@ -11,8 +11,8 @@ export class ConfigParameter {
   @Column('text')
   public type!: string;
 
-  @Column()
-  public defaultValue!: number;
+  @Column('text')
+  public defaultValue: string = '';
 
   @Column('text')
   public description: string = '';

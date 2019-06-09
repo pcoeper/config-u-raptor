@@ -64,7 +64,7 @@ function createWindow() {
         const initParameter = new ConfigParameter();
         initParameter.name = 'Timber';
         initParameter.type = 'Saw';
-        initParameter.defaultValue = 27;
+        initParameter.defaultValue = '27';
         initParameter.description = 'test';
         await parameterRepo.save(initParameter);
 
