@@ -3,12 +3,13 @@
 import 'reflect-metadata';
 import { createConnection, ConnectionOptions } from 'typeorm';
 
-import { app, protocol, BrowserWindow } from 'electron';
+import { app, protocol, BrowserWindow, ipcMain } from 'electron';
 import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib';
 import { ConfigParameter } from './db/entity/ConfigParameter';
+import { ConfigParameterController } from './db/controller/ConfigParameterController';
 
 const connectionOptions: ConnectionOptions = {
   type: 'sqlite',
@@ -61,12 +62,19 @@ function createWindow() {
 
       if (availableParameters.length === 0) {
         // insert new users for test
-        const initParameter = new ConfigParameter();
-        initParameter.name = 'Timber';
-        initParameter.type = 'Saw';
-        initParameter.defaultValue = '27';
-        initParameter.description = 'test';
-        await parameterRepo.save(initParameter);
+        const firstParam = new ConfigParameter();
+        firstParam.name = 'Timber';
+        firstParam.type = 'Saw';
+        firstParam.defaultValue = '27';
+        firstParam.description = 'test';
+        await parameterRepo.save(firstParam);
+
+        const secondParam = new ConfigParameter();
+        secondParam.name = 'Something';
+        secondParam.type = 'Else';
+        secondParam.defaultValue = '41';
+        secondParam.description = 'jbsckjhsd';
+        await parameterRepo.save(secondParam);
 
         console.log('Added first config parameter to db.');
       } else {
@@ -126,3 +134,9 @@ if (isDevelopment) {
     });
   }
 }
+
+// IPC MAIN SECTION
+ipcMain.on('getAllConfigParameter', async (event: any, args: any) => {
+  const parameters: ConfigParameter[] = await ConfigParameterController.getAll();
+  event.reply('replyAllConfigParameter', parameters);
+});
