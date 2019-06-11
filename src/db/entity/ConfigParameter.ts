@@ -8,6 +8,7 @@ export class ConfigParameter {
   @Column({ type: 'text', unique: true })
   public name!: string;
 
+  // should be one of 'string', 'number' or 'boolean'
   @Column('text')
   public type!: string;
 

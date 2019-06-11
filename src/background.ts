@@ -63,18 +63,25 @@ function createWindow() {
       if (availableParameters.length === 0) {
         // insert new users for test
         const firstParam = new ConfigParameter();
-        firstParam.name = 'Timber';
-        firstParam.type = 'Saw';
-        firstParam.defaultValue = '27';
-        firstParam.description = 'test';
+        firstParam.name = 'String Rep';
+        firstParam.type = 'string';
+        firstParam.defaultValue = 'Some String';
+        firstParam.description = 'Just a string';
         await parameterRepo.save(firstParam);
 
         const secondParam = new ConfigParameter();
-        secondParam.name = 'Something';
-        secondParam.type = 'Else';
+        secondParam.name = 'Number Rep';
+        secondParam.type = 'number';
         secondParam.defaultValue = '41';
-        secondParam.description = 'jbsckjhsd';
+        secondParam.description = 'A random number';
         await parameterRepo.save(secondParam);
+
+        const thirdParam = new ConfigParameter();
+        thirdParam.name = 'Boolean Rep';
+        thirdParam.type = 'boolean';
+        thirdParam.defaultValue = 'true';
+        thirdParam.description = 'Be true not better';
+        await parameterRepo.save(thirdParam);
 
         console.log('Added first config parameter to db.');
       } else {
