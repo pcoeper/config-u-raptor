@@ -1,26 +1,33 @@
 <template>
   <div class="config-detail">
-    <div class="parameter-name">{{parameter.name}}</div>
+    <div class="parameter.name">
+      <b-field>
+        <b-input type="text" v-model="parameter.name"></b-input>
+      </b-field>
+    </div>
+
     <div class="parameter-type">
-      <select v-model="parameter.type">
-        <option value="string">String</option>
-        <option value="number">Number</option>
-        <option value="boolean">Boolean</option>
-      </select>
+      <b-field>
+        <b-select v-model="parameter.type" expanded>
+          <option value="string">String</option>
+          <option value="number">Number</option>
+          <option value="boolean">Boolean</option>
+        </b-select>
+      </b-field>
     </div>
     <div class="parameter-value">
-      <div v-if="parameter.type === 'string'">
-        <input type="text" v-model.trim="value">
-      </div>
-      <div v-else-if="parameter.type === 'number'">
-        <input type="number" v-model.number="value">
-      </div>
-      <div v-else-if="parameter.type === 'boolean'">
-        <input type="checkbox" v-model="value">
-      </div>
+      <b-field>
+        <div v-if="parameter.type === 'string'">
+          <b-input type="text" v-model.trim="value"></b-input>
+        </div>
+        <div v-else-if="parameter.type === 'number'">
+          <b-numberinput v-model="value"></b-numberinput>
+        </div>
+        <div v-else-if="parameter.type === 'boolean'">
+          <b-switch v-model="value">{{ value }}</b-switch>
+        </div>
+      </b-field>
     </div>
-    <div>{{value}}</div>
-    <div>{{parameter.defaultValue}}</div>
   </div>
 </template>
 
