@@ -42,10 +42,43 @@ export default class ConfigDetail extends Vue {
   @Prop()
   public parameter!: ConfigParameter;
 
-  public value: any = this.parameter.defaultValue;
+  public value: any = "";
+
+  private showDebug: boolean = false;
+
+  public created() {
+    this.convertValue();
+  }
 
   @Watch("parameter.type")
-  public onTypeChanged(value: string, oldValue: string) {
+  public onTypeChanged() {
+    this.convertValue();
+  }
+
+  @Watch("value")
+  public onValueChange() {
+    this.parameter.defaultValue = this.value.toString();
+    this.debugValueChange();
+  }
+
+  public debugValueChange() {
+    if (this.showDebug) {
+      // logging / debug
+      console.log(
+        "defaultvalue is: " +
+          this.parameter.defaultValue +
+          " (" +
+          typeof this.parameter.defaultValue +
+          ")"
+      );
+      console.log("value is: " + this.value + " (" + typeof this.value + ")");
+    }
+  }
+
+  /**
+   * Converts 'value' according to the defined parameter type
+   */
+  private convertValue(): any {
     if (this.parameter.type === "string") {
       this.value = this.parameter.defaultValue;
     } else if (this.parameter.type === "number") {
@@ -54,24 +87,11 @@ export default class ConfigDetail extends Vue {
     } else if (this.parameter.type === "boolean") {
       const booleanRep =
         this.parameter.defaultValue === "true" ||
-        this.parameter.defaultValue === 'false';
-      this.value = this.parameter.defaultValue === 'true' ? true : false;
+        this.parameter.defaultValue === "false";
+      this.value = this.parameter.defaultValue === "true" ? true : false;
     }
-  }
-
-  @Watch('value')
-  public onValueChanged(value: any, oldValue: any) {
-    this.parameter.defaultValue = value.toString();
-
-    // logging / debug
-    console.log(
-      'defaultvalue is: ' +
-        this.parameter.defaultValue +
-        ' (' +
-        typeof this.parameter.defaultValue +
-        ')'
-    );
-    console.log('value is: ' + this.value + ' (' + typeof this.value + ')');
+    this.parameter.defaultValue = this.value.toString();
+    this.debugValueChange();
   }
 }
 </script>

@@ -1,5 +1,8 @@
 <template>
   <div class="config-list">
+    <div class="actions">
+      <b-button @click="submit">Click Me</b-button>
+    </div>
     <div v-for="parameter in parameters" :key="parameter.id">
       <ConfigDetail v-bind:parameter="parameter"></ConfigDetail>
     </div>
@@ -26,12 +29,21 @@ export default class ConfigList extends Vue {
       }
     );
   }
+
+  public destroyed() {
+    // clear all listeners
+    ipcRenderer.removeAllListeners('replyAllConfigParameter');
+  }
+
+  public submit() {
+    ipcRenderer.send('saveAllConfigParameter', this.parameters);
+  }
 }
 </script>
 
 <style lang="scss">
-    .config-list {
-        padding: 80px 40px;
-    }
+.config-list {
+  padding: 80px 40px;
+}
 </style>
 
