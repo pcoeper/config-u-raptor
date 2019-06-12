@@ -1,10 +1,25 @@
 'use strict';
 
-import { app, protocol, BrowserWindow } from 'electron';
+import 'reflect-metadata';
+import { createConnection, ConnectionOptions } from 'typeorm';
+
+import { app, protocol, BrowserWindow, ipcMain } from 'electron';
 import {
   createProtocol,
-  installVueDevtools,
+  installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib';
+import { ConfigParameter } from './db/entity/ConfigParameter';
+import { ConfigParameterController } from './db/controller/ConfigParameterController';
+
+const connectionOptions: ConnectionOptions = {
+  type: 'sqlite',
+  synchronize: true,
+  logging: true,
+  logger: 'simple-console',
+  database: 'db.sqlite',
+  entities: [ConfigParameter]
+};
+
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -13,15 +28,15 @@ let win: BrowserWindow | null;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true } },
+  { scheme: 'app', privileges: { secure: true, standard: true } }
 ]);
 
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     webPreferences: {
-      nodeIntegration: true,
-    },
+      nodeIntegration: true
+    }
   });
 
   win.maximize();
@@ -37,6 +52,43 @@ function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html');
   }
+
+  // initialize db
+  createConnection(connectionOptions)
+    .then(async (connection) => {
+      const parameterRepo = connection.getRepository(ConfigParameter);
+
+      const availableParameters = await parameterRepo.find();
+
+      if (availableParameters.length === 0) {
+        // insert new users for test
+        const firstParam = new ConfigParameter();
+        firstParam.name = 'String Rep';
+        firstParam.type = 'string';
+        firstParam.defaultValue = 'Some String';
+        firstParam.description = 'Just a string';
+        await parameterRepo.save(firstParam);
+
+        const secondParam = new ConfigParameter();
+        secondParam.name = 'Number Rep';
+        secondParam.type = 'number';
+        secondParam.defaultValue = '41';
+        secondParam.description = 'A random number';
+        await parameterRepo.save(secondParam);
+
+        const thirdParam = new ConfigParameter();
+        thirdParam.name = 'Boolean Rep';
+        thirdParam.type = 'boolean';
+        thirdParam.defaultValue = 'true';
+        thirdParam.description = 'Be true not better';
+        await parameterRepo.save(thirdParam);
+
+        console.log('Added first config parameter to db.');
+      } else {
+        console.log('db already exists.');
+      }
+    })
+    .catch((error) => console.log(error));
 
   win.on('closed', () => {
     win = null;
@@ -89,3 +141,9 @@ if (isDevelopment) {
     });
   }
 }
+
+// IPC MAIN SECTION
+ipcMain.on('getAllConfigParameter', async (event: any, args: any) => {
+  const parameters: ConfigParameter[] = await ConfigParameterController.getAll();
+  event.reply('replyAllConfigParameter', parameters);
+});

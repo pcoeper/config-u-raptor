@@ -1,13 +1,32 @@
 <template>
   <div class="config-list">
     <p>Config-List works!</p>
+    <div v-for="parameter in parameters" :key="parameter.id">
+      <ConfigDetail v-bind:parameter="parameter"></ConfigDetail>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
+import { ipcRenderer, Event } from 'electron';
+import { ConfigParameter } from '../db/entity/ConfigParameter';
+import ConfigDetail from './ConfigDetail.vue';
 
-@Component
-export default class ConfigList extends Vue {}
+@Component({ components: { ConfigDetail } })
+export default class ConfigList extends Vue {
+  public parameters: ConfigParameter[] = [];
+
+  public created() {
+    ipcRenderer.send('getAllConfigParameter');
+    ipcRenderer.on(
+      'replyAllConfigParameter',
+      (_: any, arg: ConfigParameter[]) => {
+        this.parameters = arg;
+      }
+    );
+  }
+}
 </script>
 
