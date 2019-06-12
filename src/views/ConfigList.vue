@@ -1,20 +1,20 @@
 <template>
   <div class="config-list">
     <div class="actions">
-      <b-button @click="add">Hinzufügen</b-button>
-      <b-button @click="submit">Speichern</b-button>
+      <b-button class="action-btn" @click="add">Hinzufügen</b-button>
+      <b-button class="action-btn" @click="submit">Speichern</b-button>
     </div>
-    <div class="new-parameter-list" v-if="newParameters.length > 0">
-      <h2>Neue Parameter</h2>
+    <div class="parameter-list" v-if="newParameters.length > 0">
+      <h2 class="subtitle">Neue Parameter</h2>
       <div v-for="parameter in newParameters" :key="parameter.id">
-        <ConfigDetail v-bind:parameter="parameter"></ConfigDetail>
+        <ConfigDetail class="config-detail" v-bind:parameter="parameter"></ConfigDetail>
       </div>
     </div>
 
     <div class="parameter-list">
-      <h2>Parameter</h2>
+      <h2 class="subtitle">Parameter</h2>
       <div v-for="parameter in parameters" :key="parameter.id">
-        <ConfigDetail v-bind:parameter="parameter"></ConfigDetail>
+        <ConfigDetail class="config-detail" v-bind:parameter="parameter"></ConfigDetail>
       </div>
     </div>
   </div>
@@ -65,7 +65,23 @@ export default class ConfigList extends Vue {
 
 <style lang="scss">
 .config-list {
-  padding: 80px 40px;
+  height: 100%;
+  overflow: auto;
+
+  .actions {
+    text-align: right;
+
+    .action-btn:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
+
+  .parameter-list {
+    padding: 20px 0;
+    h2 {
+      text-align: left;
+    }
+  }
 }
 </style>
 
