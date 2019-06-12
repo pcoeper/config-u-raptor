@@ -10,7 +10,7 @@ export class ConfigParameter {
 
   // should be one of 'string', 'number' or 'boolean'
   @Column('text')
-  public type!: string;
+  public type: string = 'string';
 
   @Column('text')
   public defaultValue: string = '';
