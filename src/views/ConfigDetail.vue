@@ -28,6 +28,9 @@
         </div>
       </b-field>
     </div>
+    <div class="actions">
+      <b-button @click="deleteParameter">Löschen</b-button>
+    </div>
   </div>
 </template>
 
@@ -75,10 +78,14 @@ export default class ConfigDetail extends Vue {
     }
   }
 
+  public deleteParameter(): void {
+    console.log("delete param: ", this.parameter.id);
+  }
+
   /**
    * Converts 'value' according to the defined parameter type
    */
-  private convertValue(): any {
+  private convertValue(): void {
     if (this.parameter.type === "string") {
       this.value = this.parameter.defaultValue;
     } else if (this.parameter.type === "number") {
@@ -99,13 +106,13 @@ export default class ConfigDetail extends Vue {
 <style lang="scss">
 .config-detail {
   display: grid;
-  grid-template-columns: 5fr 1fr 2fr;
+  grid-template-columns: 5fr 1fr 2fr 1fr;
   grid-template-rows: 1fr;
-  grid-template-areas: "name type value";
+  grid-template-areas: "name type value action";
   grid-column-gap: 2rem;
 
-  border-bottom: 1px solid black;
   padding: 20px 0;
+  border-bottom: 1px solid black;
 
   .parameter-name {
     grid-area: name;
@@ -118,6 +125,11 @@ export default class ConfigDetail extends Vue {
 
   .parameter-value {
     grid-area: value;
+  }
+
+  .actions {
+    grid-area: action;
+    justify-self: center;
   }
 }
 </style>
