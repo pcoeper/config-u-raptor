@@ -72,10 +72,13 @@ export default class ConfigDetail extends Vue {
 <style lang="scss">
 .config-detail {
   display: grid;
-  grid-template-columns: 5fr 2fr 2fr;
+  grid-template-columns: 5fr 1fr 2fr;
   grid-template-rows: 1fr;
   grid-template-areas: "name type value";
-  border: 1px solid black;
+  grid-column-gap: 2rem;
+
+  border-bottom: 1px solid black;
+  padding: 20px 0;
 
   .parameter-name {
     grid-area: name;
