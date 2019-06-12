@@ -58,7 +58,6 @@ export default class ConfigList extends Vue {
 
   public add() {
     const newParameter = new ConfigParameter();
-    // newParameter.id = 0;
     this.newParameters.push(newParameter);
   }
 }
