@@ -1,6 +1,5 @@
 <template>
   <div class="config-list">
-    <p>Config-List works!</p>
     <div v-for="parameter in parameters" :key="parameter.id">
       <ConfigDetail v-bind:parameter="parameter"></ConfigDetail>
     </div>
@@ -29,4 +28,10 @@ export default class ConfigList extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+    .config-list {
+        padding: 80px 40px;
+    }
+</style>
 
