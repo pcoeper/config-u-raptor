@@ -14,6 +14,10 @@ export class ConfigParameterController {
     return new Promise(async (resolve, reject) => {
       for (const p of parameters) {
         let saveParam = false;
+
+        // avoid undefined id when p is new instance
+        p.id = p.id ? p.id : 0;
+
         let parameter = await parameterRepo.findOne(p.id);
 
         // parameter already exists -> update?

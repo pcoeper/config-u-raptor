@@ -6,7 +6,7 @@ export class ConfigParameter {
   public id!: number;
 
   @Column({ type: 'text', unique: true })
-  public name!: string;
+  public name: string = '';
 
   // should be one of 'string', 'number' or 'boolean'
   @Column('text')
