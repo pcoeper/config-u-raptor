@@ -35,7 +35,7 @@ body {
 
 #app {
   display: grid;
-  grid-template-columns: 1fr 8fr;
+  grid-template-columns: 100px auto;
   grid-template-rows: 100vh;
   grid-template-areas: "nav content";
 }
