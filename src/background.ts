@@ -156,3 +156,9 @@ ipcMain.on(
     event.reply('replyAllConfigParameter', parameters);
   }
 );
+
+ipcMain.on('deleteConfigParameter', async (event: any, args: any) => {
+  await ConfigParameterController.deleteParameter(args);
+  const parameters = await ConfigParameterController.getAll();
+  event.reply('replyAllConfigParameter', parameters);
+});

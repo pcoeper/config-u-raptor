@@ -39,6 +39,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { ConfigParameter } from "../db/entity/ConfigParameter";
 import { Prop, Watch } from "vue-property-decorator";
+import { ipcRenderer } from "electron";
 
 @Component
 export default class ConfigDetail extends Vue {
@@ -72,30 +73,30 @@ export default class ConfigDetail extends Vue {
           this.parameter.defaultValue +
           " (" +
           typeof this.parameter.defaultValue +
-          ")"
+          ')'
       );
-      console.log("value is: " + this.value + " (" + typeof this.value + ")");
+      console.log('value is: ' + this.value + ' (' + typeof this.value + ')');
     }
   }
 
   public deleteParameter(): void {
-    console.log("delete param: ", this.parameter.id);
+    ipcRenderer.send('deleteConfigParameter', this.parameter.id);
   }
 
   /**
    * Converts 'value' according to the defined parameter type
    */
   private convertValue(): void {
-    if (this.parameter.type === "string") {
+    if (this.parameter.type === 'string') {
       this.value = this.parameter.defaultValue;
-    } else if (this.parameter.type === "number") {
+    } else if (this.parameter.type === 'number') {
       const numberRep = Number(this.parameter.defaultValue);
       this.value = isNaN(numberRep) ? 0 : numberRep;
-    } else if (this.parameter.type === "boolean") {
+    } else if (this.parameter.type === 'boolean') {
       const booleanRep =
-        this.parameter.defaultValue === "true" ||
-        this.parameter.defaultValue === "false";
-      this.value = this.parameter.defaultValue === "true" ? true : false;
+        this.parameter.defaultValue === 'true' ||
+        this.parameter.defaultValue === 'false';
+      this.value = this.parameter.defaultValue === 'true' ? true : false;
     }
     this.parameter.defaultValue = this.value.toString();
     this.debugValueChange();

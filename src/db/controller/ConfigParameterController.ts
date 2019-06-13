@@ -60,4 +60,18 @@ export class ConfigParameterController {
       resolve(true);
     });
   }
+
+  public static async deleteParameter(id: number): Promise<boolean> {
+    const parameterRepo = getRepository(ConfigParameter);
+
+    return new Promise(async (resolve, reject) => {
+      const parameter = await parameterRepo.findOne(id);
+      if (parameter) {
+        await parameterRepo.delete(id);
+      }
+
+      // resolve promise when done
+      resolve(true);
+    });
+  }
 }
