@@ -7,14 +7,22 @@
     <div class="parameter-list" v-if="newParameters.length > 0">
       <h2 class="subtitle">Neue Parameter</h2>
       <div v-for="parameter in newParameters" :key="parameter.id">
-        <ConfigDetail class="config-detail" v-bind:parameter="parameter"></ConfigDetail>
+        <ConfigDetail
+          class="config-detail"
+          v-bind:parameter="parameter"
+          @delete-parameter="deleteParameter"
+        ></ConfigDetail>
       </div>
     </div>
 
     <div class="parameter-list">
       <h2 class="subtitle">Parameter</h2>
       <div v-for="parameter in parameters" :key="parameter.id">
-        <ConfigDetail class="config-detail" v-bind:parameter="parameter"></ConfigDetail>
+        <ConfigDetail
+          class="config-detail"
+          v-bind:parameter="parameter"
+          @delete-parameter="deleteParameter"
+        ></ConfigDetail>
       </div>
     </div>
   </div>
@@ -59,6 +67,19 @@ export default class ConfigList extends Vue {
   public add() {
     const newParameter = new ConfigParameter();
     this.newParameters.push(newParameter);
+  }
+
+  public deleteParameter(parameter: ConfigParameter) {
+    if (parameter.id === undefined) {
+      const parameterIndex = this.newParameters.findIndex(
+        (param: ConfigParameter) => param === parameter
+      );
+      if (parameterIndex >= 0) {
+        this.newParameters.splice(parameterIndex, 1);
+      }
+    } else {
+      ipcRenderer.send('deleteConfigParameter', parameter.id);
+    }
   }
 }
 </script>

@@ -29,7 +29,9 @@
       </b-field>
     </div>
     <div class="actions">
-      <b-button @click="deleteParameter">Löschen</b-button>
+      <b-button @click="deleteParameter" type="is-danger">
+        <v-icon name="trash-alt"/>
+      </b-button>
     </div>
   </div>
 </template>
@@ -40,8 +42,10 @@ import Component from "vue-class-component";
 import { ConfigParameter } from "../db/entity/ConfigParameter";
 import { Prop, Watch } from "vue-property-decorator";
 import { ipcRenderer } from "electron";
+import Icon from "vue-awesome/components/Icon.vue";
+import "vue-awesome/icons/trash-alt";
 
-@Component
+@Component({ components: { "v-icon": Icon } })
 export default class ConfigDetail extends Vue {
   @Prop()
   public parameter!: ConfigParameter;
@@ -73,30 +77,30 @@ export default class ConfigDetail extends Vue {
           this.parameter.defaultValue +
           " (" +
           typeof this.parameter.defaultValue +
-          ')'
+          ")"
       );
-      console.log('value is: ' + this.value + ' (' + typeof this.value + ')');
+      console.log("value is: " + this.value + " (" + typeof this.value + ")");
     }
   }
 
   public deleteParameter(): void {
-    ipcRenderer.send('deleteConfigParameter', this.parameter.id);
+    this.$emit("delete-parameter", this.parameter);
   }
 
   /**
    * Converts 'value' according to the defined parameter type
    */
   private convertValue(): void {
-    if (this.parameter.type === 'string') {
+    if (this.parameter.type === "string") {
       this.value = this.parameter.defaultValue;
-    } else if (this.parameter.type === 'number') {
+    } else if (this.parameter.type === "number") {
       const numberRep = Number(this.parameter.defaultValue);
       this.value = isNaN(numberRep) ? 0 : numberRep;
-    } else if (this.parameter.type === 'boolean') {
+    } else if (this.parameter.type === "boolean") {
       const booleanRep =
-        this.parameter.defaultValue === 'true' ||
-        this.parameter.defaultValue === 'false';
-      this.value = this.parameter.defaultValue === 'true' ? true : false;
+        this.parameter.defaultValue === "true" ||
+        this.parameter.defaultValue === "false";
+      this.value = this.parameter.defaultValue === "true" ? true : false;
     }
     this.parameter.defaultValue = this.value.toString();
     this.debugValueChange();
