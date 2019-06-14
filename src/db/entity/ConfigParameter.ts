@@ -1,11 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { ParameterMod } from './ParameterMod';
 
 @Entity()
 export class ConfigParameter {
   @PrimaryGeneratedColumn()
   public id!: number;
 
-  @Column({ type: 'text', unique: true })
+  @Column('text')
   public name: string = '';
 
   // should be one of 'string', 'number' or 'boolean'
@@ -17,4 +18,7 @@ export class ConfigParameter {
 
   @Column('text')
   public description: string = '';
+
+  @OneToMany((type) => ParameterMod, (parameterMod) => parameterMod.configParameter)
+  public modifications!: ParameterMod[];
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 import 'reflect-metadata';
-import { createConnection, ConnectionOptions } from 'typeorm';
+import { createConnection } from 'typeorm';
 
 import { app, protocol, BrowserWindow, ipcMain } from 'electron';
 import {
@@ -9,16 +9,9 @@ import {
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib';
 import { ConfigParameter } from './db/entity/ConfigParameter';
+import { ConfigSetup } from './db/entity/ConfigSetup';
+import { ParameterMod } from './db/entity/ParameterMod';
 import { ConfigParameterController } from './db/controller/ConfigParameterController';
-
-const connectionOptions: ConnectionOptions = {
-  type: 'sqlite',
-  synchronize: true,
-  logging: false,
-  logger: 'simple-console',
-  database: 'db.sqlite',
-  entities: [ConfigParameter]
-};
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -54,7 +47,14 @@ function createWindow() {
   }
 
   // initialize db
-  createConnection(connectionOptions)
+  createConnection({
+    type: 'sqlite',
+    synchronize: true,
+    logging: false,
+    logger: 'simple-console',
+    database: 'db.sqlite',
+    entities: [ConfigParameter, ConfigSetup, ParameterMod]
+  })
     .then(async (connection) => {
       const parameterRepo = connection.getRepository(ConfigParameter);
 
