@@ -54,45 +54,50 @@ export class SetupController {
 
     return new Promise(async (resolve, reject) => {
       // should be there...otherwise the call makes no sense
-      const setup = await setupRepo.findOne(setupId);
+      let setup = await setupRepo.findOne(setupId);
 
-      // HAS TO BE THERE!!!
-      if (setup) {
-        // get all available parameters
-        const availableParameters = await parameterRepo.find();
+      // create setup if it does not exist (=> setupId = 0)
+      if (!setup) {
+        setup = new ConfigSetup();
+        setup.name = 'New Setup';
 
-        for (const param of availableParameters) {
-          // setup parameter (=> potential modification)
-          const setupParameter = setupParameters.find(
-            (setupParam: ConfigParameter) => {
-              return setupParam.id === param.id;
+        setupRepo.save(setup);
+      }
+
+      // get all available parameters
+      const availableParameters = await parameterRepo.find();
+
+      for (const param of availableParameters) {
+        // setup parameter (=> potential modification)
+        const setupParameter = setupParameters.find(
+          (setupParam: ConfigParameter) => {
+            return setupParam.id === param.id;
+          }
+        );
+
+        // HAS TO BE THERE!!!
+        if (setupParameter) {
+          // modification for this particular setup and parameter
+          let mod = await modRepo.findOne({
+            where: { configParameter: param, configSetup: setup }
+          });
+
+          if (setupParameter.defaultValue !== param.defaultValue) {
+            // value was changed for this setup
+            if (!mod) {
+              // create modification if it does not exist...
+              mod = new ParameterMod();
+              mod.configParameter = param;
+              mod.configSetup = setup;
             }
-          );
+            // ...and reset value
+            mod.value = setupParameter.defaultValue;
 
-          // HAS TO BE THERE!!!
-          if (setupParameter) {
-            // modification for this particular setup and parameter
-            let mod = await modRepo.findOne({
-              where: { configParameter: param, configSetup: setup }
-            });
-
-            if (setupParameter.defaultValue !== param.defaultValue) {
-              // value was changed for this setup
-              if (!mod) {
-                // create modification if it does not exist...
-                mod = new ParameterMod();
-                mod.configParameter = param;
-                mod.configSetup = setup;
-              }
-              // ...and reset value
-              mod.value = setupParameter.defaultValue;
-
-              modRepo.save(mod);
-            } else {
-              // value equals defaultvalue of parameter: check whether mod exists and delete
-              if (mod) {
-                modRepo.delete(mod);
-              }
+            modRepo.save(mod);
+          } else {
+            // value equals defaultvalue of parameter: check whether mod exists and delete
+            if (mod) {
+              modRepo.delete(mod);
             }
           }
         }
