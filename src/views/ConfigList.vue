@@ -21,6 +21,7 @@
         <ConfigDetail
           class="config-detail"
           v-bind:parameter="parameter"
+          v-bind:editMode="true"
           @delete-parameter="deleteParameter"
         ></ConfigDetail>
       </div>
@@ -45,8 +46,8 @@ export default class ConfigList extends Vue {
     ipcRenderer.send('getAllConfigParameter');
     ipcRenderer.on(
       'replyAllConfigParameter',
-      (_: any, arg: ConfigParameter[]) => {
-        this.parameters = arg;
+      (_: any, args: ConfigParameter[]) => {
+        this.parameters = args;
       }
     );
   }

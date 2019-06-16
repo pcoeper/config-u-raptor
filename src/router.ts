@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
-import Favorites from './views/Favorites.vue';
 import ConfigList from './views/ConfigList.vue';
 import Settings from './views/Settings.vue';
+import SetupList from './views/SetupList.vue';
+import SetupDetail from './views/SetupDetail.vue';
 
 Vue.use(Router);
 
@@ -20,9 +21,14 @@ export default new Router({
       component: ConfigList
     },
     {
-      path: '/favorites',
-      name: 'favorites',
-      component: Favorites
+      path: '/setups',
+      name: 'setups',
+      component: SetupList
+    },
+    {
+      path: 'setups/:id',
+      name: 'setup-detail',
+      component: SetupDetail
     },
     {
       path: '/settings',

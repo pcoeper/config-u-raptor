@@ -12,6 +12,7 @@ import { ConfigParameter } from './db/entity/ConfigParameter';
 import { ConfigSetup } from './db/entity/ConfigSetup';
 import { ParameterMod } from './db/entity/ParameterMod';
 import { ConfigParameterController } from './db/controller/ConfigParameterController';
+import { SetupController } from './db/controller/SetupController';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -57,6 +58,7 @@ function createWindow() {
   })
     .then(async (connection) => {
       const parameterRepo = connection.getRepository(ConfigParameter);
+      const setupRepo = connection.getRepository(ConfigSetup);
 
       const availableParameters = await parameterRepo.find();
 
@@ -82,6 +84,16 @@ function createWindow() {
         thirdParam.defaultValue = 'true';
         thirdParam.description = 'Be true not better';
         await parameterRepo.save(thirdParam);
+
+        const firstSetup = new ConfigSetup();
+        firstSetup.name = 'Erstes Setup';
+        // firstSetup.modifications = [];
+        await setupRepo.save(firstSetup);
+
+        const secondSetup = new ConfigSetup();
+        secondSetup.name = 'Zweites Setup';
+        // secondSetup.modifications = [];
+        await setupRepo.save(secondSetup);
 
         console.log('Added first config parameter to db.');
       } else {
@@ -143,6 +155,7 @@ if (isDevelopment) {
 }
 
 // IPC MAIN SECTION
+// ConfigParameter
 ipcMain.on('getAllConfigParameter', async (event: any, args: any) => {
   const parameters: ConfigParameter[] = await ConfigParameterController.getAll();
   event.reply('replyAllConfigParameter', parameters);
@@ -161,4 +174,15 @@ ipcMain.on('deleteConfigParameter', async (event: any, args: any) => {
   await ConfigParameterController.deleteParameter(args);
   const parameters = await ConfigParameterController.getAll();
   event.reply('replyAllConfigParameter', parameters);
+});
+
+// ConfigSetup
+ipcMain.on('getAllConfigSetups', async (event: any, args: any) => {
+  const setups = await SetupController.getAll();
+  event.reply('replyAllConfigSetups', setups);
+});
+
+ipcMain.on('getAllParameterOfSetup', async (event: any, setupId: number) => {
+  const parameters = await SetupController.getParametersOfSetup(setupId);
+  event.reply('replyAllParametersOfSetup', parameters);
 });
