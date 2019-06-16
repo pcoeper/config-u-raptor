@@ -59,6 +59,7 @@ function createWindow() {
     .then(async (connection) => {
       const parameterRepo = connection.getRepository(ConfigParameter);
       const setupRepo = connection.getRepository(ConfigSetup);
+      const modRepo = connection.getRepository(ParameterMod);
 
       const availableParameters = await parameterRepo.find();
 
@@ -94,6 +95,12 @@ function createWindow() {
         secondSetup.name = 'Zweites Setup';
         // secondSetup.modifications = [];
         await setupRepo.save(secondSetup);
+
+        const firstMod = new ParameterMod();
+        firstMod.configSetup = firstSetup;
+        firstMod.configParameter = firstParam;
+        firstMod.value = 'modified String';
+        modRepo.save(firstMod);
 
         console.log('Added first config parameter to db.');
       } else {
@@ -183,6 +190,13 @@ ipcMain.on('getAllConfigSetups', async (event: any, args: any) => {
 });
 
 ipcMain.on('getAllParameterOfSetup', async (event: any, setupId: number) => {
-  const parameters = await SetupController.getParametersOfSetup(setupId);
+  const parameters = await SetupController.getParameterOfSetup(setupId);
   event.reply('replyAllParametersOfSetup', parameters);
+});
+
+ipcMain.on('saveSetupParameter', async (event: any, args: any) => {
+  const parameters = await SetupController.saveSetupParameter(
+    args.setupId,
+    args.parameters
+  );
 });

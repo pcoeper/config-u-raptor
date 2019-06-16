@@ -2,6 +2,9 @@
   <div class="setup-detail">
     <p>SetupDetail works</p>
     <p>{{$route.params.id}}</p>
+    <div class="actions">
+      <b-button class="action-btn" @click="submit">Speichern</b-button>
+    </div>
     <div class="parameter-list">
       <h2 class="subtitle">Parameter</h2>
       <div v-for="parameter in parameters" :key="parameter.id">
@@ -23,9 +26,11 @@ import ConfigDetail from "./ConfigDetail.vue";
 export default class SetupDetail extends Vue {
   public parameters: ConfigParameter[] = [];
 
+  private setupId: number = 0;
+
   public created() {
-    const setupId = this.$route.params.id;
-    ipcRenderer.send("getAllParameterOfSetup", setupId);
+    this.setupId = +this.$route.params.id;
+    ipcRenderer.send("getAllParameterOfSetup", this.setupId);
     ipcRenderer.on(
       "replyAllParametersOfSetup",
       (_: any, args: ConfigParameter[]) => {
@@ -37,6 +42,13 @@ export default class SetupDetail extends Vue {
   public destroyed() {
     // clear all listeners
     ipcRenderer.removeAllListeners("replyAllParametersOfSetup");
+  }
+
+  public submit() {
+    ipcRenderer.send("saveSetupParameter", {
+      setupId: this.setupId,
+      parameters: this.parameters
+    });
   }
 }
 </script>

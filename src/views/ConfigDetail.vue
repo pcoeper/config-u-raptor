@@ -160,7 +160,6 @@ export default class ConfigDetail extends Vue {
 
   .parameter-description {
     grid-area: description;
-    // justify-self: start;
   }
 }
 </style>

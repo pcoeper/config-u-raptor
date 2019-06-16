@@ -8,7 +8,13 @@
 
     <div class="setup-list">
       <h2 class="subtitle">Setups</h2>
-      <div v-for="setup in setups" :key="setup.id">{{setup.name}}, {{setup.modifications.length}}</div>
+      <div v-for="setup in setups" :key="setup.id">
+        {{setup.name}}
+        {{setup.id}}
+        <router-link :to="{name: 'setup-detail', params: {id: setup.id}}">
+          <b-button class="action-btn">Test</b-button>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
