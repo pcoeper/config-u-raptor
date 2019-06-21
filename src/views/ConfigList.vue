@@ -29,11 +29,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { ipcRenderer, Event } from "electron";
-import { ConfigParameter } from "../db/entity/ConfigParameter";
-import ConfigDetail from "./ConfigDetail.vue";
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
+import { ipcRenderer, Event } from 'electron';
+import { ConfigParameter } from '../db/entity/ConfigParameter';
+import ConfigDetail from './ConfigDetail.vue';
 
 @Component({ components: { ConfigDetail } })
 export default class ConfigList extends Vue {
@@ -42,9 +42,9 @@ export default class ConfigList extends Vue {
   public newParameters: ConfigParameter[] = [];
 
   public created() {
-    ipcRenderer.send("getAllConfigParameter");
+    ipcRenderer.send('getAllConfigParameter');
     ipcRenderer.on(
-      "replyAllConfigParameter",
+      'replyAllConfigParameter',
       (_: any, args: ConfigParameter[]) => {
         this.parameters = args;
       }
@@ -53,12 +53,12 @@ export default class ConfigList extends Vue {
 
   public destroyed() {
     // clear all listeners
-    ipcRenderer.removeAllListeners("replyAllConfigParameter");
+    ipcRenderer.removeAllListeners('replyAllConfigParameter');
   }
 
   public submit() {
     ipcRenderer.send(
-      "saveAllConfigParameter",
+      'saveAllConfigParameter',
       this.parameters.concat(this.newParameters)
     );
     this.newParameters = [];
@@ -78,7 +78,7 @@ export default class ConfigList extends Vue {
         this.newParameters.splice(parameterIndex, 1);
       }
     } else {
-      ipcRenderer.send("deleteConfigParameter", parameter.id);
+      ipcRenderer.send('deleteConfigParameter', parameter.id);
     }
   }
 }

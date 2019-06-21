@@ -4,30 +4,28 @@
       <span class="helper"></span>
       <img alt="Vue logo" src="../assets/logo.png">
     </div>
-    <nav>
-      <div class="nav-list">
-        <div class="nav-item">
-          <router-link to="/">
-            <v-icon name="home" scale="1.5"/>
-          </router-link>
-        </div>
-        <div class="nav-item">
-          <router-link to="/config-list">
-            <v-icon name="list-ul" scale="1.5"/>
-          </router-link>
-        </div>
-        <div class="nav-item">
-          <router-link to="/setups">
-            <v-icon name="heart" scale="1.5"/>
-          </router-link>
-        </div>
-        <div class="nav-item">
-          <router-link to="/settings">
-            <v-icon name="cog" scale="1.5"/>
-          </router-link>
-        </div>
+    <div class="nav-list">
+      <div class="nav-item">
+        <router-link to="/">
+          <v-icon name="home" scale="1.5"/>
+        </router-link>
       </div>
-    </nav>
+      <div class="nav-item">
+        <router-link to="/config-list">
+          <v-icon name="list-ul" scale="1.5"/>
+        </router-link>
+      </div>
+      <div class="nav-item">
+        <router-link to="/setups">
+          <v-icon name="heart" scale="1.5"/>
+        </router-link>
+      </div>
+      <div class="nav-item">
+        <router-link to="/settings">
+          <v-icon name="cog" scale="1.5"/>
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -45,7 +43,7 @@ import 'vue-awesome/icons/cog';
 export default class NavBar extends Vue {}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .nav-container {
   .logo {
     height: 150px;
@@ -68,6 +66,10 @@ export default class NavBar extends Vue {}
       text-decoration: none;
       color: #2c3e50;
       cursor: pointer;
+
+      &.router-link-exact-active {
+        color: #a52641;
+      }
     }
   }
 }
