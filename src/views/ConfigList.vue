@@ -10,6 +10,7 @@
         <ConfigDetail
           class="config-detail"
           v-bind:parameter="parameter"
+          v-bind:editMode="true"
           @delete-parameter="deleteParameter"
         ></ConfigDetail>
       </div>
