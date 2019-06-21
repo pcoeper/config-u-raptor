@@ -100,7 +100,6 @@ export default class ConfigList extends Vue {
   }
 
   .parameter-list {
-    padding: 20px 0;
     h2 {
       text-align: left;
     }

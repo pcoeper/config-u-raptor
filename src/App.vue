@@ -4,7 +4,9 @@
       <NavBar></NavBar>
     </nav>
     <main>
-      <router-view/>
+      <div class="content-wrapper">
+        <router-view/>
+      </div>
     </main>
   </div>
 </template>
@@ -49,7 +51,11 @@ main {
   grid-area: content;
   background-color: lightcoral;
 
-  padding: 80px 40px;
+  padding: 40px 40px;
+
+  .content-wrapper {
+    padding: 10px 50px;
+  }
 }
 
 #nav {
