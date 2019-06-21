@@ -11,9 +11,10 @@
       <div class="setup-item" v-for="setup in setups" :key="setup.id">
         <div class="item-name">{{setup.name}}</div>
         <div class="item-actions">
-          <router-link :to="{name: 'setup-detail', params: {id: setup.id}}">
-            <b-button class="action-btn">Bearbeiten</b-button>
-          </router-link>
+          <b-button class="action-btn" @click="navigateToDetail(setup.id)">Bearbeiten</b-button>
+          <b-button class="action-btn" @click="downloadSetup(setup.id)">
+            <v-icon name="arrow-alt-circle-down"></v-icon>
+          </b-button>
         </div>
       </div>
     </div>
@@ -25,8 +26,10 @@ import { Component, Vue } from 'vue-property-decorator';
 import { ipcRenderer } from 'electron';
 import { ConfigSetup } from '../db/entity/ConfigSetup';
 import router from '../router';
+import Icon from 'vue-awesome/components/Icon.vue';
+import 'vue-awesome/icons/arrow-alt-circle-down';
 
-@Component
+@Component({ components: { 'v-icon': Icon } })
 export default class SetupList extends Vue {
   public setups: ConfigSetup[] = [];
 
@@ -41,6 +44,14 @@ export default class SetupList extends Vue {
   public destroyed() {
     // clear all listeners
     ipcRenderer.removeAllListeners('replyAllConfigSetups');
+  }
+
+  public downloadSetup(setupId: number): void {
+    console.log(setupId);
+  }
+
+  public navigateToDetail(setupId: number): void {
+    router.push({ name: 'setup-detail', params: { id: setupId.toString() } });
   }
 }
 </script>
@@ -83,6 +94,10 @@ export default class SetupList extends Vue {
 
       .item-actions {
         grid-area: actions;
+
+        .action-btn:not(:last-child) {
+          margin-right: 5px;
+        }
       }
     }
   }
