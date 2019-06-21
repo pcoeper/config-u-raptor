@@ -8,7 +8,6 @@
       <h2 class="subtitle">Neue Parameter</h2>
       <div v-for="parameter in newParameters" :key="parameter.id">
         <ConfigDetail
-          class="config-detail"
           v-bind:parameter="parameter"
           v-bind:editMode="true"
           @delete-parameter="deleteParameter"
@@ -20,7 +19,6 @@
       <h2 class="subtitle">Parameter</h2>
       <div v-for="parameter in parameters" :key="parameter.id">
         <ConfigDetail
-          class="config-detail"
           v-bind:parameter="parameter"
           v-bind:editMode="true"
           @delete-parameter="deleteParameter"
@@ -31,11 +29,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
-import { ipcRenderer, Event } from 'electron';
-import { ConfigParameter } from '../db/entity/ConfigParameter';
-import ConfigDetail from './ConfigDetail.vue';
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { ipcRenderer, Event } from "electron";
+import { ConfigParameter } from "../db/entity/ConfigParameter";
+import ConfigDetail from "./ConfigDetail.vue";
 
 @Component({ components: { ConfigDetail } })
 export default class ConfigList extends Vue {
@@ -44,9 +42,9 @@ export default class ConfigList extends Vue {
   public newParameters: ConfigParameter[] = [];
 
   public created() {
-    ipcRenderer.send('getAllConfigParameter');
+    ipcRenderer.send("getAllConfigParameter");
     ipcRenderer.on(
-      'replyAllConfigParameter',
+      "replyAllConfigParameter",
       (_: any, args: ConfigParameter[]) => {
         this.parameters = args;
       }
@@ -55,12 +53,12 @@ export default class ConfigList extends Vue {
 
   public destroyed() {
     // clear all listeners
-    ipcRenderer.removeAllListeners('replyAllConfigParameter');
+    ipcRenderer.removeAllListeners("replyAllConfigParameter");
   }
 
   public submit() {
     ipcRenderer.send(
-      'saveAllConfigParameter',
+      "saveAllConfigParameter",
       this.parameters.concat(this.newParameters)
     );
     this.newParameters = [];
@@ -80,13 +78,13 @@ export default class ConfigList extends Vue {
         this.newParameters.splice(parameterIndex, 1);
       }
     } else {
-      ipcRenderer.send('deleteConfigParameter', parameter.id);
+      ipcRenderer.send("deleteConfigParameter", parameter.id);
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .config-list {
   .actions {
     text-align: right;

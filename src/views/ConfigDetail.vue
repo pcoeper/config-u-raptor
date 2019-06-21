@@ -43,15 +43,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import { ConfigParameter } from '../db/entity/ConfigParameter';
-import { Prop, Watch } from 'vue-property-decorator';
-import { ipcRenderer } from 'electron';
-import Icon from 'vue-awesome/components/Icon.vue';
-import 'vue-awesome/icons/trash-alt';
+import Vue from "vue";
+import Component from "vue-class-component";
+import { ConfigParameter } from "../db/entity/ConfigParameter";
+import { Prop, Watch } from "vue-property-decorator";
+import { ipcRenderer } from "electron";
+import Icon from "vue-awesome/components/Icon.vue";
+import "vue-awesome/icons/trash-alt";
 
-@Component({ components: { 'v-icon': Icon } })
+@Component({ components: { "v-icon": Icon } })
 export default class ConfigDetail extends Vue {
   @Prop()
   public parameter!: ConfigParameter;
@@ -59,7 +59,7 @@ export default class ConfigDetail extends Vue {
   @Prop({ default: false })
   public editMode!: boolean;
 
-  public value: any = '';
+  public value: any = "";
 
   private showDebug: boolean = false;
 
@@ -71,12 +71,12 @@ export default class ConfigDetail extends Vue {
     return this.editMode;
   }
 
-  @Watch('parameter.type')
+  @Watch("parameter.type")
   public onTypeChanged() {
     this.convertValue();
   }
 
-  @Watch('value')
+  @Watch("value")
   public onValueChange() {
     this.parameter.defaultValue = this.value.toString();
     this.debugValueChange();
@@ -86,34 +86,34 @@ export default class ConfigDetail extends Vue {
     if (this.showDebug) {
       // logging / debug
       console.log(
-        'defaultvalue is: ' +
+        "defaultvalue is: " +
           this.parameter.defaultValue +
-          ' (' +
+          " (" +
           typeof this.parameter.defaultValue +
-          ')'
+          ")"
       );
-      console.log('value is: ' + this.value + ' (' + typeof this.value + ')');
+      console.log("value is: " + this.value + " (" + typeof this.value + ")");
     }
   }
 
   public deleteParameter(): void {
-    this.$emit('delete-parameter', this.parameter);
+    this.$emit("delete-parameter", this.parameter);
   }
 
   /**
    * Converts 'value' according to the defined parameter type
    */
   private convertValue(): void {
-    if (this.parameter.type === 'string') {
+    if (this.parameter.type === "string") {
       this.value = this.parameter.defaultValue;
-    } else if (this.parameter.type === 'number') {
+    } else if (this.parameter.type === "number") {
       const numberRep = Number(this.parameter.defaultValue);
       this.value = isNaN(numberRep) ? 0 : numberRep;
-    } else if (this.parameter.type === 'boolean') {
+    } else if (this.parameter.type === "boolean") {
       const booleanRep =
-        this.parameter.defaultValue === 'true' ||
-        this.parameter.defaultValue === 'false';
-      this.value = this.parameter.defaultValue === 'true' ? true : false;
+        this.parameter.defaultValue === "true" ||
+        this.parameter.defaultValue === "false";
+      this.value = this.parameter.defaultValue === "true" ? true : false;
     }
     this.parameter.defaultValue = this.value.toString();
     this.debugValueChange();
@@ -121,7 +121,7 @@ export default class ConfigDetail extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .config-detail {
   display: grid;
 

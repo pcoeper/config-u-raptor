@@ -8,7 +8,7 @@
     <div class="parameter-list">
       <h2 class="subtitle">Parameter</h2>
       <div v-for="parameter in parameters" :key="parameter.id">
-        <ConfigDetail class="config-detail" v-bind:parameter="parameter"></ConfigDetail>
+        <ConfigDetail v-bind:parameter="parameter"></ConfigDetail>
       </div>
     </div>
   </div>
@@ -16,11 +16,11 @@
 
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import { ipcRenderer } from 'electron';
-import { ConfigParameter } from '../db/entity/ConfigParameter';
-import ConfigDetail from './ConfigDetail.vue';
+import Vue from "vue";
+import Component from "vue-class-component";
+import { ipcRenderer } from "electron";
+import { ConfigParameter } from "../db/entity/ConfigParameter";
+import ConfigDetail from "./ConfigDetail.vue";
 
 @Component({ components: { ConfigDetail } })
 export default class SetupDetail extends Vue {
@@ -30,9 +30,9 @@ export default class SetupDetail extends Vue {
 
   public created() {
     this.setupId = +this.$route.params.id;
-    ipcRenderer.send('getAllParameterOfSetup', this.setupId);
+    ipcRenderer.send("getAllParameterOfSetup", this.setupId);
     ipcRenderer.on(
-      'replyAllParametersOfSetup',
+      "replyAllParametersOfSetup",
       (_: any, args: ConfigParameter[]) => {
         this.parameters = args;
       }
@@ -41,11 +41,11 @@ export default class SetupDetail extends Vue {
 
   public destroyed() {
     // clear all listeners
-    ipcRenderer.removeAllListeners('replyAllParametersOfSetup');
+    ipcRenderer.removeAllListeners("replyAllParametersOfSetup");
   }
 
   public submit() {
-    ipcRenderer.send('saveSetupParameter', {
+    ipcRenderer.send("saveSetupParameter", {
       setupId: this.setupId,
       parameters: this.parameters
     });
