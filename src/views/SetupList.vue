@@ -20,25 +20,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { ipcRenderer } from "electron";
-import { ConfigSetup } from "../db/entity/ConfigSetup";
-import router from "../router";
+import { Component, Vue } from 'vue-property-decorator';
+import { ipcRenderer } from 'electron';
+import { ConfigSetup } from '../db/entity/ConfigSetup';
+import router from '../router';
 
 @Component
 export default class SetupList extends Vue {
   public setups: ConfigSetup[] = [];
 
   public created() {
-    ipcRenderer.send("getAllConfigSetups");
-    ipcRenderer.on("replyAllConfigSetups", (_: any, args: ConfigSetup[]) => {
+    ipcRenderer.send('getAllConfigSetups');
+    ipcRenderer.on('replyAllConfigSetups', (_: any, args: ConfigSetup[]) => {
       this.setups = args;
     });
   }
 
   public destroyed() {
     // clear all listeners
-    ipcRenderer.removeAllListeners("replyAllConfigSetups");
+    ipcRenderer.removeAllListeners('replyAllConfigSetups');
   }
 }
 </script>

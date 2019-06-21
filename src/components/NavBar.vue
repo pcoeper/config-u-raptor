@@ -32,15 +32,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Icon from "vue-awesome/components/Icon.vue";
-import "vue-awesome/icons/home";
-import "vue-awesome/icons/list-ul";
-import "vue-awesome/icons/heart";
-import "vue-awesome/icons/cog";
+import { Component, Vue } from 'vue-property-decorator';
+import Icon from 'vue-awesome/components/Icon.vue';
+import 'vue-awesome/icons/home';
+import 'vue-awesome/icons/list-ul';
+import 'vue-awesome/icons/heart';
+import 'vue-awesome/icons/cog';
 
 @Component({
-  components: { "v-icon": Icon }
+  components: { 'v-icon': Icon }
 })
 export default class NavBar extends Vue {}
 </script>
