@@ -195,8 +195,6 @@ ipcMain.on('getAllParameterOfSetup', async (event: any, setupId: number) => {
 });
 
 ipcMain.on('saveSetupParameter', async (event: any, args: any) => {
-  const parameters = await SetupController.saveSetupParameter(
-    args.setupId,
-    args.parameters
-  );
+  await SetupController.saveSetupParameter(args.setupId, args.parameters);
+});
 });

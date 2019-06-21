@@ -97,7 +97,7 @@ export class SetupController {
           } else {
             // value equals defaultvalue of parameter: check whether mod exists and delete
             if (mod) {
-              modRepo.delete(mod);
+              await modRepo.delete(mod);
             }
           }
         }
