@@ -21,8 +21,8 @@ export default new Router({
       component: ConfigList
     },
     {
-      path: '/setups',
-      name: 'setups',
+      path: '/setup-list',
+      name: 'setup-list',
       component: SetupList
     },
     {

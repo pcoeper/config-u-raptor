@@ -1,6 +1,9 @@
 <template>
   <div class="setup-detail">
     <div class="actions">
+      <b-button class="action-btn">
+        <router-link to="/setup-list">Zurück</router-link>
+      </b-button>
       <b-button class="action-btn" @click="submit">Speichern</b-button>
     </div>
     <div class="parameter-list">
@@ -14,11 +17,11 @@
 
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { ipcRenderer } from "electron";
-import { ConfigParameter } from "../db/entity/ConfigParameter";
-import ConfigDetail from "./ConfigDetail.vue";
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { ipcRenderer } from 'electron';
+import { ConfigParameter } from '../db/entity/ConfigParameter';
+import ConfigDetail from './ConfigDetail.vue';
 
 @Component({ components: { ConfigDetail } })
 export default class SetupDetail extends Vue {
@@ -28,9 +31,9 @@ export default class SetupDetail extends Vue {
 
   public created() {
     this.setupId = +this.$route.params.id;
-    ipcRenderer.send("getAllParameterOfSetup", this.setupId);
+    ipcRenderer.send('getAllParameterOfSetup', this.setupId);
     ipcRenderer.on(
-      "replyAllParametersOfSetup",
+      'replyAllParametersOfSetup',
       (_: any, args: ConfigParameter[]) => {
         this.parameters = args;
       }
@@ -39,11 +42,11 @@ export default class SetupDetail extends Vue {
 
   public destroyed() {
     // clear all listeners
-    ipcRenderer.removeAllListeners("replyAllParametersOfSetup");
+    ipcRenderer.removeAllListeners('replyAllParametersOfSetup');
   }
 
   public submit() {
-    ipcRenderer.send("saveSetupParameter", {
+    ipcRenderer.send('saveSetupParameter', {
       setupId: this.setupId,
       parameters: this.parameters
     });
@@ -57,6 +60,12 @@ export default class SetupDetail extends Vue {
 
   .action-btn:not(:last-child) {
     margin-right: 5px;
+  }
+
+  a {
+    text-decoration: none;
+    color: #2c3e50;
+    cursor: pointer;
   }
 }
 

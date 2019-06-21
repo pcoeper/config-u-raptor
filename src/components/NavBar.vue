@@ -16,7 +16,7 @@
         </router-link>
       </div>
       <div class="nav-item">
-        <router-link to="/setups">
+        <router-link to="/setup-list">
           <v-icon name="heart" scale="1.5"/>
         </router-link>
       </div>
