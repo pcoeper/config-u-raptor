@@ -50,10 +50,12 @@ nav {
 main {
   grid-area: content;
   background-color: lightcoral;
-
   padding: 40px 40px;
+  height: 100%;
 
   .content-wrapper {
+    height: 100%;
+    overflow: auto;
     padding: 10px 50px;
   }
 }

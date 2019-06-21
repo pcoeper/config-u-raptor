@@ -88,9 +88,6 @@ export default class ConfigList extends Vue {
 
 <style lang="scss">
 .config-list {
-  height: 100%;
-  overflow: auto;
-
   .actions {
     text-align: right;
 
