@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app-wrapper">
     <nav>
       <NavBar></NavBar>
     </nav>
@@ -12,15 +12,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import NavBar from '@/components/NavBar.vue';
 
-@Component({
-  components: {
-    NavBar
-  }
-})
-export default class App extends Vue {}
+export default {
+  components: { NavBar }
+};
 </script>
 
 
@@ -35,7 +31,7 @@ body {
   color: #2c3e50;
 }
 
-#app {
+#app-wrapper {
   display: grid;
   grid-template-columns: 100px auto;
   grid-template-rows: 100vh;

@@ -1,9 +1,7 @@
 <template>
   <div class="setups">
     <div class="actions">
-      <router-link :to="{name: 'setup-detail', params: {id: 0}}">
-        <b-button class="action-btn">Hinzufügen</b-button>
-      </router-link>
+      <b-button class="action-btn" @click="navigateToDetail(0)">Hinzufügen</b-button>
     </div>
 
     <div class="setup-list">
@@ -22,38 +20,47 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import { ipcRenderer } from 'electron';
 import { ConfigSetup } from '../db/entity/ConfigSetup';
 import router from '../router';
 import Icon from 'vue-awesome/components/Icon.vue';
 import 'vue-awesome/icons/arrow-alt-circle-down';
+import Vue from 'vue';
 
-@Component({ components: { 'v-icon': Icon } })
-export default class SetupList extends Vue {
-  public setups: ConfigSetup[] = [];
+export default Vue.extend({
+  data() {
+    return {
+      setups: [] as ConfigSetup[]
+    };
+  },
 
-  public created() {
+  components: {
+    'v-icon': Icon
+  },
+
+  created() {
     ipcRenderer.send('getAllConfigSetups');
     ipcRenderer.on('replyAllConfigSetups', (_: any, args: ConfigSetup[]) => {
       console.table(args);
       this.setups = args;
     });
-  }
+  },
 
-  public destroyed() {
+  destroyed() {
     // clear all listeners
     ipcRenderer.removeAllListeners('replyAllConfigSetups');
-  }
+  },
 
-  public downloadSetup(setupId: number): void {
-    console.log(setupId);
-  }
+  methods: {
+    downloadSetup(setupId: number): void {
+      console.log(setupId);
+    },
 
-  public navigateToDetail(setupId: number): void {
-    router.push({ name: 'setup-detail', params: { id: setupId.toString() } });
+    navigateToDetail(setupId: number): void {
+      router.push({ name: 'setup-detail', params: { id: setupId.toString() } });
+    }
   }
-}
+});
 </script>
 
 <style lang="scss" scoped>

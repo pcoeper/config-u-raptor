@@ -30,18 +30,23 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
 import { ipcRenderer, Event } from 'electron';
 import { ConfigParameter } from '../db/entity/ConfigParameter';
 import ConfigDetail from './ConfigDetail.vue';
 
-@Component({ components: { ConfigDetail } })
-export default class ConfigList extends Vue {
-  public parameters: ConfigParameter[] = [];
+export default Vue.extend({
+  data() {
+    return {
+      parameters: [] as ConfigParameter[],
+      newParameters: [] as ConfigParameter[]
+    };
+  },
 
-  public newParameters: ConfigParameter[] = [];
+  components: {
+    ConfigDetail
+  },
 
-  public created() {
+  created() {
     ipcRenderer.send('getAllConfigParameter');
     ipcRenderer.on(
       'replyAllConfigParameter',
@@ -49,39 +54,41 @@ export default class ConfigList extends Vue {
         this.parameters = args;
       }
     );
-  }
+  },
 
-  public destroyed() {
+  destroyed() {
     // clear all listeners
     ipcRenderer.removeAllListeners('replyAllConfigParameter');
-  }
+  },
 
-  public submit() {
-    ipcRenderer.send(
-      'saveAllConfigParameter',
-      this.parameters.concat(this.newParameters)
-    );
-    this.newParameters = [];
-  }
-
-  public add() {
-    const newParameter = new ConfigParameter();
-    this.newParameters.push(newParameter);
-  }
-
-  public deleteParameter(parameter: ConfigParameter) {
-    if (parameter.id === undefined) {
-      const parameterIndex = this.newParameters.findIndex(
-        (param: ConfigParameter) => param === parameter
+  methods: {
+    submit() {
+      ipcRenderer.send(
+        'saveAllConfigParameter',
+        this.parameters.concat(this.newParameters)
       );
-      if (parameterIndex >= 0) {
-        this.newParameters.splice(parameterIndex, 1);
+      this.newParameters = [];
+    },
+
+    add() {
+      const newParameter = new ConfigParameter();
+      this.newParameters.push(newParameter);
+    },
+
+    deleteParameter(parameter: ConfigParameter) {
+      if (parameter.id === undefined) {
+        const parameterIndex = this.newParameters.findIndex(
+          (param: ConfigParameter) => param === parameter
+        );
+        if (parameterIndex >= 0) {
+          this.newParameters.splice(parameterIndex, 1);
+        }
+      } else {
+        ipcRenderer.send('deleteConfigParameter', parameter.id);
       }
-    } else {
-      ipcRenderer.send('deleteConfigParameter', parameter.id);
     }
   }
-}
+});
 </script>
 
 <style lang="scss" scoped>

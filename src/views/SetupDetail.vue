@@ -18,18 +18,23 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Component from 'vue-class-component';
 import { ipcRenderer } from 'electron';
 import { ConfigParameter } from '../db/entity/ConfigParameter';
 import ConfigDetail from './ConfigDetail.vue';
 
-@Component({ components: { ConfigDetail } })
-export default class SetupDetail extends Vue {
-  public parameters: ConfigParameter[] = [];
+export default Vue.extend({
+  data() {
+    return {
+      parameters: [] as ConfigParameter[],
+      setupId: 0 as number
+    };
+  },
 
-  private setupId: number = 0;
+  components: {
+    ConfigDetail
+  },
 
-  public created() {
+  created() {
     this.setupId = +this.$route.params.id;
     ipcRenderer.send('getAllParameterOfSetup', this.setupId);
     ipcRenderer.on(
@@ -38,20 +43,22 @@ export default class SetupDetail extends Vue {
         this.parameters = args;
       }
     );
-  }
+  },
 
-  public destroyed() {
+  destroyed() {
     // clear all listeners
     ipcRenderer.removeAllListeners('replyAllParametersOfSetup');
-  }
+  },
 
-  public submit() {
-    ipcRenderer.send('saveSetupParameter', {
-      setupId: this.setupId,
-      parameters: this.parameters
-    });
+  methods: {
+    submit() {
+      ipcRenderer.send('saveSetupParameter', {
+        setupId: this.setupId,
+        parameters: this.parameters
+      });
+    }
   }
-}
+});
 </script>
 
 <style lang="scss" scoped>
