@@ -196,6 +196,7 @@ ipcMain.on('getAllParameterOfSetup', async (event: any, setupId: number) => {
 
 ipcMain.on('saveSetupParameter', async (event: any, args: any) => {
   await SetupController.saveSetupParameter(args.setupId, args.parameters);
+  event.reply('navigateBack');
 });
 
 ipcMain.on('deleteSetup', async (event: any, args: number) => {

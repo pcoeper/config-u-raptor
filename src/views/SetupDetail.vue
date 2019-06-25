@@ -21,6 +21,7 @@ import Vue from 'vue';
 import { ipcRenderer } from 'electron';
 import { ConfigParameter } from '../db/entity/ConfigParameter';
 import ConfigDetail from './ConfigDetail.vue';
+import router from '../router';
 
 export default Vue.extend({
   data() {
@@ -43,6 +44,9 @@ export default Vue.extend({
         this.parameters = args;
       }
     );
+    ipcRenderer.on('navigateBack', () => {
+      router.push({ name: 'setup-list' });
+    });
   },
 
   destroyed() {
