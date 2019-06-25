@@ -106,4 +106,27 @@ export class SetupController {
       resolve(true);
     });
   }
+
+  public static deleteSetup = async (setupId: number): Promise<boolean> => {
+    const setupRepo = getRepository(ConfigSetup);
+    const modRepo = getRepository(ParameterMod);
+
+    return new Promise(async (resolve, reject) => {
+      const setup = await setupRepo.findOne(setupId);
+
+      if (setup) {
+        // get mods and delete them
+        const mods = await modRepo.find({ where: { configSetup: setup } });
+        if (mods) {
+          for (const mod of mods) {
+            await modRepo.delete(mod.id);
+          }
+        }
+        // delete setup
+        await setupRepo.delete(setupId).catch((e) => console.log(e));
+        resolve(true);
+      }
+      reject();
+    });
+  }
 }

@@ -13,6 +13,9 @@
           <b-button class="action-btn" @click="downloadSetup(setup.id)">
             <v-icon name="arrow-alt-circle-down"></v-icon>
           </b-button>
+          <b-button class="action-btn" type="is-danger" @click="deleteSetup(setup.id)">
+            <v-icon name="trash-alt"></v-icon>
+          </b-button>
         </div>
       </div>
     </div>
@@ -25,7 +28,9 @@ import { ConfigSetup } from '../db/entity/ConfigSetup';
 import router from '../router';
 import Icon from 'vue-awesome/components/Icon.vue';
 import 'vue-awesome/icons/arrow-alt-circle-down';
+import 'vue-awesome/icons/trash-alt';
 import Vue from 'vue';
+import { SetupController } from '../db/controller/SetupController';
 
 export default Vue.extend({
   data() {
@@ -58,6 +63,10 @@ export default Vue.extend({
 
     navigateToDetail(setupId: number): void {
       router.push({ name: 'setup-detail', params: { id: setupId.toString() } });
+    },
+
+    deleteSetup(setupId: number): void {
+      ipcRenderer.send('deleteSetup', setupId);
     }
   }
 });
