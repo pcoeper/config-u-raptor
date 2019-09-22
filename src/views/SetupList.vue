@@ -57,7 +57,7 @@ export default Vue.extend({
 
   methods: {
     downloadSetup(setupId: number): void {
-      console.log(setupId);
+      ipcRenderer.send("downloadSetup", setupId);
     },
 
     navigateToDetail(setupId: number): void {
