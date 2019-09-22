@@ -2,7 +2,8 @@ import { ConfigSetup } from '../entity/ConfigSetup';
 import { getRepository } from 'typeorm';
 import { ConfigParameter } from '../entity/ConfigParameter';
 import { ParameterMod } from '../entity/ParameterMod';
-import { dialog } from 'electron';
+import { dialog, app } from 'electron';
+import * as fs from 'fs';
 
 export class SetupController {
     public static getAll = async (): Promise<ConfigSetup[]> => {
@@ -138,17 +139,33 @@ export class SetupController {
         return new Promise(async (resolve, reject) => {
 
             // open save file dialog
-            const saveObject = await dialog.showSaveDialog({
+            const savePath = await dialog.showSaveDialog({
                 filters: [{ name: 'config', extensions: ['properties'] }]
             });
-            if (saveObject) {
-                console.log(saveObject);
+            if (!savePath) {
+                resolve(false);
             } else {
-                console.log('no file path');
+                // define file content
+                const parameters = await SetupController.getParameterOfSetup(setupId);
 
+                let fileContent = '';
+                parameters.forEach((parameter: ConfigParameter) => {
+                    fileContent += `${parameter.name} = ${SetupController.getFormattedParameterValue(parameter)}\n`;
+                });
+
+                fs.writeFileSync(savePath, fileContent);
+
+                resolve(true);
             }
 
-            resolve(true);
         });
+    }
+
+    private static getFormattedParameterValue(parameter: ConfigParameter): string {
+        if (parameter.type === 'string') {
+            return `\"${parameter.defaultValue}\"`;
+        } else {
+            return parameter.defaultValue;
+        }
     }
 }
