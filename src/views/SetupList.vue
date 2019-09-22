@@ -23,14 +23,14 @@
 </template>
 
 <script lang="ts">
-import { ipcRenderer } from 'electron';
-import { ConfigSetup } from '../db/entity/ConfigSetup';
-import router from '../router';
-import Icon from 'vue-awesome/components/Icon.vue';
-import 'vue-awesome/icons/arrow-alt-circle-down';
-import 'vue-awesome/icons/trash-alt';
-import Vue from 'vue';
-import { SetupController } from '../db/controller/SetupController';
+import { ipcRenderer } from "electron";
+import { ConfigSetup } from "../db/entity/ConfigSetup";
+import router from "../router";
+import Icon from "vue-awesome/components/Icon.vue";
+import "vue-awesome/icons/arrow-alt-circle-down";
+import "vue-awesome/icons/trash-alt";
+import Vue from "vue";
+import { SetupController } from "../db/controller/SetupController";
 
 export default Vue.extend({
   data() {
@@ -40,20 +40,19 @@ export default Vue.extend({
   },
 
   components: {
-    'v-icon': Icon
+    "v-icon": Icon
   },
 
   created() {
-    ipcRenderer.send('getAllConfigSetups');
-    ipcRenderer.on('replyAllConfigSetups', (_: any, args: ConfigSetup[]) => {
-      console.table(args);
+    ipcRenderer.send("getAllConfigSetups");
+    ipcRenderer.on("replyAllConfigSetups", (_: any, args: ConfigSetup[]) => {
       this.setups = args;
     });
   },
 
   destroyed() {
     // clear all listeners
-    ipcRenderer.removeAllListeners('replyAllConfigSetups');
+    ipcRenderer.removeAllListeners("replyAllConfigSetups");
   },
 
   methods: {
@@ -62,11 +61,11 @@ export default Vue.extend({
     },
 
     navigateToDetail(setupId: number): void {
-      router.push({ name: 'setup-detail', params: { id: setupId.toString() } });
+      router.push({ name: "setup-detail", params: { id: setupId.toString() } });
     },
 
     deleteSetup(setupId: number): void {
-      ipcRenderer.send('deleteSetup', setupId);
+      ipcRenderer.send("deleteSetup", setupId);
     }
   }
 });

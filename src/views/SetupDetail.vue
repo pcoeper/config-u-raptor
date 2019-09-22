@@ -1,9 +1,7 @@
 <template>
   <div class="setup-detail">
     <div class="actions">
-      <b-button class="action-btn">
-        <router-link to="/setup-list">Zurück</router-link>
-      </b-button>
+      <b-button class="action-btn" @click="navigateBack()">Zurück</b-button>
       <b-button class="action-btn" @click="submit">Speichern</b-button>
     </div>
     <div class="parameter-list">
@@ -17,11 +15,11 @@
 
 
 <script lang="ts">
-import Vue from 'vue';
-import { ipcRenderer } from 'electron';
-import { ConfigParameter } from '../db/entity/ConfigParameter';
-import ConfigDetail from './ConfigDetail.vue';
-import router from '../router';
+import Vue from "vue";
+import { ipcRenderer } from "electron";
+import { ConfigParameter } from "../db/entity/ConfigParameter";
+import ConfigDetail from "./ConfigDetail.vue";
+import router from "../router";
 
 export default Vue.extend({
   data() {
@@ -37,29 +35,34 @@ export default Vue.extend({
 
   created() {
     this.setupId = +this.$route.params.id;
-    ipcRenderer.send('getAllParameterOfSetup', this.setupId);
+    ipcRenderer.send("getAllParameterOfSetup", this.setupId);
     ipcRenderer.on(
-      'replyAllParametersOfSetup',
+      "replyAllParametersOfSetup",
       (_: any, args: ConfigParameter[]) => {
         this.parameters = args;
       }
     );
-    ipcRenderer.on('navigateBack', () => {
-      router.push({ name: 'setup-list' });
+    ipcRenderer.on("navigateBack", () => {
+      this.navigateBack();
     });
   },
 
   destroyed() {
     // clear all listeners
-    ipcRenderer.removeAllListeners('replyAllParametersOfSetup');
+    ipcRenderer.removeAllListeners("replyAllParametersOfSetup");
+    ipcRenderer.removeAllListeners("navigateBack");
   },
 
   methods: {
     submit() {
-      ipcRenderer.send('saveSetupParameter', {
+      ipcRenderer.send("saveSetupParameter", {
         setupId: this.setupId,
         parameters: this.parameters
       });
+    },
+
+    navigateBack() {
+      router.push({ name: "setup-list" });
     }
   }
 });
