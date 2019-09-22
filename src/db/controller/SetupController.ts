@@ -161,6 +161,10 @@ export class SetupController {
         });
     }
 
+    /**
+     * Returns defaultValue of given parameter formatted based on its type
+     * @param parameter
+     */
     private static getFormattedParameterValue(parameter: ConfigParameter): string {
         if (parameter.type === 'string') {
             return `\"${parameter.defaultValue}\"`;
