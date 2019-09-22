@@ -4,6 +4,12 @@
       <b-button class="action-btn" @click="navigateBack()">Zurück</b-button>
       <b-button class="action-btn" @click="submit">Speichern</b-button>
     </div>
+    <div class="parameter-meta">
+      <h2 class="subtitle">Meta Daten</h2>
+      <b-field>
+        <b-input type="text" placeholder="Name" v-model="setupName" expanded></b-input>
+      </b-field>
+    </div>
     <div class="parameter-list">
       <h2 class="subtitle">Parameter</h2>
       <div v-for="parameter in parameters" :key="parameter.id">
@@ -25,7 +31,8 @@ export default Vue.extend({
   data() {
     return {
       parameters: [] as ConfigParameter[],
-      setupId: 0 as number
+      setupId: 0 as number,
+      setupName: "" as string
     };
   },
 
@@ -35,11 +42,12 @@ export default Vue.extend({
 
   created() {
     this.setupId = +this.$route.params.id;
-    ipcRenderer.send("getAllParameterOfSetup", this.setupId);
+    ipcRenderer.send("getSetup", this.setupId);
     ipcRenderer.on(
-      "replyAllParametersOfSetup",
-      (_: any, args: ConfigParameter[]) => {
-        this.parameters = args;
+      "replySetup",
+      (_: any, args: { name: string; parameters: ConfigParameter[] }) => {
+        this.setupName = args.name;
+        this.parameters = args.parameters;
       }
     );
     ipcRenderer.on("navigateBack", () => {
@@ -49,7 +57,7 @@ export default Vue.extend({
 
   destroyed() {
     // clear all listeners
-    ipcRenderer.removeAllListeners("replyAllParametersOfSetup");
+    ipcRenderer.removeAllListeners("replySetup");
     ipcRenderer.removeAllListeners("navigateBack");
   },
 
@@ -57,6 +65,7 @@ export default Vue.extend({
     submit() {
       ipcRenderer.send("saveSetupParameter", {
         setupId: this.setupId,
+        setupName: this.setupName,
         parameters: this.parameters
       });
     },
@@ -83,10 +92,13 @@ export default Vue.extend({
   }
 }
 
-.parameter-list {
-  h2 {
-    text-align: left;
-  }
+h2 {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.parameter-meta {
+  margin-bottom: 50px;
 }
 </style>
 

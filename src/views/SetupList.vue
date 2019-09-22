@@ -84,6 +84,7 @@ export default Vue.extend({
   .setup-list {
     h2 {
       text-align: left;
+      margin-bottom: 10px;
     }
 
     .setup-item {

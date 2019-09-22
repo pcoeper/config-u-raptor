@@ -11,9 +11,25 @@ export class SetupController {
         return await setupRepo.find();
     }
 
-    public static getParameterOfSetup = async (
+    public static getSetupName = async (setupId: number): Promise<string> => {
+        const setupRepo = getRepository(ConfigSetup);
+
+        return new Promise(async (resolve, reject) => {
+            if (setupId === 0) {
+                resolve('');
+            } else {
+                const setup = await setupRepo.findOne(setupId);
+                if (setup) {
+                    resolve(setup.name);
+                }
+            }
+        });
+    }
+
+
+    public static getSetup = async (
         setupId: number
-    ): Promise<ConfigParameter[]> => {
+    ): Promise<{ name: string, parameters: ConfigParameter[] }> => {
         const setupRepo = getRepository(ConfigSetup);
         const parameterRepo = getRepository(ConfigParameter);
         const modRepo = getRepository(ParameterMod);
@@ -23,10 +39,12 @@ export class SetupController {
             const availableParameters = await parameterRepo.find();
 
             if (setupId === 0) {
-                resolve(availableParameters);
+                resolve({ name: '', parameters: availableParameters });
             }
 
             const setup = await setupRepo.findOne(setupId);
+
+            const setupName = setup ? setup.name : '';
 
             const setupModifications = await modRepo.find({
                 where: { configSetup: setup },
@@ -45,12 +63,13 @@ export class SetupController {
                 }
             });
 
-            resolve(availableParameters);
+            resolve({ name: setupName, parameters: availableParameters });
         });
     }
 
     public static saveSetupParameter = async (
         setupId: number,
+        setupName: string,
         setupParameters: ConfigParameter[]
     ): Promise<boolean> => {
         const parameterRepo = getRepository(ConfigParameter);
@@ -64,10 +83,10 @@ export class SetupController {
             // create setup if it does not exist (=> setupId = 0)
             if (!setup) {
                 setup = new ConfigSetup();
-                setup.name = 'New Setup';
-
-                setupRepo.save(setup);
             }
+
+            setup.name = setupName;
+            setupRepo.save(setup);
 
             // get all available parameters
             const availableParameters = await parameterRepo.find();
@@ -146,14 +165,14 @@ export class SetupController {
                 resolve(false);
             } else {
                 // define file content
-                const parameters = await SetupController.getParameterOfSetup(setupId);
+                const setup = await SetupController.getSetup(setupId);
 
                 let fileContent = '';
-                parameters.forEach((parameter: ConfigParameter) => {
+                setup.parameters.forEach((parameter: ConfigParameter) => {
                     fileContent += `${parameter.name} = ${SetupController.getFormattedParameterValue(parameter)}\n`;
                 });
 
-                fs.writeFileSync(savePath, fileContent);
+                fs.writeFileSync(savePath, fileContent, { encoding: 'utf8', flag: 'w' });
 
                 resolve(true);
             }

@@ -189,13 +189,13 @@ ipcMain.on('getAllConfigSetups', async (event: any, args: any) => {
     event.reply('replyAllConfigSetups', setups);
 });
 
-ipcMain.on('getAllParameterOfSetup', async (event: any, setupId: number) => {
-    const parameters = await SetupController.getParameterOfSetup(setupId);
-    event.reply('replyAllParametersOfSetup', parameters);
+ipcMain.on('getSetup', async (event: any, setupId: number) => {
+    const setup = await SetupController.getSetup(setupId);
+    event.reply('replySetup', { name: setup.name, parameters: setup.parameters });
 });
 
 ipcMain.on('saveSetupParameter', async (event: any, args: any) => {
-    await SetupController.saveSetupParameter(args.setupId, args.parameters);
+    await SetupController.saveSetupParameter(args.setupId, args.setupName, args.parameters);
     event.reply('navigateBack');
 });
 

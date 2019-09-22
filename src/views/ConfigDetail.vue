@@ -2,7 +2,13 @@
   <div class="config-detail" v-bind:class="{'isEditMode': isEditMode}">
     <div class="parameter.name">
       <b-field>
-        <b-input type="text" v-model="parameter.name" :disabled="!isEditMode" expanded></b-input>
+        <b-input
+          type="text"
+          placeholder="Name"
+          v-model="parameter.name"
+          :disabled="!isEditMode"
+          expanded
+        ></b-input>
       </b-field>
     </div>
 
@@ -18,7 +24,7 @@
     <div class="parameter-value">
       <b-field>
         <div v-if="parameter.type === 'string'">
-          <b-input type="text" v-model.trim="value"></b-input>
+          <b-input type="text" placeholder="Wert" v-model.trim="value"></b-input>
         </div>
         <div v-else-if="parameter.type === 'number'">
           <b-numberinput v-model="value"></b-numberinput>
@@ -30,24 +36,29 @@
     </div>
     <div v-if="isEditMode" class="actions">
       <b-button @click="deleteParameter" type="is-danger">
-        <v-icon name="trash-alt"/>
+        <v-icon name="trash-alt" />
       </b-button>
     </div>
 
     <div v-if="isEditMode" class="parameter-description">
       <b-field>
-        <b-input type="textarea" v-model="parameter.description" expanded></b-input>
+        <b-input
+          type="textarea"
+          placeholder="Beschreibung"
+          v-model="parameter.description"
+          expanded
+        ></b-input>
       </b-field>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { ConfigParameter } from '../db/entity/ConfigParameter';
-import { ipcRenderer } from 'electron';
-import Icon from 'vue-awesome/components/Icon.vue';
-import 'vue-awesome/icons/trash-alt';
+import Vue from "vue";
+import { ConfigParameter } from "../db/entity/ConfigParameter";
+import { ipcRenderer } from "electron";
+import Icon from "vue-awesome/components/Icon.vue";
+import "vue-awesome/icons/trash-alt";
 
 export default Vue.extend({
   props: {
@@ -69,7 +80,7 @@ export default Vue.extend({
   },
 
   components: {
-    'v-icon': Icon
+    "v-icon": Icon
   },
 
   created() {
@@ -102,34 +113,34 @@ export default Vue.extend({
       if (this.showDebug) {
         // logging / debug
         console.log(
-          'defaultvalue is: ' +
+          "defaultvalue is: " +
             this.parameter.defaultValue +
-            ' (' +
+            " (" +
             typeof this.parameter.defaultValue +
-            ')'
+            ")"
         );
-        console.log('value is: ' + this.value + ' (' + typeof this.value + ')');
+        console.log("value is: " + this.value + " (" + typeof this.value + ")");
       }
     },
 
     deleteParameter(): void {
-      this.$emit('delete-parameter', this.parameter);
+      this.$emit("delete-parameter", this.parameter);
     },
 
     /**
      * Converts 'value' according to the defined parameter type
      */
     convertValue(): void {
-      if (this.parameter.type === 'string') {
+      if (this.parameter.type === "string") {
         this.value = this.parameter.defaultValue;
-      } else if (this.parameter.type === 'number') {
+      } else if (this.parameter.type === "number") {
         const numberRep = Number(this.parameter.defaultValue);
         this.value = isNaN(numberRep) ? 0 : numberRep;
-      } else if (this.parameter.type === 'boolean') {
+      } else if (this.parameter.type === "boolean") {
         const booleanRep =
-          this.parameter.defaultValue === 'true' ||
-          this.parameter.defaultValue === 'false';
-        this.value = this.parameter.defaultValue === 'true' ? true : false;
+          this.parameter.defaultValue === "true" ||
+          this.parameter.defaultValue === "false";
+        this.value = this.parameter.defaultValue === "true" ? true : false;
       }
       this.parameter.defaultValue = this.value.toString();
       this.debugValueChange();
@@ -147,7 +158,7 @@ export default Vue.extend({
   grid-template-areas: "name type value value";
   grid-column-gap: 2rem;
 
-  padding: 20px 0;
+  padding: 10px 0;
   border-bottom: 1px solid black;
 
   &.isEditMode {

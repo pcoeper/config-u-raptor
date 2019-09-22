@@ -29,10 +29,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { ipcRenderer, Event } from 'electron';
-import { ConfigParameter } from '../db/entity/ConfigParameter';
-import ConfigDetail from './ConfigDetail.vue';
+import Vue from "vue";
+import { ipcRenderer, Event } from "electron";
+import { ConfigParameter } from "../db/entity/ConfigParameter";
+import ConfigDetail from "./ConfigDetail.vue";
 
 export default Vue.extend({
   data() {
@@ -47,9 +47,9 @@ export default Vue.extend({
   },
 
   created() {
-    ipcRenderer.send('getAllConfigParameter');
+    ipcRenderer.send("getAllConfigParameter");
     ipcRenderer.on(
-      'replyAllConfigParameter',
+      "replyAllConfigParameter",
       (_: any, args: ConfigParameter[]) => {
         this.parameters = args;
       }
@@ -58,13 +58,13 @@ export default Vue.extend({
 
   destroyed() {
     // clear all listeners
-    ipcRenderer.removeAllListeners('replyAllConfigParameter');
+    ipcRenderer.removeAllListeners("replyAllConfigParameter");
   },
 
   methods: {
     submit() {
       ipcRenderer.send(
-        'saveAllConfigParameter',
+        "saveAllConfigParameter",
         this.parameters.concat(this.newParameters)
       );
       this.newParameters = [];
@@ -84,7 +84,7 @@ export default Vue.extend({
           this.newParameters.splice(parameterIndex, 1);
         }
       } else {
-        ipcRenderer.send('deleteConfigParameter', parameter.id);
+        ipcRenderer.send("deleteConfigParameter", parameter.id);
       }
     }
   }
@@ -104,6 +104,7 @@ export default Vue.extend({
   .parameter-list {
     h2 {
       text-align: left;
+      margin-bottom: 10px;
     }
   }
 }
