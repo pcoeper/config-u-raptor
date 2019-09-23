@@ -137,6 +137,11 @@ ipcMain.on('deleteConfigParameter', async (event: any, args: any) => {
     event.reply('replyAllConfigParameter', parameters);
 });
 
+ipcMain.on('deleteAllConfigParameter', async (event: any) => {
+    await ConfigParameterController.deleteAll();
+    event.reply('replyAllConfigParameter', []);
+});
+
 // ConfigSetup
 ipcMain.on('getAllConfigSetups', async (event: any, args: any) => {
     const setups = await SetupController.getAll();

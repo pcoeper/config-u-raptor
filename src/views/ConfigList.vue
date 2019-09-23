@@ -1,9 +1,13 @@
 <template>
   <div class="config-list">
     <div class="actions">
+      <b-button class="action-btn" type="is-danger" @click="deleteAll">Alle Löschen</b-button>
       <b-button class="action-btn" @click="add">Hinzufügen</b-button>
       <b-button class="action-btn" @click="submit">Speichern</b-button>
     </div>
+    <b-field class="show-description">
+      <b-checkbox v-model="showDescription">Beschreibung anzeigen</b-checkbox>
+    </b-field>
     <div class="parameter-list" v-if="newParameters.length > 0">
       <h2 class="subtitle">Neue Parameter</h2>
       <div v-for="parameter in newParameters" :key="parameter.id">
@@ -17,11 +21,12 @@
 
     <div class="parameter-list">
       <h2 class="subtitle">Parameter</h2>
+      <div v-show="!parameters.length">Keine Konfigurationsparameter vorhanden.</div>
       <div v-for="parameter in parameters" :key="parameter.id">
         <ConfigDetail
           v-bind:parameter="parameter"
           v-bind:editMode="true"
-          v-bind:showDescription="true"
+          v-bind:showDescription="showDescription"
           @delete-parameter="deleteParameter"
         ></ConfigDetail>
       </div>
@@ -39,7 +44,8 @@ export default Vue.extend({
   data() {
     return {
       parameters: [] as ConfigParameter[],
-      newParameters: [] as ConfigParameter[]
+      newParameters: [] as ConfigParameter[],
+      showDescription: true as boolean
     };
   },
 
@@ -87,6 +93,10 @@ export default Vue.extend({
       } else {
         ipcRenderer.send("deleteConfigParameter", parameter.id);
       }
+    },
+
+    deleteAll() {
+      ipcRenderer.send("deleteAllConfigParameter");
     }
   }
 });
@@ -100,6 +110,11 @@ export default Vue.extend({
     .action-btn:not(:last-child) {
       margin-right: 5px;
     }
+  }
+
+  .show-description {
+    text-align: right;
+    margin-top: 10px;
   }
 
   .parameter-list {
