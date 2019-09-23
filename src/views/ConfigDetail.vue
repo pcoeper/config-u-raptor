@@ -40,7 +40,7 @@
       </b-button>
     </div>
 
-    <div v-if="isEditMode" class="parameter-description">
+    <div v-show="isShowDescription" class="parameter-description">
       <b-field>
         <b-input
           type="textarea"
@@ -69,6 +69,10 @@ export default Vue.extend({
     editMode: {
       type: Boolean,
       default: false
+    },
+    showDescription: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -90,6 +94,10 @@ export default Vue.extend({
   computed: {
     isEditMode(): boolean {
       return this.editMode;
+    },
+
+    isShowDescription(): boolean {
+      return this.showDescription;
     },
 
     parameterType(): string {
@@ -154,16 +162,19 @@ export default Vue.extend({
   display: grid;
 
   grid-template-columns: 5fr 1fr 2fr auto;
-  grid-template-rows: 1fr;
-  grid-template-areas: "name type value value";
+  grid-template-rows: 1fr auto;
+  grid-row-gap: 1rem;
+  grid-template-areas:
+    "name type value value"
+    "description description description description";
   grid-column-gap: 2rem;
 
   padding: 10px 0;
   border-bottom: 1px solid black;
 
   &.isEditMode {
-    grid-template-rows: 1fr auto;
-    grid-row-gap: 1rem;
+    // grid-template-rows: 1fr auto;
+    // grid-row-gap: 1rem;
     grid-template-areas:
       "name type value action"
       "description description description description";

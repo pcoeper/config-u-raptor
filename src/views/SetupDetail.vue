@@ -13,7 +13,7 @@
     <div class="parameter-list">
       <h2 class="subtitle">Parameter</h2>
       <div v-for="parameter in parameters" :key="parameter.id">
-        <ConfigDetail v-bind:parameter="parameter"></ConfigDetail>
+        <ConfigDetail v-bind:parameter="parameter" v-bind:showDescription="false"></ConfigDetail>
       </div>
     </div>
   </div>

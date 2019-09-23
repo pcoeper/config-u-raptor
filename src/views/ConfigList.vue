@@ -21,6 +21,7 @@
         <ConfigDetail
           v-bind:parameter="parameter"
           v-bind:editMode="true"
+          v-bind:showDescription="true"
           @delete-parameter="deleteParameter"
         ></ConfigDetail>
       </div>
