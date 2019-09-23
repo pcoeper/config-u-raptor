@@ -3,6 +3,8 @@
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 
+import { init_db } from './init_db';
+
 import { app, protocol, BrowserWindow, ipcMain } from 'electron';
 import {
     createProtocol,
@@ -57,55 +59,7 @@ function createWindow() {
         entities: [ConfigParameter, ConfigSetup, ParameterMod]
     })
         .then(async (connection) => {
-            const parameterRepo = connection.getRepository(ConfigParameter);
-            const setupRepo = connection.getRepository(ConfigSetup);
-            const modRepo = connection.getRepository(ParameterMod);
-
-            const availableParameters = await parameterRepo.find();
-
-            if (availableParameters.length === 0) {
-                // insert new users for test
-                const firstParam = new ConfigParameter();
-                firstParam.name = 'String Rep';
-                firstParam.type = 'string';
-                firstParam.defaultValue = 'Some String';
-                firstParam.description = 'Just a string';
-                await parameterRepo.save(firstParam);
-
-                const secondParam = new ConfigParameter();
-                secondParam.name = 'Number Rep';
-                secondParam.type = 'number';
-                secondParam.defaultValue = '41';
-                secondParam.description = 'A random number';
-                await parameterRepo.save(secondParam);
-
-                const thirdParam = new ConfigParameter();
-                thirdParam.name = 'Boolean Rep';
-                thirdParam.type = 'boolean';
-                thirdParam.defaultValue = 'true';
-                thirdParam.description = 'Be true not better';
-                await parameterRepo.save(thirdParam);
-
-                const firstSetup = new ConfigSetup();
-                firstSetup.name = 'Erstes Setup';
-                // firstSetup.modifications = [];
-                await setupRepo.save(firstSetup);
-
-                const secondSetup = new ConfigSetup();
-                secondSetup.name = 'Zweites Setup';
-                // secondSetup.modifications = [];
-                await setupRepo.save(secondSetup);
-
-                const firstMod = new ParameterMod();
-                firstMod.configSetup = firstSetup;
-                firstMod.configParameter = firstParam;
-                firstMod.value = 'modified String';
-                modRepo.save(firstMod);
-
-                console.log('Added first config parameter to db.');
-            } else {
-                console.log('db already exists.');
-            }
+            await init_db(connection);
         })
         .catch((error) => console.log(error));
 
