@@ -5,14 +5,14 @@
     </nav>
     <main>
       <div class="content-wrapper">
-        <router-view/>
+        <router-view />
       </div>
     </main>
   </div>
 </template>
 
 <script lang="ts">
-import NavBar from '@/components/NavBar.vue';
+import NavBar from "@/components/NavBar.vue";
 
 export default {
   components: { NavBar }
@@ -21,6 +21,10 @@ export default {
 
 
 <style lang="scss">
+$lightBlue: #b3c7d6ff;
+$middleBlue: #85b3d1ff;
+$lightYellow: #d9b48fff;
+
 body {
   margin: 0;
   padding: 0;
@@ -39,13 +43,13 @@ body {
 }
 
 nav {
+  background-color: $middleBlue;
   grid-area: nav;
-  background-color: lightblue;
 }
 
 main {
   grid-area: content;
-  background-color: lightcoral;
+  background-color: $lightBlue;
   padding: 40px 40px;
   height: 100%;
 
