@@ -6,6 +6,9 @@
 
     <div class="setup-list">
       <h2 class="subtitle">Setups</h2>
+      <div v-show="!setups.length">
+        <span>Keine Setups vorhanden.</span>
+      </div>
       <div class="setup-item" v-for="setup in setups" :key="setup.id">
         <div class="item-name">{{setup.name}}</div>
         <div class="item-actions">
