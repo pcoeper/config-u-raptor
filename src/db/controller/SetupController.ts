@@ -141,11 +141,10 @@ export class SetupController {
             if (setup) {
                 // get mods and delete them
                 const mods = await modRepo.find({ where: { configSetup: setup } });
-                if (mods) {
-                    for (const mod of mods) {
-                        await modRepo.delete(mod.id);
-                    }
+                for (const mod of mods) {
+                    await modRepo.delete(mod);
                 }
+
                 // delete setup
                 await setupRepo.delete(setupId).catch((e) => console.log(e));
                 resolve(true);

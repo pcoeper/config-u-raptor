@@ -1,7 +1,12 @@
 <template>
   <div class="config-list">
     <div class="actions">
-      <b-button class="action-btn" type="is-danger" @click="deleteAll">Alle Löschen</b-button>
+      <b-button
+        v-show="parameters.length"
+        class="action-btn"
+        type="is-danger"
+        @click="deleteAll"
+      >Alle Löschen</b-button>
       <b-button class="action-btn" @click="add">Hinzufügen</b-button>
       <b-button class="action-btn" @click="submit">Speichern</b-button>
     </div>
@@ -14,6 +19,7 @@
         <ConfigDetail
           v-bind:parameter="parameter"
           v-bind:editMode="true"
+          v-bind:showDescription="showDescription"
           @delete-parameter="deleteParameter"
         ></ConfigDetail>
       </div>
