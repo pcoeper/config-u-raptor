@@ -27,9 +27,15 @@
 
     <div class="parameter-list">
       <div class="subtitle">Parameter</div>
+      <div class="search">
+        <b-field>
+          <b-input type="text" placeholder="Suche" v-model="searchValue" expanded></b-input>
+        </b-field>
+      </div>
       <div v-if="!parameters.length">Keine Konfigurationsparameter vorhanden.</div>
       <div v-for="parameter in parameters" :key="parameter.id">
         <ConfigDetail
+          v-if="matchesSearch(parameter)"
           v-bind:parameter="parameter"
           v-bind:editMode="true"
           v-bind:showDescription="showDescription"
@@ -51,7 +57,8 @@ export default Vue.extend({
     return {
       parameters: [] as ConfigParameter[],
       newParameters: [] as ConfigParameter[],
-      showDescription: true as boolean
+      showDescription: true as boolean,
+      searchValue: "" as string
     };
   },
 
@@ -103,6 +110,16 @@ export default Vue.extend({
 
     deleteAll() {
       ipcRenderer.send("deleteAllConfigParameter");
+    },
+
+    matchesSearch(parameter: ConfigParameter): boolean {
+      return (
+        this.searchValue === "" ||
+        parameter.name.toLowerCase().includes(this.searchValue.toLowerCase()) ||
+        parameter.defaultValue
+          .toLowerCase()
+          .includes(this.searchValue.toLowerCase())
+      );
     }
   }
 });
@@ -124,6 +141,10 @@ export default Vue.extend({
   }
 
   .parameter-list {
+    .search {
+      margin-bottom: 50px;
+    }
+
     .subtitle {
       text-align: left;
       font-size: 1.6rem;

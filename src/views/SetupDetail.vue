@@ -12,8 +12,17 @@
     </div>
     <div class="parameter-list">
       <div class="subtitle">Parameter</div>
+      <div class="search">
+        <b-field>
+          <b-input type="text" placeholder="Suche" v-model="searchValue" expanded></b-input>
+        </b-field>
+      </div>
       <div v-for="parameter in parameters" :key="parameter.id">
-        <ConfigDetail v-bind:parameter="parameter" v-bind:showDescription="false"></ConfigDetail>
+        <ConfigDetail
+          v-if="matchesSearch(parameter)"
+          v-bind:parameter="parameter"
+          v-bind:showDescription="false"
+        ></ConfigDetail>
       </div>
     </div>
   </div>
@@ -32,7 +41,8 @@ export default Vue.extend({
     return {
       parameters: [] as ConfigParameter[],
       setupId: 0 as number,
-      setupName: "" as string
+      setupName: "" as string,
+      searchValue: "" as string
     };
   },
 
@@ -72,6 +82,16 @@ export default Vue.extend({
 
     navigateBack() {
       router.push({ name: "setup-list" });
+    },
+
+    matchesSearch(parameter: ConfigParameter): boolean {
+      return (
+        this.searchValue === "" ||
+        parameter.name.toLowerCase().includes(this.searchValue.toLowerCase()) ||
+        parameter.defaultValue
+          .toLowerCase()
+          .includes(this.searchValue.toLowerCase())
+      );
     }
   }
 });
@@ -99,6 +119,10 @@ export default Vue.extend({
 }
 
 .parameter-meta {
+  margin-bottom: 50px;
+}
+
+.search {
   margin-bottom: 50px;
 }
 </style>
