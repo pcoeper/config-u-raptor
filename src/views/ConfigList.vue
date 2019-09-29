@@ -2,7 +2,7 @@
   <div class="config-list">
     <div class="actions">
       <b-button
-        v-show="parameters.length"
+        v-if="parameters.length"
         class="action-btn"
         type="is-danger"
         @click="deleteAll"
@@ -27,7 +27,7 @@
 
     <div class="parameter-list">
       <h2 class="subtitle">Parameter</h2>
-      <div v-show="!parameters.length">Keine Konfigurationsparameter vorhanden.</div>
+      <div v-if="!parameters.length">Keine Konfigurationsparameter vorhanden.</div>
       <div v-for="parameter in parameters" :key="parameter.id">
         <ConfigDetail
           v-bind:parameter="parameter"

@@ -1,6 +1,6 @@
 <template>
   <div class="config-detail" v-bind:class="{'isEditMode': isEditMode}">
-    <div class="parameter.name">
+    <div class="parameter-name">
       <b-field>
         <b-input
           type="text"
@@ -40,7 +40,7 @@
       </b-button>
     </div>
 
-    <div v-show="isShowDescription" class="parameter-description">
+    <div v-if="isShowDescription" class="parameter-description">
       <b-field>
         <b-input
           type="textarea"
@@ -181,7 +181,6 @@ export default Vue.extend({
   }
   .parameter-name {
     grid-area: name;
-    justify-self: start;
   }
 
   .parameter-type {
@@ -194,7 +193,6 @@ export default Vue.extend({
 
   .actions {
     grid-area: action;
-    justify-self: center;
   }
 
   .parameter-description {
