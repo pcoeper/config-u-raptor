@@ -14,7 +14,7 @@
               ></b-input>
             </b-field>
           </td>
-          <td class="parameter-type">
+          <td class="parameter-type" v-if="isEditMode">
             <b-field>
               <b-select v-model="parameter.type" expanded :disabled="!isEditMode">
                 <option value="string">String</option>

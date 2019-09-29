@@ -6,21 +6,34 @@
 
     <div class="setup-list">
       <div class="subtitle">Setups</div>
+      <div class="search">
+        <b-field>
+          <b-input type="text" placeholder="Suche" v-model="searchValue" expanded></b-input>
+        </b-field>
+      </div>
       <div v-if="!setups.length">
         <span>Keine Setups vorhanden.</span>
       </div>
-      <div class="setup-item" v-for="setup in setups" :key="setup.id">
-        <div class="item-name">{{setup.name}}</div>
-        <div class="item-actions">
-          <b-button class="action-btn" @click="navigateToDetail(setup.id)">Bearbeiten</b-button>
-          <b-button class="action-btn" @click="downloadSetup(setup.id)">
-            <v-icon name="arrow-alt-circle-down"></v-icon>
-          </b-button>
-          <b-button class="action-btn" type="is-danger" @click="deleteSetup(setup.id)">
-            <v-icon name="trash-alt"></v-icon>
-          </b-button>
-        </div>
-      </div>
+      <table>
+        <tbody>
+          <template v-for="setup in setups">
+            <template v-if="matchesSearch(setup)">
+              <tr :key="setup.id">
+                <td class="item-name">{{setup.name}}</td>
+                <td class="item-actions">
+                  <b-button class="action-btn" @click="navigateToDetail(setup.id)">Bearbeiten</b-button>
+                  <b-button class="action-btn" @click="downloadSetup(setup.id)">
+                    <v-icon name="arrow-alt-circle-down"></v-icon>
+                  </b-button>
+                  <b-button class="action-btn" type="is-danger" @click="deleteSetup(setup.id)">
+                    <v-icon name="trash-alt"></v-icon>
+                  </b-button>
+                </td>
+              </tr>
+            </template>
+          </template>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -38,7 +51,8 @@ import { SetupController } from "../db/controller/SetupController";
 export default Vue.extend({
   data() {
     return {
-      setups: [] as ConfigSetup[]
+      setups: [] as ConfigSetup[],
+      searchValue: "" as string
     };
   },
 
@@ -69,6 +83,13 @@ export default Vue.extend({
 
     deleteSetup(setupId: number): void {
       ipcRenderer.send("deleteSetup", setupId);
+    },
+
+    matchesSearch(setup: ConfigSetup): boolean {
+      return (
+        this.searchValue === "" ||
+        setup.name.toLowerCase().includes(this.searchValue.toLowerCase())
+      );
     }
   }
 });
@@ -91,32 +112,31 @@ export default Vue.extend({
       margin-bottom: 20px;
     }
 
-    .setup-item {
-      border: 1px solid black;
-      padding: 10px 20px;
+    .search {
+      margin-bottom: 50px;
+    }
 
-      display: grid;
-      grid-template-columns: 5fr auto;
-      grid-template-rows: 1fr;
-      grid-template-areas: "name actions";
+    table {
+      table-layout: fixed;
+      width: 100%;
 
-      margin-bottom: 5px;
+      border-collapse: separate;
+      border-spacing: 0 10px;
 
-      &:last-child {
-        margin-bottom: 0;
-      }
+      tr {
+        .item-name {
+          width: auto;
+          font-weight: 600;
+          padding: 0 10px;
+          vertical-align: middle;
+        }
 
-      .item-name {
-        grid-area: name;
-        justify-self: start;
-        align-self: center;
-      }
+        .item-actions {
+          width: 200px;
 
-      .item-actions {
-        grid-area: actions;
-
-        .action-btn:not(:last-child) {
-          margin-right: 5px;
+          .action-btn:not(:last-child) {
+            margin-right: 5px;
+          }
         }
       }
     }
