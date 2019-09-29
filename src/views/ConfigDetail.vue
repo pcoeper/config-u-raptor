@@ -1,44 +1,49 @@
 <template>
-  <div class="config-detail" v-bind:class="{'isEditMode': isEditMode}">
-    <div class="parameter-name">
-      <b-field>
-        <b-input
-          type="text"
-          placeholder="Name"
-          v-model="parameter.name"
-          :disabled="!isEditMode"
-          expanded
-        ></b-input>
-      </b-field>
-    </div>
-
-    <div class="parameter-type">
-      <b-field>
-        <b-select v-model="parameter.type" expanded :disabled="!isEditMode">
-          <option value="string">String</option>
-          <option value="number">Number</option>
-          <option value="boolean">Boolean</option>
-        </b-select>
-      </b-field>
-    </div>
-    <div class="parameter-value">
-      <b-field>
-        <div v-if="parameter.type === 'string'">
-          <b-input type="text" placeholder="Wert" v-model.trim="value"></b-input>
-        </div>
-        <div v-else-if="parameter.type === 'number'">
-          <b-numberinput v-model="value"></b-numberinput>
-        </div>
-        <div v-else-if="parameter.type === 'boolean'">
-          <b-switch v-model="value">{{ value }}</b-switch>
-        </div>
-      </b-field>
-    </div>
-    <div v-if="isEditMode" class="actions">
-      <b-button @click="deleteParameter" type="is-danger">
-        <v-icon name="trash-alt" />
-      </b-button>
-    </div>
+  <div class="config-detail">
+    <table>
+      <tbody>
+        <tr>
+          <td class="parameter-name">
+            <b-field>
+              <b-input
+                type="text"
+                placeholder="Name"
+                v-model="parameter.name"
+                :disabled="!isEditMode"
+                expanded
+              ></b-input>
+            </b-field>
+          </td>
+          <td class="parameter-type">
+            <b-field>
+              <b-select v-model="parameter.type" expanded :disabled="!isEditMode">
+                <option value="string">String</option>
+                <option value="number">Number</option>
+                <option value="boolean">Boolean</option>
+              </b-select>
+            </b-field>
+          </td>
+          <td class="parameter-value">
+            <b-field>
+              <div v-if="parameter.type === 'string'">
+                <b-input type="text" placeholder="Wert" v-model.trim="value"></b-input>
+              </div>
+              <div v-else-if="parameter.type === 'number'">
+                <b-numberinput v-model="value"></b-numberinput>
+              </div>
+              <div v-else-if="parameter.type === 'boolean'">
+                <b-switch v-model="value">{{ value }}</b-switch>
+              </div>
+            </b-field>
+          </td>
+          <td v-if="isEditMode" class="actions">
+            <b-button @click="deleteParameter" type="is-danger">
+              <v-icon name="trash-alt" />
+            </b-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
     <div v-if="isShowDescription" class="parameter-description">
       <b-field>
@@ -50,6 +55,8 @@
         ></b-input>
       </b-field>
     </div>
+
+    <hr class="spacer" />
   </div>
 </template>
 
@@ -159,44 +166,42 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .config-detail {
-  display: grid;
+  table {
+    width: 100%;
+    table-layout: fixed;
 
-  grid-template-columns: 5fr 1fr 2fr auto;
-  grid-template-rows: 1fr auto;
-  grid-row-gap: 1rem;
-  grid-template-areas:
-    "name type value value"
-    "description description description description";
-  grid-column-gap: 2rem;
+    margin-bottom: 10px;
 
-  padding: 10px 0;
-  border-bottom: 1px solid black;
+    td:not(:last-child) {
+      padding-right: 10px;
+    }
 
-  &.isEditMode {
-    // grid-template-rows: 1fr auto;
-    // grid-row-gap: 1rem;
-    grid-template-areas:
-      "name type value action"
-      "description description description description";
-  }
-  .parameter-name {
-    grid-area: name;
-  }
+    .parameter-name {
+      width: auto;
+    }
 
-  .parameter-type {
-    grid-area: type;
-  }
+    .parameter-type {
+      width: 120px;
+    }
 
-  .parameter-value {
-    grid-area: value;
-  }
+    .parameter-value {
+      width: 35%;
+      text-align: center;
+      vertical-align: middle;
+    }
 
-  .actions {
-    grid-area: action;
+    .actions {
+      width: 40px;
+    }
   }
 
   .parameter-description {
-    grid-area: description;
+    margin-bottom: 10px;
+  }
+
+  .spacer {
+    background-color: black;
+    height: 1px;
   }
 }
 </style>
