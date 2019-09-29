@@ -14,7 +14,7 @@
       <b-checkbox v-model="showDescription">Beschreibung anzeigen</b-checkbox>
     </b-field>
     <div class="parameter-list" v-if="newParameters.length > 0">
-      <h2 class="subtitle">Neue Parameter</h2>
+      <div class="subtitle">Neue Parameter</div>
       <div v-for="parameter in newParameters" :key="parameter.id">
         <ConfigDetail
           v-bind:parameter="parameter"
@@ -26,7 +26,7 @@
     </div>
 
     <div class="parameter-list">
-      <h2 class="subtitle">Parameter</h2>
+      <div class="subtitle">Parameter</div>
       <div v-if="!parameters.length">Keine Konfigurationsparameter vorhanden.</div>
       <div v-for="parameter in parameters" :key="parameter.id">
         <ConfigDetail
@@ -124,9 +124,10 @@ export default Vue.extend({
   }
 
   .parameter-list {
-    h2 {
+    .subtitle {
       text-align: left;
-      margin-bottom: 10px;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
     }
   }
 }

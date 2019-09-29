@@ -5,7 +5,7 @@
     </div>
 
     <div class="setup-list">
-      <h2 class="subtitle">Setups</h2>
+      <div class="subtitle">Setups</div>
       <div v-if="!setups.length">
         <span>Keine Setups vorhanden.</span>
       </div>
@@ -85,9 +85,10 @@ export default Vue.extend({
   }
 
   .setup-list {
-    h2 {
+    .subtitle {
       text-align: left;
-      margin-bottom: 10px;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
     }
 
     .setup-item {

@@ -5,13 +5,13 @@
       <b-button class="action-btn" @click="submit">Speichern</b-button>
     </div>
     <div class="parameter-meta">
-      <h2 class="subtitle">Meta Daten</h2>
+      <div class="subtitle">Meta Daten</div>
       <b-field>
         <b-input type="text" placeholder="Name" v-model="setupName" expanded></b-input>
       </b-field>
     </div>
     <div class="parameter-list">
-      <h2 class="subtitle">Parameter</h2>
+      <div class="subtitle">Parameter</div>
       <div v-for="parameter in parameters" :key="parameter.id">
         <ConfigDetail v-bind:parameter="parameter" v-bind:showDescription="false"></ConfigDetail>
       </div>
@@ -92,9 +92,10 @@ export default Vue.extend({
   }
 }
 
-h2 {
+.subtitle {
   text-align: left;
-  margin-bottom: 10px;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
 }
 
 .parameter-meta {
