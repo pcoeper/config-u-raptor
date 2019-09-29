@@ -21,8 +21,9 @@ export default {
 
 
 <style lang="scss">
-$lightBlue: #b3c7d6ff;
-$middleBlue: #85b3d1ff;
+$lightBlue: #b3c7d6;
+$middleBlue: #85b3d1;
+$darkBlue: #2460a7ff;
 $lightYellow: #d9b48fff;
 
 body {
@@ -43,13 +44,15 @@ body {
 }
 
 nav {
-  background-color: $middleBlue;
+  background-color: $lightBlue;
   grid-area: nav;
+  box-shadow: 0 4px 8px 0 rgba($color: #000000, $alpha: 0.2);
+  z-index: 1;
 }
 
 main {
   grid-area: content;
-  background-color: $lightBlue;
+  background-color: $middleBlue;
   padding: 40px 40px;
   height: 100%;
 
