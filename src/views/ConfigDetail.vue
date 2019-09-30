@@ -17,9 +17,9 @@
           <td class="parameter-type" v-if="isEditMode">
             <div class="control">
               <div class="select">
-                <select v-model="parameter.type" expanded :disabled="!isEditMode">
-                  <option value="string">String</option>
-                  <option value="number">Number</option>
+                <select v-model="parameter.type" :disabled="!isEditMode">
+                  <option value="string">Text</option>
+                  <option value="number">Zahl</option>
                   <option value="boolean">Boolean</option>
                 </select>
               </div>
@@ -38,9 +38,14 @@
                 </div>
               </div>
               <div v-else-if="parameter.type === 'boolean'">
-                <label class="checkbox">
-                  <input type="checkbox" v-model="value" />
-                </label>
+                <div class="control">
+                  <div class="select is-expanded">
+                    <select v-model="value">
+                      <option value="true">True</option>
+                      <option value="false">False</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
           </td>
@@ -86,8 +91,7 @@ export default Vue.extend({
 
   data() {
     return {
-      value: null as any,
-      showDebug: false as boolean
+      value: null as any
     };
   },
 
@@ -116,7 +120,6 @@ export default Vue.extend({
   watch: {
     value() {
       this.parameter.defaultValue = this.value.toString();
-      this.debugValueChange();
     },
 
     parameterType() {
@@ -125,20 +128,6 @@ export default Vue.extend({
   },
 
   methods: {
-    debugValueChange() {
-      if (this.showDebug) {
-        // logging / debug
-        console.log(
-          "defaultvalue is: " +
-            this.parameter.defaultValue +
-            " (" +
-            typeof this.parameter.defaultValue +
-            ")"
-        );
-        console.log("value is: " + this.value + " (" + typeof this.value + ")");
-      }
-    },
-
     deleteParameter(): void {
       this.$emit("delete-parameter", this.parameter);
     },
@@ -153,13 +142,9 @@ export default Vue.extend({
         const numberRep = Number(this.parameter.defaultValue);
         this.value = isNaN(numberRep) ? 0 : numberRep;
       } else if (this.parameter.type === "boolean") {
-        const booleanRep =
-          this.parameter.defaultValue === "true" ||
-          this.parameter.defaultValue === "false";
-        this.value = this.parameter.defaultValue === "true" ? true : false;
+        this.value = this.parameter.defaultValue === "true" ? "true" : "false";
       }
       this.parameter.defaultValue = this.value.toString();
-      this.debugValueChange();
     }
   }
 });
@@ -189,6 +174,16 @@ export default Vue.extend({
       width: 35%;
       text-align: center;
       vertical-align: middle;
+
+      .select {
+        &.is-expanded {
+          width: 100%;
+
+          select {
+            width: 100%;
+          }
+        }
+      }
     }
 
     .actions {
