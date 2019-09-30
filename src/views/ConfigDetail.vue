@@ -26,25 +26,23 @@
             </div>
           </td>
           <td class="parameter-value">
-            <div>
-              <div v-if="parameter.type === 'string'">
-                <div class="control">
-                  <input class="input" type="text" placeholder="Wert" v-model.trim="value" />
-                </div>
+            <div v-if="parameter.type === 'string'">
+              <div class="control">
+                <input class="input" type="text" placeholder="Wert" v-model.trim="value" />
               </div>
-              <div v-else-if="parameter.type === 'number'">
-                <div class="control">
-                  <input class="input" type="number" v-model="value" />
-                </div>
+            </div>
+            <div v-else-if="parameter.type === 'number'">
+              <div class="control">
+                <input class="input" type="number" v-model="value" />
               </div>
-              <div v-else-if="parameter.type === 'boolean'">
-                <div class="control">
-                  <div class="select is-expanded">
-                    <select v-model="value">
-                      <option value="true">True</option>
-                      <option value="false">False</option>
-                    </select>
-                  </div>
+            </div>
+            <div v-else-if="parameter.type === 'boolean'">
+              <div class="control">
+                <div class="select is-expanded">
+                  <select v-model="value">
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                  </select>
                 </div>
               </div>
             </div>

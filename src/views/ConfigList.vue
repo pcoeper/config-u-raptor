@@ -6,7 +6,7 @@
         class="button is-danger action-btn"
         @click="deleteAll"
       >Alle Löschen</div>
-      <div class="button action-btn" @click="add">Hinzufügen</div>
+      <div class="button action-btn" @click="openModal">Hinzufügen</div>
       <div class="button action-btn" @click="submit">Speichern</div>
     </div>
     <div class="show-description">
@@ -45,6 +45,11 @@
         ></ConfigDetail>
       </div>
     </div>
+    <ConfigParameterModal
+      v-bind:show="showModal"
+      v-bind:parameter="modalParameter"
+      @closeModal="closeModal"
+    ></ConfigParameterModal>
   </div>
 </template>
 
@@ -53,6 +58,7 @@ import Vue from "vue";
 import { ipcRenderer, Event } from "electron";
 import { ConfigParameter } from "../db/entity/ConfigParameter";
 import ConfigDetail from "./ConfigDetail.vue";
+import ConfigParameterModal from "./ConfigParameterModal.vue";
 
 export default Vue.extend({
   data() {
@@ -60,12 +66,21 @@ export default Vue.extend({
       parameters: [] as ConfigParameter[],
       newParameters: [] as ConfigParameter[],
       showDescription: true as boolean,
-      searchValue: "" as string
+      searchValue: "" as string,
+      showModal: false as boolean,
+      modalParameter: {
+        id: 0,
+        name: "",
+        type: "string",
+        defaultValue: "",
+        description: ""
+      } as ConfigParameter
     };
   },
 
   components: {
-    ConfigDetail
+    ConfigDetail,
+    ConfigParameterModal
   },
 
   created() {
@@ -90,6 +105,14 @@ export default Vue.extend({
         this.parameters.concat(this.newParameters)
       );
       this.newParameters = [];
+    },
+
+    openModal() {
+      this.showModal = true;
+    },
+
+    closeModal() {
+      this.showModal = false;
     },
 
     add() {
