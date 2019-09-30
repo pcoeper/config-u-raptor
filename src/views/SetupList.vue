@@ -1,15 +1,15 @@
 <template>
   <div class="setups">
     <div class="actions">
-      <b-button class="action-btn" @click="navigateToDetail(0)">Hinzufügen</b-button>
+      <div class="button action-btn" @click="navigateToDetail(0)">Hinzufügen</div>
     </div>
 
     <div class="setup-list">
       <div class="subtitle">Setups</div>
       <div class="search">
-        <b-field>
-          <b-input type="text" placeholder="Suche" v-model="searchValue" expanded></b-input>
-        </b-field>
+        <div class="control">
+          <input class="input" type="text" placeholder="Suche" v-model="searchValue" />
+        </div>
       </div>
       <div v-if="!setups.length">
         <span>Keine Setups vorhanden.</span>
@@ -21,13 +21,13 @@
               <tr :key="setup.id">
                 <td class="item-name">{{setup.name}}</td>
                 <td class="item-actions">
-                  <b-button class="action-btn" @click="navigateToDetail(setup.id)">Bearbeiten</b-button>
-                  <b-button class="action-btn" @click="downloadSetup(setup.id)">
+                  <div class="button action-btn" @click="navigateToDetail(setup.id)">Bearbeiten</div>
+                  <div class="button action-btn" @click="downloadSetup(setup.id)">
                     <v-icon name="arrow-alt-circle-down"></v-icon>
-                  </b-button>
-                  <b-button class="action-btn" type="is-danger" @click="deleteSetup(setup.id)">
+                  </div>
+                  <div class="button is-danger action-btn" @click="deleteSetup(setup.id)">
                     <v-icon name="trash-alt"></v-icon>
-                  </b-button>
+                  </div>
                 </td>
               </tr>
             </template>

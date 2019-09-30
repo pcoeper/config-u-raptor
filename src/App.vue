@@ -62,4 +62,6 @@ main {
     padding: 10px 50px;
   }
 }
+
+@import "../node_modules/bulma/bulma.sass";
 </style>

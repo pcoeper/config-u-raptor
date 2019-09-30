@@ -1,18 +1,20 @@
 <template>
   <div class="config-list">
     <div class="actions">
-      <b-button
+      <div
         v-if="parameters.length"
-        class="action-btn"
-        type="is-danger"
+        class="button is-danger action-btn"
         @click="deleteAll"
-      >Alle Löschen</b-button>
-      <b-button class="action-btn" @click="add">Hinzufügen</b-button>
-      <b-button class="action-btn" @click="submit">Speichern</b-button>
+      >Alle Löschen</div>
+      <div class="button action-btn" @click="add">Hinzufügen</div>
+      <div class="button action-btn" @click="submit">Speichern</div>
     </div>
-    <b-field class="show-description">
-      <b-checkbox v-model="showDescription">Beschreibung anzeigen</b-checkbox>
-    </b-field>
+    <div class="show-description">
+      <label class="checkbox">
+        <input type="checkbox" v-model="showDescription" />
+        <span class="checkbox-label">Beschreibung anzeigen</span>
+      </label>
+    </div>
     <div class="parameter-list" v-if="newParameters.length > 0">
       <div class="subtitle">Neue Parameter</div>
       <div v-for="parameter in newParameters" :key="parameter.id">
@@ -28,9 +30,9 @@
     <div class="parameter-list">
       <div class="subtitle">Parameter</div>
       <div class="search">
-        <b-field>
-          <b-input type="text" placeholder="Suche" v-model="searchValue" expanded></b-input>
-        </b-field>
+        <div class="control">
+          <input class="input" type="text" placeholder="Suche" v-model="searchValue" />
+        </div>
       </div>
       <div v-if="!parameters.length">Keine Konfigurationsparameter vorhanden.</div>
       <div v-for="parameter in parameters" :key="parameter.id">
@@ -138,6 +140,10 @@ export default Vue.extend({
   .show-description {
     text-align: right;
     margin-top: 10px;
+
+    .checkbox-label {
+      margin-left: 5px;
+    }
   }
 
   .parameter-list {

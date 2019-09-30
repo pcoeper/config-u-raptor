@@ -4,56 +4,57 @@
       <tbody>
         <tr>
           <td class="parameter-name">
-            <b-field>
-              <b-input
+            <div class="control">
+              <input
+                class="input"
                 type="text"
                 placeholder="Name"
                 v-model="parameter.name"
                 :disabled="!isEditMode"
-                expanded
-              ></b-input>
-            </b-field>
+              />
+            </div>
           </td>
           <td class="parameter-type" v-if="isEditMode">
-            <b-field>
-              <b-select v-model="parameter.type" expanded :disabled="!isEditMode">
-                <option value="string">String</option>
-                <option value="number">Number</option>
-                <option value="boolean">Boolean</option>
-              </b-select>
-            </b-field>
+            <div class="control">
+              <div class="select">
+                <select v-model="parameter.type" expanded :disabled="!isEditMode">
+                  <option value="string">String</option>
+                  <option value="number">Number</option>
+                  <option value="boolean">Boolean</option>
+                </select>
+              </div>
+            </div>
           </td>
           <td class="parameter-value">
-            <b-field>
+            <div>
               <div v-if="parameter.type === 'string'">
-                <b-input type="text" placeholder="Wert" v-model.trim="value"></b-input>
+                <div class="control">
+                  <input class="input" type="text" placeholder="Wert" v-model.trim="value" />
+                </div>
               </div>
               <div v-else-if="parameter.type === 'number'">
-                <b-numberinput v-model="value"></b-numberinput>
+                <div class="control">
+                  <input class="input" type="number" v-model="value" />
+                </div>
               </div>
               <div v-else-if="parameter.type === 'boolean'">
-                <b-switch v-model="value">{{ value }}</b-switch>
+                <label class="checkbox">
+                  <input type="checkbox" v-model="value" />
+                </label>
               </div>
-            </b-field>
+            </div>
           </td>
           <td v-if="isEditMode" class="actions">
-            <b-button @click="deleteParameter" type="is-danger">
+            <div class="button is-danger" @click="deleteParameter">
               <v-icon name="trash-alt" />
-            </b-button>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
 
     <div v-if="isShowDescription" class="parameter-description">
-      <b-field>
-        <b-input
-          type="textarea"
-          placeholder="Beschreibung"
-          v-model="parameter.description"
-          expanded
-        ></b-input>
-      </b-field>
+      <textarea class="textarea" placeholder="Beschreibung" v-model="parameter.description"></textarea>
     </div>
 
     <hr class="spacer" />

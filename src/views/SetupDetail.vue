@@ -1,21 +1,21 @@
 <template>
   <div class="setup-detail">
     <div class="actions">
-      <b-button class="action-btn" @click="navigateBack()">Zurück</b-button>
-      <b-button class="action-btn" @click="submit">Speichern</b-button>
+      <div class="button action-btn" @click="navigateBack()">Zurück</div>
+      <div class="button action-btn" @click="submit">Speichern</div>
     </div>
     <div class="parameter-meta">
       <div class="subtitle">Meta Daten</div>
-      <b-field>
-        <b-input type="text" placeholder="Name" v-model="setupName" expanded></b-input>
-      </b-field>
+      <div class="control">
+        <input class="input" type="text" placeholder="Name" v-model="setupName" />
+      </div>
     </div>
     <div class="parameter-list">
       <div class="subtitle">Parameter</div>
       <div class="search">
-        <b-field>
-          <b-input type="text" placeholder="Suche" v-model="searchValue" expanded></b-input>
-        </b-field>
+        <div class="control">
+          <input class="input" type="text" placeholder="Suche" v-model="searchValue" />
+        </div>
       </div>
       <div v-for="parameter in parameters" :key="parameter.id">
         <ConfigDetail
