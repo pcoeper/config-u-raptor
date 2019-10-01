@@ -1,11 +1,11 @@
 <template>
   <div class="setup-detail">
     <div class="actions">
-      <div class="button action-btn" @click="navigateBack()">Zurück</div>
-      <div class="button action-btn" @click="submit">Speichern</div>
+      <div class="button" @click="navigateBack()">Zurück</div>
+      <div class="button is-primary m-l-5" @click="submit">Speichern</div>
     </div>
     <div class="parameter-meta">
-      <div class="subtitle">Meta Daten</div>
+      <div class="subtitle">Setup Name</div>
       <div class="control">
         <input class="input" type="text" placeholder="Name" v-model="setupName" />
       </div>
@@ -13,17 +13,53 @@
     <div class="parameter-list">
       <div class="subtitle">Parameter</div>
       <div class="search">
-        <div class="control">
+        <div class="control has-icons-left">
           <input class="input" type="text" placeholder="Suche" v-model="searchValue" />
+          <span class="icon is-left">
+            <v-icon name="search" />
+          </span>
         </div>
       </div>
-      <div v-for="parameter in parameters" :key="parameter.id">
-        <ConfigDetail
-          v-if="matchesSearch(parameter)"
-          v-bind:parameter="parameter"
-          v-bind:showDescription="false"
-        ></ConfigDetail>
-      </div>
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th class="column-values">Wert</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="parameter in filteredParameterList" :key="parameter.id">
+            <td>{{parameter.name}}</td>
+            <td class="column-values">
+              <div v-if="parameter.type === 'string'">
+                <div class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    placeholder="Wert"
+                    v-model.trim="parameter.defaultValue"
+                  />
+                </div>
+              </div>
+              <div v-else-if="parameter.type === 'number'">
+                <div class="control">
+                  <input class="input" type="number" v-model="parameter.defaultValue" />
+                </div>
+              </div>
+              <div v-else-if="parameter.type === 'boolean'">
+                <div class="control">
+                  <div class="select is-expanded">
+                    <select v-model="parameter.defaultValue">
+                      <option value="true">True</option>
+                      <option value="false">False</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -33,8 +69,9 @@
 import Vue from "vue";
 import { ipcRenderer } from "electron";
 import { ConfigParameter } from "../db/entity/ConfigParameter";
-import ConfigDetail from "./ConfigDetail.vue";
 import router from "../router";
+import Icon from "vue-awesome/components/Icon.vue";
+import "vue-awesome/icons/search";
 
 export default Vue.extend({
   data() {
@@ -46,8 +83,14 @@ export default Vue.extend({
     };
   },
 
-  components: {
-    ConfigDetail
+  components: { "v-icon": Icon },
+
+  computed: {
+    filteredParameterList(): ConfigParameter[] {
+      return this.parameters.filter((parameter: ConfigParameter) =>
+        this.matchesSearch(parameter)
+      );
+    }
   },
 
   created() {
@@ -100,16 +143,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .actions {
   text-align: right;
-
-  .action-btn:not(:last-child) {
-    margin-right: 5px;
-  }
-
-  a {
-    text-decoration: none;
-    color: #2c3e50;
-    cursor: pointer;
-  }
 }
 
 .subtitle {
@@ -124,6 +157,24 @@ export default Vue.extend({
 
 .search {
   margin-bottom: 50px;
+}
+
+table {
+  table-layout: fixed;
+
+  .column-values {
+    width: 30%;
+
+    .select {
+      &.is-expanded {
+        width: 100%;
+
+        select {
+          width: 100%;
+        }
+      }
+    }
+  }
 }
 </style>
 

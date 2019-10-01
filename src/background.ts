@@ -123,9 +123,9 @@ ipcMain.on('getAllConfigParameter', async (event: any, args: any) => {
 });
 
 ipcMain.on(
-    'saveAllConfigParameter',
-    async (event: any, args: ConfigParameter[]) => {
-        await ConfigParameterController.saveAll(args);
+    'saveConfigParameter',
+    async (event: any, args: ConfigParameter) => {
+        await ConfigParameterController.saveConfigParameter(args);
         const parameters = await ConfigParameterController.getAll();
         event.reply('replyAllConfigParameter', parameters);
     }

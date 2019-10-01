@@ -21,6 +21,7 @@ export default {
 
 
 <style lang="scss">
+$white: white;
 $lightBlue: #b3c7d6;
 $middleBlue: #85b3d1;
 $darkBlue: #2460a7ff;
@@ -44,7 +45,7 @@ body {
 }
 
 nav {
-  background-color: $lightBlue;
+  background-color: $middleBlue;
   grid-area: nav;
   box-shadow: 0 4px 8px 0 rgba($color: #000000, $alpha: 0.2);
   z-index: 1;
@@ -52,7 +53,7 @@ nav {
 
 main {
   grid-area: content;
-  background-color: $middleBlue;
+  background-color: $white;
   padding: 40px 40px;
   height: 100%;
 
@@ -61,6 +62,10 @@ main {
     overflow: auto;
     padding: 10px 50px;
   }
+}
+
+.m-l-5 {
+  margin-left: 5px;
 }
 
 @import "../node_modules/bulma/bulma.sass";

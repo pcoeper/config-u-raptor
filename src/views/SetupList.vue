@@ -1,52 +1,66 @@
 <template>
   <div class="setups">
     <div class="actions">
-      <div class="button action-btn" @click="navigateToDetail(0)">Hinzufügen</div>
+      <button class="button" @click="navigateToDetail(0)">
+        <v-icon name="plus" />
+        <span class="m-l-5">Neues Setup</span>
+      </button>
     </div>
 
     <div class="setup-list">
       <div class="subtitle">Setups</div>
       <div class="search">
-        <div class="control">
+        <div class="control has-icons-left">
           <input class="input" type="text" placeholder="Suche" v-model="searchValue" />
+          <span class="icon is-left">
+            <v-icon name="search" />
+          </span>
         </div>
       </div>
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th class="column-statistics"></th>
+            <th class="column-actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="setup in filteredSetupList" :key="setup.id">
+            <td>{{setup.name}}</td>
+            <td></td>
+            <td>
+              <button class="button" @click="navigateToDetail(setup.id)">
+                <v-icon name="pencil-alt" />
+              </button>
+              <button class="button m-l-5" @click="downloadSetup(setup.id)">
+                <v-icon name="download" />
+              </button>
+              <button class="button is-danger m-l-5" @click="deleteSetup(setup.id)">
+                <v-icon name="trash-alt" />
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <div v-if="!setups.length">
         <span>Keine Setups vorhanden.</span>
       </div>
-      <table>
-        <tbody>
-          <template v-for="setup in setups">
-            <template v-if="matchesSearch(setup)">
-              <tr :key="setup.id">
-                <td class="item-name">{{setup.name}}</td>
-                <td class="item-actions">
-                  <div class="button action-btn" @click="navigateToDetail(setup.id)">Bearbeiten</div>
-                  <div class="button action-btn" @click="downloadSetup(setup.id)">
-                    <v-icon name="arrow-alt-circle-down"></v-icon>
-                  </div>
-                  <div class="button is-danger action-btn" @click="deleteSetup(setup.id)">
-                    <v-icon name="trash-alt"></v-icon>
-                  </div>
-                </td>
-              </tr>
-            </template>
-          </template>
-        </tbody>
-      </table>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import Vue from "vue";
 import { ipcRenderer } from "electron";
 import { ConfigSetup } from "../db/entity/ConfigSetup";
 import router from "../router";
 import Icon from "vue-awesome/components/Icon.vue";
-import "vue-awesome/icons/arrow-alt-circle-down";
+import "vue-awesome/icons/download";
 import "vue-awesome/icons/trash-alt";
-import Vue from "vue";
-import { SetupController } from "../db/controller/SetupController";
+import "vue-awesome/icons/plus";
+import "vue-awesome/icons/pencil-alt";
+import "vue-awesome/icons/search";
 
 export default Vue.extend({
   data() {
@@ -58,6 +72,14 @@ export default Vue.extend({
 
   components: {
     "v-icon": Icon
+  },
+
+  computed: {
+    filteredSetupList(): ConfigSetup[] {
+      return this.setups.filter((setup: ConfigSetup) =>
+        this.matchesSearch(setup)
+      );
+    }
   },
 
   created() {
@@ -99,10 +121,6 @@ export default Vue.extend({
 .setups {
   .actions {
     text-align: right;
-
-    .action-btn:not(:last-child) {
-      margin-right: 5px;
-    }
   }
 
   .setup-list {
@@ -118,25 +136,14 @@ export default Vue.extend({
 
     table {
       table-layout: fixed;
-      width: 100%;
 
-      border-collapse: separate;
-      border-spacing: 0 10px;
-
-      tr {
-        .item-name {
-          width: auto;
-          font-weight: 600;
-          padding: 0 10px;
-          vertical-align: middle;
+      th {
+        &.column-statistics {
+          width: 30%;
         }
 
-        .item-actions {
-          width: 200px;
-
-          .action-btn:not(:last-child) {
-            margin-right: 5px;
-          }
+        &.column-actions {
+          width: 160px;
         }
       }
     }

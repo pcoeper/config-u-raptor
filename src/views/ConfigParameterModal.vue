@@ -8,12 +8,12 @@
         </header>
         <section class="modal-card-body">
           <div class="columns">
-            <div class="column is-one-thirs">
+            <div class="column is-one-third">
               <div class="control">
                 <input class="input" type="text" placeholder="Name" v-model="parameter.name" />
               </div>
             </div>
-            <div class="column is-one-thirs">
+            <div class="column is-one-third">
               <div class="control">
                 <div class="select is-expanded">
                   <select v-model="parameter.type">
@@ -24,7 +24,7 @@
                 </div>
               </div>
             </div>
-            <div class="column is-one-thirs">
+            <div class="column is-one-third">
               <div v-if="parameter.type === 'string'">
                 <div class="control">
                   <input class="input" type="text" placeholder="Wert" v-model.trim="value" />
@@ -54,8 +54,15 @@
           </div>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-primary">Speichern</button>
+          <button class="button is-primary" @click="saveParameter">Speichern</button>
           <button class="button" @click="closeModal">Abbrechen</button>
+          <button
+            v-if="parameter.id>0"
+            class="button is-danger delete-button"
+            @click="deleteParameter"
+          >
+            <v-icon name="trash-alt" />
+          </button>
         </footer>
       </div>
     </div>
@@ -65,6 +72,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { ConfigParameter } from "../db/entity/ConfigParameter";
+import Icon from "vue-awesome/components/Icon.vue";
+import "vue-awesome/icons/trash-alt";
 
 export default Vue.extend({
   props: {
@@ -76,6 +85,10 @@ export default Vue.extend({
       type: Object,
       required: true
     }
+  },
+
+  components: {
+    "v-icon": Icon
   },
 
   data() {
@@ -105,6 +118,14 @@ export default Vue.extend({
   },
 
   methods: {
+    saveParameter() {
+      this.$emit("saveParameter", this.parameter);
+    },
+
+    deleteParameter() {
+      this.$emit("deleteParameter", this.parameter);
+    },
+
     closeModal(): void {
       this.$emit("closeModal");
     },
@@ -138,6 +159,13 @@ export default Vue.extend({
           width: 100%;
         }
       }
+    }
+  }
+
+  .modal-card-foot {
+    button.delete-button {
+      position: absolute;
+      right: 20px;
     }
   }
 }

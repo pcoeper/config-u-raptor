@@ -9,28 +9,28 @@ export class ConfigParameterController {
         return parameterRepo.find();
     }
 
-    public static saveAll = async (
-        parameters: ConfigParameter[]
+    public static saveConfigParameter = async (
+        configParameter: ConfigParameter
     ): Promise<boolean> => {
         const parameterRepo = getRepository(ConfigParameter);
         return new Promise(async (resolve, reject) => {
-            for (const p of parameters) {
-                // avoid undefined id when p is new instance
-                p.id = p.id ? p.id : 0;
 
-                let parameter = await parameterRepo.findOne(p.id);
+            // avoid undefined id when parameter is new instance
+            configParameter.id = configParameter.id ? configParameter.id : 0;
 
-                if (!parameter) {
-                    // create new parameter
-                    parameter = new ConfigParameter();
-                }
-                parameter.name = p.name;
-                parameter.type = p.type;
-                parameter.defaultValue = p.defaultValue;
-                parameter.description = p.description;
+            let parameter = await parameterRepo.findOne(configParameter.id);
 
-                await parameterRepo.save(parameter);
+            if (!parameter) {
+                // create new parameter
+                parameter = new ConfigParameter();
             }
+            parameter.name = configParameter.name;
+            parameter.type = configParameter.type;
+            parameter.defaultValue = configParameter.defaultValue;
+            parameter.description = configParameter.description;
+
+            await parameterRepo.save(parameter);
+
             // resolve promise when done
             resolve(true);
         });
