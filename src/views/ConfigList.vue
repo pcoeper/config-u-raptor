@@ -2,10 +2,12 @@
   <div class="config-list">
     <div class="actions">
       <div v-if="parameters.length" class="button is-danger" @click="deleteAll">Alle Löschen</div>
-      <div class="button m-l-5" @click="addNewParameter">
-        <v-icon name="plus" />
-        <span class="m-l-5">Neuer Parameter</span>
-      </div>
+      <button class="button m-l-5" @click="addNewParameter">
+        <span class="icon">
+          <v-icon name="plus" />
+        </span>
+        <span>Neuer Parameter</span>
+      </button>
     </div>
 
     <div class="parameter-list">
@@ -22,7 +24,7 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th class="column-values">Standartwert</th>
+            <th class="column-values">Standardwert</th>
             <th class="column-actions"></th>
           </tr>
         </thead>
@@ -43,6 +45,7 @@
 
     <!-- config parameter modal -->
     <ConfigParameterModal
+      v-if="showModal"
       v-bind:show="showModal"
       v-bind:parameter="modalParameter"
       @closeModal="closeModal"
@@ -68,7 +71,7 @@ export default Vue.extend({
       parameters: [] as ConfigParameter[],
       searchValue: "" as string,
       showModal: false as boolean,
-      modalParameter: new ConfigParameter() as ConfigParameter
+      modalParameter: ConfigParameter
     };
   },
 
@@ -174,6 +177,10 @@ export default Vue.extend({
         &.column-actions {
           width: 70px;
         }
+      }
+
+      td {
+        vertical-align: middle;
       }
     }
   }

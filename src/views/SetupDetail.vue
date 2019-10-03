@@ -162,6 +162,10 @@ export default Vue.extend({
 table {
   table-layout: fixed;
 
+  td {
+    vertical-align: middle;
+  }
+
   .column-values {
     width: 30%;
 

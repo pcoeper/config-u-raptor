@@ -2,8 +2,10 @@
   <div class="setups">
     <div class="actions">
       <button class="button" @click="navigateToDetail(0)">
-        <v-icon name="plus" />
-        <span class="m-l-5">Neues Setup</span>
+        <span class="icon">
+          <v-icon name="plus" />
+        </span>
+        <span>Neues Setup</span>
       </button>
     </div>
 
@@ -145,6 +147,10 @@ export default Vue.extend({
         &.column-actions {
           width: 160px;
         }
+      }
+
+      td {
+        vertical-align: middle;
       }
     }
   }

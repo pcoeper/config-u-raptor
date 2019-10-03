@@ -54,13 +54,13 @@ nav {
 main {
   grid-area: content;
   background-color: $white;
-  padding: 40px 40px;
+  padding: 40px 30px 40px 40px;
   height: 100%;
 
   .content-wrapper {
     height: 100%;
     overflow: auto;
-    padding: 10px 50px;
+    padding-right: 10px;
   }
 }
 
