@@ -44,6 +44,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .search {
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 </style>
