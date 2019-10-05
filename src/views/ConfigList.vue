@@ -12,14 +12,7 @@
 
     <div class="parameter-list">
       <div class="subtitle">Parameter</div>
-      <div class="search">
-        <div class="control has-icons-left">
-          <input class="input" type="text" placeholder="Suche" v-model="searchValue" />
-          <span class="icon is-left">
-            <v-icon name="search" />
-          </span>
-        </div>
-      </div>
+      <SearchBar @update="searchValue = $event"></SearchBar>
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -60,10 +53,10 @@ import Vue from "vue";
 import { ipcRenderer, Event } from "electron";
 import { ConfigParameter } from "../db/entity/ConfigParameter";
 import ConfigParameterModal from "./ConfigParameterModal.vue";
+import SearchBar from "../components/SearchBar.vue";
 import Icon from "vue-awesome/components/Icon.vue";
 import "vue-awesome/icons/plus";
 import "vue-awesome/icons/pencil-alt";
-import "vue-awesome/icons/search";
 
 export default Vue.extend({
   data() {
@@ -71,13 +64,14 @@ export default Vue.extend({
       parameters: [] as ConfigParameter[],
       searchValue: "" as string,
       showModal: false as boolean,
-      modalParameter: ConfigParameter
+      modalParameter: {} as ConfigParameter
     };
   },
 
   components: {
     "v-icon": Icon,
-    ConfigParameterModal
+    ConfigParameterModal,
+    SearchBar
   },
 
   computed: {
@@ -156,10 +150,6 @@ export default Vue.extend({
   }
 
   .parameter-list {
-    .search {
-      margin-bottom: 50px;
-    }
-
     .subtitle {
       text-align: left;
       font-size: 1.6rem;

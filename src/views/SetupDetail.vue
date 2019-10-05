@@ -12,14 +12,7 @@
     </div>
     <div class="parameter-list">
       <div class="subtitle">Parameter</div>
-      <div class="search">
-        <div class="control has-icons-left">
-          <input class="input" type="text" placeholder="Suche" v-model="searchValue" />
-          <span class="icon is-left">
-            <v-icon name="search" />
-          </span>
-        </div>
-      </div>
+      <SearchBar @update="searchValue=$event"></SearchBar>
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -70,8 +63,7 @@ import Vue from "vue";
 import { ipcRenderer } from "electron";
 import { ConfigParameter } from "../db/entity/ConfigParameter";
 import router from "../router";
-import Icon from "vue-awesome/components/Icon.vue";
-import "vue-awesome/icons/search";
+import SearchBar from "../components/SearchBar.vue";
 
 export default Vue.extend({
   data() {
@@ -83,7 +75,7 @@ export default Vue.extend({
     };
   },
 
-  components: { "v-icon": Icon },
+  components: { SearchBar },
 
   computed: {
     filteredParameterList(): ConfigParameter[] {
@@ -152,10 +144,6 @@ export default Vue.extend({
 }
 
 .parameter-meta {
-  margin-bottom: 50px;
-}
-
-.search {
   margin-bottom: 50px;
 }
 

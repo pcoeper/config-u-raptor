@@ -11,14 +11,7 @@
 
     <div class="setup-list">
       <div class="subtitle">Setups</div>
-      <div class="search">
-        <div class="control has-icons-left">
-          <input class="input" type="text" placeholder="Suche" v-model="searchValue" />
-          <span class="icon is-left">
-            <v-icon name="search" />
-          </span>
-        </div>
-      </div>
+      <SearchBar @update="searchValue=$event"></SearchBar>
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -57,12 +50,12 @@ import Vue from "vue";
 import { ipcRenderer } from "electron";
 import { ConfigSetup } from "../db/entity/ConfigSetup";
 import router from "../router";
+import SearchBar from "../components/SearchBar.vue";
 import Icon from "vue-awesome/components/Icon.vue";
 import "vue-awesome/icons/download";
 import "vue-awesome/icons/trash-alt";
 import "vue-awesome/icons/plus";
 import "vue-awesome/icons/pencil-alt";
-import "vue-awesome/icons/search";
 
 export default Vue.extend({
   data() {
@@ -73,7 +66,8 @@ export default Vue.extend({
   },
 
   components: {
-    "v-icon": Icon
+    "v-icon": Icon,
+    SearchBar
   },
 
   computed: {
@@ -130,10 +124,6 @@ export default Vue.extend({
       text-align: left;
       font-size: 1.6rem;
       margin-bottom: 20px;
-    }
-
-    .search {
-      margin-bottom: 50px;
     }
 
     table {
