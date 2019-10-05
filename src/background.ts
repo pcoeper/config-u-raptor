@@ -15,6 +15,7 @@ import { ConfigSetup } from './db/entity/ConfigSetup';
 import { ParameterMod } from './db/entity/ParameterMod';
 import { ConfigParameterController } from './db/controller/ConfigParameterController';
 import { SetupController } from './db/controller/SetupController';
+import { SettingController } from './db/controller/SettingController';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -167,4 +168,10 @@ ipcMain.on('deleteSetup', async (event: any, args: number) => {
 
 ipcMain.on('downloadSetup', async (event: any, args: number) => {
     await SetupController.downloadSetup(args);
+});
+
+// Settings
+ipcMain.on('openFilePath', async (event: any) => {
+    const filePath = await SettingController.openFilePath();
+    event.reply('replyFilePath', filePath);
 });

@@ -6,13 +6,13 @@
         <label class="label">Speicherpfad</label>
         <div class="field has-addons">
           <div class="control is-expanded">
-            <input class="input" type="text" v-model="filePath" />
+            <input class="input" type="text" v-model="filePath" readonly />
           </div>
           <div class="control">
-            <button class="button" v-show="filePath === ''">
+            <button class="button" v-show="filePath === ''" @click="openFilePath">
               <v-icon name="folder-open" />
             </button>
-            <button class="button is-danger" v-show="filePath !== ''">
+            <button class="button is-danger" v-show="filePath !== ''" @click="filePath = ''">
               <v-icon name="trash-alt" />
             </button>
           </div>
@@ -22,8 +22,6 @@
         <label class="label">Dateiname</label>
         <input class="input" type="text" v-model="fileName" />
       </div>
-      <div>{{filePath}}</div>
-      <div>{{fileName}}</div>
     </div>
   </div>
 </template>
@@ -33,6 +31,7 @@ import Vue from "vue";
 import Icon from "vue-awesome/components/Icon.vue";
 import "vue-awesome/icons/folder-open";
 import "vue-awesome/icons/trash-alt";
+import { ipcRenderer } from "electron";
 export default Vue.extend({
   data() {
     return {
@@ -43,6 +42,23 @@ export default Vue.extend({
 
   components: {
     "v-icon": Icon
+  },
+
+  created() {
+    ipcRenderer.on("replyFilePath", (_: any, filePath: string) => {
+      this.filePath = filePath;
+    });
+  },
+
+  destroyed() {
+    // clear all listeners
+    ipcRenderer.removeAllListeners("replyFilePath");
+  },
+
+  methods: {
+    openFilePath() {
+      ipcRenderer.send("openFilePath");
+    }
   }
 });
 </script>
