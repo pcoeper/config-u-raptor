@@ -1,5 +1,8 @@
 <template>
   <div class="settings">
+    <div class="actions">
+      <button class="button is-primary" @click="submit">Speichern</button>
+    </div>
     <div class="subtitle">Einstellungen</div>
     <div class="columns">
       <div class="column is-two-third">
@@ -58,13 +61,18 @@ export default Vue.extend({
   methods: {
     openFilePath() {
       ipcRenderer.send("openFilePath");
-    }
+    },
+
+    submit() {}
   }
 });
 </script>
 
 <style lang="scss" scoped>
 .settings {
+  .actions {
+    text-align: right;
+  }
   .subtitle {
     text-align: left;
     font-size: 1.6rem;
