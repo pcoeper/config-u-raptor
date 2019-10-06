@@ -10,4 +10,7 @@ export class Setting {
 
     @Column('text')
     public fileName: string = '';
+
+    @Column('text')
+    public fileExtension: string = '.properties';
 }

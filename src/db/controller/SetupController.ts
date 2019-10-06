@@ -4,6 +4,8 @@ import { ConfigParameter } from '../entity/ConfigParameter';
 import { ParameterMod } from '../entity/ParameterMod';
 import { dialog } from 'electron';
 import * as fs from 'fs';
+import { Setting } from '../entity/Setting';
+import { SettingController } from './SettingController';
 
 export class SetupController {
     public static getAll = async (): Promise<ConfigSetup[]> => {
@@ -155,11 +157,20 @@ export class SetupController {
 
     public static downloadSetup = async (setupId: number): Promise<boolean> => {
         return new Promise(async (resolve, reject) => {
+            const setting = await SettingController.getSetting();
 
-            // open save file dialog
-            const savePath = await dialog.showSaveDialog({
-                filters: [{ name: 'config', extensions: ['properties'] }]
-            });
+            let savePath: string | undefined;
+
+            if (setting.filePath !== '' && setting.fileName !== '') {
+                savePath = setting.filePath + setting.fileName + setting.fileExtension;
+            } else {
+                // open save file dialog
+                savePath = await dialog.showSaveDialog({
+                    defaultPath: setting.filePath + setting.fileName,
+                    filters: [{ name: 'config', extensions: ['properties'] }]
+                });
+            }
+
             if (!savePath) {
                 resolve(false);
             } else {
@@ -170,6 +181,11 @@ export class SetupController {
                 setup.parameters.forEach((parameter: ConfigParameter) => {
                     fileContent += `${parameter.name} = ${SetupController.getFormattedParameterValue(parameter)}\n`;
                 });
+
+                if (fs.existsSync(savePath)) {
+                    // delete file if it exists
+                    fs.unlinkSync(savePath);
+                }
 
                 fs.writeFileSync(savePath, fileContent, { encoding: 'utf8', flag: 'w' });
 
