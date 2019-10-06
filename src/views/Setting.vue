@@ -23,7 +23,19 @@
       </div>
       <div class='column is-one-third'>
         <label class='label'>Dateiname</label>
-        <input class='input' type='text' v-model='setting.fileName' />
+        <div class='field has-addons'>
+            <div class='control is-expanded'>
+                <input class='input' type='text' v-model='setting.fileName' />
+            </div>
+            <div class='control'>
+                <div class='select is-expanded'>
+                  <select v-model='setting.fileExtension'>
+                    <option value='.properties'>.properties</option>
+                    <option value='.txt'>.txt</option>
+                  </select>
+                </div>
+            </div>
+        </div>
       </div>
     </div>
   </div>
@@ -35,11 +47,11 @@ import Icon from 'vue-awesome/components/Icon.vue';
 import 'vue-awesome/icons/folder-open';
 import 'vue-awesome/icons/trash-alt';
 import { ipcRenderer } from 'electron';
-import {SettingModel} from '@/models/Setting.model';
+import { SettingModel } from '@/models/Setting.model';
 export default Vue.extend({
   data() {
     return {
-        setting: new SettingModel() as SettingModel
+      setting: new SettingModel() as SettingModel
     };
   },
 
@@ -49,17 +61,17 @@ export default Vue.extend({
 
   computed: {
     emptyFilePath(): boolean {
-        return this.setting.filePath === '';
+      return this.setting.filePath === '';
     }
   },
 
   created() {
     ipcRenderer.send('getSetting');
     ipcRenderer.on('replySetting', (_: any, setting: SettingModel) => {
-        this.setting = setting;
+      this.setting = setting;
     });
     ipcRenderer.on('replyFilePath', (_: any, filePath: string) => {
-        this.setting.filePath = filePath;
+      this.setting.filePath = filePath;
     });
   },
 
@@ -75,11 +87,11 @@ export default Vue.extend({
     },
 
     clearFilePath() {
-        this.setting.filePath = '';
+      this.setting.filePath = '';
     },
 
     submit() {
-        ipcRenderer.send('saveSetting', this.setting);
+      ipcRenderer.send('saveSetting', this.setting);
     }
   }
 });

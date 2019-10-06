@@ -83,11 +83,17 @@ export default Vue.extend({
     ipcRenderer.on('replyAllConfigSetups', (_: any, args: ConfigSetup[]) => {
       this.setups = args;
     });
+    ipcRenderer.on('replyDownload', (_: any, status: boolean) => {
+        if (status === true) {
+            console.log('was saved');
+        }
+    })
   },
 
   destroyed() {
     // clear all listeners
     ipcRenderer.removeAllListeners('replyAllConfigSetups');
+    ipcRenderer.removeAllListeners('replyDownload');
   },
 
   methods: {

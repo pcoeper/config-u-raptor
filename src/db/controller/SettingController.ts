@@ -25,7 +25,7 @@ export class SettingController {
             const setting = await SettingController.getSetting();
             setting.filePath = newSetting.filePath;
             setting.fileName = newSetting.fileName;
-            setting.fileExtension = setting.fileExtension;
+            setting.fileExtension = newSetting.fileExtension;
             await settingRepo.save(setting);
             resolve(setting);
         });

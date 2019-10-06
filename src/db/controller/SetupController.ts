@@ -179,14 +179,14 @@ export class SetupController {
 
                 let fileContent = '';
                 setup.parameters.forEach((parameter: ConfigParameter) => {
-                    fileContent += `${parameter.name} = ${SetupController.getFormattedParameterValue(parameter)}\n`;
+                    fileContent += `${parameter.name} = ${parameter.defaultValue}\n`;
                 });
 
+                // delete file if it exists
                 if (fs.existsSync(savePath)) {
-                    // delete file if it exists
                     fs.unlinkSync(savePath);
                 }
-
+                // save file
                 fs.writeFileSync(savePath, fileContent, { encoding: 'utf8', flag: 'w' });
 
                 resolve(true);

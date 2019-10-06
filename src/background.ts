@@ -169,7 +169,8 @@ ipcMain.on('deleteSetup', async (event: any, args: number) => {
 });
 
 ipcMain.on('downloadSetup', async (event: any, args: number) => {
-    await SetupController.downloadSetup(args);
+    const status = await SetupController.downloadSetup(args);
+    event.reply('replyDownload', status);
 });
 
 // Settings
