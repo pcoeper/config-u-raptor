@@ -1,18 +1,18 @@
 <template>
-  <div id="app-wrapper">
+  <div id='app-wrapper'>
     <nav>
       <NavBar></NavBar>
     </nav>
     <main>
-      <div class="content-wrapper">
+      <div class='content-wrapper'>
         <router-view />
       </div>
     </main>
   </div>
 </template>
 
-<script lang="ts">
-import NavBar from "@/components/NavBar.vue";
+<script lang='ts'>
+import NavBar from '@/components/NavBar.vue';
 
 export default {
   components: { NavBar }
@@ -20,7 +20,7 @@ export default {
 </script>
 
 
-<style lang="scss">
+<style lang='scss'>
 $white: white;
 $lightBlue: #b3c7d6;
 $middleBlue: #85b3d1;
@@ -30,7 +30,7 @@ $lightYellow: #d9b48fff;
 body {
   margin: 0;
   padding: 0;
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -41,7 +41,7 @@ body {
   display: grid;
   grid-template-columns: 100px auto;
   grid-template-rows: 100vh;
-  grid-template-areas: "nav content";
+  grid-template-areas: 'nav content';
 }
 
 nav {
@@ -68,5 +68,5 @@ main {
   margin-left: 5px;
 }
 
-@import "../node_modules/bulma/bulma.sass";
+@import '../node_modules/bulma/bulma.sass';
 </style>

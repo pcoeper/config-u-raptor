@@ -1,50 +1,50 @@
 <template>
-  <div class="setup-detail">
-    <div class="actions">
-      <div class="button" @click="navigateBack()">Zurück</div>
-      <div class="button is-primary m-l-5" @click="submit">Speichern</div>
+  <div class='setup-detail'>
+    <div class='actions'>
+      <div class='button' @click='navigateBack()'>Zurück</div>
+      <div class='button is-primary m-l-5' @click='submit'>Speichern</div>
     </div>
-    <div class="parameter-meta">
-      <div class="subtitle">Setup Name</div>
-      <div class="control">
-        <input class="input" type="text" placeholder="Name" v-model="setupName" />
+    <div class='parameter-meta'>
+      <div class='subtitle'>Setup Name</div>
+      <div class='control'>
+        <input class='input' type='text' placeholder='Name' v-model='setupName' />
       </div>
     </div>
-    <div class="parameter-list">
-      <div class="subtitle">Parameter</div>
-      <SearchBar @update="searchValue=$event"></SearchBar>
-      <table class="table is-fullwidth is-striped is-hoverable">
+    <div class='parameter-list'>
+      <div class='subtitle'>Parameter</div>
+      <SearchBar @update='searchValue=$event'></SearchBar>
+      <table class='table is-fullwidth is-striped is-hoverable'>
         <thead>
           <tr>
             <th>Name</th>
-            <th class="column-values">Wert</th>
+            <th class='column-values'>Wert</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="parameter in filteredParameterList" :key="parameter.id">
+          <tr v-for='parameter in filteredParameterList' :key='parameter.id'>
             <td>{{parameter.name}}</td>
-            <td class="column-values">
-              <div v-if="parameter.type === 'string'">
-                <div class="control">
+            <td class='column-values'>
+              <div v-if='parameter.type === "string"'>
+                <div class='control'>
                   <input
-                    class="input"
-                    type="text"
-                    placeholder="Wert"
-                    v-model.trim="parameter.defaultValue"
+                    class='input'
+                    type='text'
+                    placeholder='Wert'
+                    v-model.trim='parameter.defaultValue'
                   />
                 </div>
               </div>
-              <div v-else-if="parameter.type === 'number'">
-                <div class="control">
-                  <input class="input" type="number" v-model="parameter.defaultValue" />
+              <div v-else-if='parameter.type === "number"'>
+                <div class='control'>
+                  <input class='input' type='number' v-model='parameter.defaultValue' />
                 </div>
               </div>
-              <div v-else-if="parameter.type === 'boolean'">
-                <div class="control">
-                  <div class="select is-expanded">
-                    <select v-model="parameter.defaultValue">
-                      <option value="true">True</option>
-                      <option value="false">False</option>
+              <div v-else-if='parameter.type === "boolean"'>
+                <div class='control'>
+                  <div class='select is-expanded'>
+                    <select v-model='parameter.defaultValue'>
+                      <option value='true'>True</option>
+                      <option value='false'>False</option>
                     </select>
                   </div>
                 </div>
@@ -58,20 +58,20 @@
 </template>
 
 
-<script lang="ts">
-import Vue from "vue";
-import { ipcRenderer } from "electron";
-import { ConfigParameter } from "../db/entity/ConfigParameter";
-import router from "../router";
-import SearchBar from "../components/SearchBar.vue";
+<script lang='ts'>
+import Vue from 'vue';
+import { ipcRenderer } from 'electron';
+import { ConfigParameter } from '../db/entity/ConfigParameter';
+import router from '../router';
+import SearchBar from '../components/SearchBar.vue';
 
 export default Vue.extend({
   data() {
     return {
       parameters: [] as ConfigParameter[],
       setupId: 0 as number,
-      setupName: "" as string,
-      searchValue: "" as string
+      setupName: '' as string,
+      searchValue: '' as string
     };
   },
 
@@ -87,28 +87,28 @@ export default Vue.extend({
 
   created() {
     this.setupId = +this.$route.params.id;
-    ipcRenderer.send("getSetup", this.setupId);
+    ipcRenderer.send('getSetup', this.setupId);
     ipcRenderer.on(
-      "replySetup",
+      'replySetup',
       (_: any, args: { name: string; parameters: ConfigParameter[] }) => {
         this.setupName = args.name;
         this.parameters = args.parameters;
       }
     );
-    ipcRenderer.on("navigateBack", () => {
+    ipcRenderer.on('navigateBack', () => {
       this.navigateBack();
     });
   },
 
   destroyed() {
     // clear all listeners
-    ipcRenderer.removeAllListeners("replySetup");
-    ipcRenderer.removeAllListeners("navigateBack");
+    ipcRenderer.removeAllListeners('replySetup');
+    ipcRenderer.removeAllListeners('navigateBack');
   },
 
   methods: {
     submit() {
-      ipcRenderer.send("saveSetupParameter", {
+      ipcRenderer.send('saveSetupParameter', {
         setupId: this.setupId,
         setupName: this.setupName,
         parameters: this.parameters
@@ -116,12 +116,12 @@ export default Vue.extend({
     },
 
     navigateBack() {
-      router.push({ name: "setup-list" });
+      router.push({ name: 'setup-list' });
     },
 
     matchesSearch(parameter: ConfigParameter): boolean {
       return (
-        this.searchValue === "" ||
+        this.searchValue === '' ||
         parameter.name.toLowerCase().includes(this.searchValue.toLowerCase()) ||
         parameter.defaultValue
           .toLowerCase()
@@ -132,7 +132,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .actions {
   text-align: right;
 }

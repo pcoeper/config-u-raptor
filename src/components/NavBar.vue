@@ -1,47 +1,47 @@
 <template>
-  <div class="nav-container">
-    <div class="logo">
-      <span class="helper"></span>
-      <img alt="Vue logo" src="../assets/logo.png" />
+  <div class='nav-container'>
+    <div class='logo'>
+      <span class='helper'></span>
+      <img alt='Vue logo' src='../assets/logo.png' />
     </div>
-    <div class="nav-list">
-      <div class="nav-item">
-        <router-link to="/">
-          <v-icon name="home" scale="1.5" />
+    <div class='nav-list'>
+      <div class='nav-item'>
+        <router-link to='/'>
+          <v-icon name='home' scale='1.5' />
         </router-link>
       </div>
-      <div class="nav-item">
-        <router-link to="/config-list">
-          <v-icon name="list-ul" scale="1.5" />
+      <div class='nav-item'>
+        <router-link to='/config-list'>
+          <v-icon name='list-ul' scale='1.5' />
         </router-link>
       </div>
-      <div class="nav-item">
-        <router-link to="/setup-list">
-          <v-icon name="heart" scale="1.5" />
+      <div class='nav-item'>
+        <router-link to='/setup-list'>
+          <v-icon name='heart' scale='1.5' />
         </router-link>
       </div>
-      <div class="nav-item">
-        <router-link to="/settings">
-          <v-icon name="cog" scale="1.5" />
+      <div class='nav-item'>
+        <router-link to='/settings'>
+          <v-icon name='cog' scale='1.5' />
         </router-link>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import Icon from "vue-awesome/components/Icon.vue";
-import "vue-awesome/icons/home";
-import "vue-awesome/icons/list-ul";
-import "vue-awesome/icons/heart";
-import "vue-awesome/icons/cog";
+<script lang='ts'>
+import Icon from 'vue-awesome/components/Icon.vue';
+import 'vue-awesome/icons/home';
+import 'vue-awesome/icons/list-ul';
+import 'vue-awesome/icons/heart';
+import 'vue-awesome/icons/cog';
 
 export default {
-  components: { "v-icon": Icon }
+  components: { 'v-icon': Icon }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .nav-container {
   .logo {
     height: 150px;

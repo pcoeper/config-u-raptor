@@ -1,75 +1,75 @@
 <template>
-  <div class="config-list">
-    <div class="actions">
-      <div v-if="parameters.length" class="button is-danger" @click="deleteAll">Alle Löschen</div>
-      <button class="button m-l-5" @click="addNewParameter">
-        <span class="icon">
-          <v-icon name="plus" />
+  <div class='config-list'>
+    <div class='actions'>
+      <div v-if='parameters.length' class='button is-danger' @click='deleteAll'>Alle Löschen</div>
+      <button class='button m-l-5' @click='addNewParameter'>
+        <span class='icon'>
+          <v-icon name='plus' />
         </span>
         <span>Neuer Parameter</span>
       </button>
     </div>
 
-    <div class="parameter-list">
-      <div class="subtitle">Parameter</div>
-      <SearchBar @update="searchValue = $event"></SearchBar>
-      <table class="table is-fullwidth is-striped is-hoverable">
+    <div class='parameter-list'>
+      <div class='subtitle'>Parameter</div>
+      <SearchBar @update='searchValue = $event'></SearchBar>
+      <table class='table is-fullwidth is-striped is-hoverable'>
         <thead>
           <tr>
             <th>Name</th>
-            <th class="column-values">Standardwert</th>
-            <th class="column-actions"></th>
+            <th class='column-values'>Standardwert</th>
+            <th class='column-actions'></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="parameter in filteredParameterList" :key="parameter.id">
+          <tr v-for='parameter in filteredParameterList' :key='parameter.id'>
             <td>{{parameter.name}}</td>
             <td>{{parameter.defaultValue}}</td>
             <td>
-              <button class="button" @click="editParameter(parameter)">
-                <v-icon name="pencil-alt" />
+              <button class='button' @click='editParameter(parameter)'>
+                <v-icon name='pencil-alt' />
               </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <div v-if="!parameters.length">Keine Konfigurationsparameter vorhanden.</div>
+      <div v-if='!parameters.length'>Keine Konfigurationsparameter vorhanden.</div>
     </div>
 
     <!-- config parameter modal -->
     <ConfigParameterModal
-      v-if="showModal"
-      v-bind:show="showModal"
-      v-bind:parameter="modalParameter"
-      @closeModal="closeModal"
-      @saveParameter="saveParameter"
-      @deleteParameter="deleteParameter"
+      v-if='showModal'
+      v-bind:show='showModal'
+      v-bind:parameter='modalParameter'
+      @closeModal='closeModal'
+      @saveParameter='saveParameter'
+      @deleteParameter='deleteParameter'
     ></ConfigParameterModal>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { ipcRenderer, Event } from "electron";
-import { ConfigParameter } from "../db/entity/ConfigParameter";
-import ConfigParameterModal from "./ConfigParameterModal.vue";
-import SearchBar from "../components/SearchBar.vue";
-import Icon from "vue-awesome/components/Icon.vue";
-import "vue-awesome/icons/plus";
-import "vue-awesome/icons/pencil-alt";
+<script lang='ts'>
+import Vue from 'vue';
+import { ipcRenderer, Event } from 'electron';
+import { ConfigParameter } from '@/db/entity/ConfigParameter';
+import ConfigParameterModal from '@/views/ConfigParameterModal.vue';
+import SearchBar from '@/components/SearchBar.vue';
+import Icon from 'vue-awesome/components/Icon.vue';
+import 'vue-awesome/icons/plus';
+import 'vue-awesome/icons/pencil-alt';
 
 export default Vue.extend({
   data() {
     return {
       parameters: [] as ConfigParameter[],
-      searchValue: "" as string,
+      searchValue: '' as string,
       showModal: false as boolean,
       modalParameter: {} as ConfigParameter
     };
   },
 
   components: {
-    "v-icon": Icon,
+    'v-icon': Icon,
     ConfigParameterModal,
     SearchBar
   },
@@ -83,9 +83,9 @@ export default Vue.extend({
   },
 
   created() {
-    ipcRenderer.send("getAllConfigParameter");
+    ipcRenderer.send('getAllConfigParameter');
     ipcRenderer.on(
-      "replyAllConfigParameter",
+      'replyAllConfigParameter',
       (_: any, args: ConfigParameter[]) => {
         this.parameters = args;
       }
@@ -94,7 +94,7 @@ export default Vue.extend({
 
   destroyed() {
     // clear all listeners
-    ipcRenderer.removeAllListeners("replyAllConfigParameter");
+    ipcRenderer.removeAllListeners('replyAllConfigParameter');
   },
 
   methods: {
@@ -113,7 +113,7 @@ export default Vue.extend({
 
     saveParameter(parameter: ConfigParameter) {
       this.closeModal();
-      ipcRenderer.send("saveConfigParameter", parameter);
+      ipcRenderer.send('saveConfigParameter', parameter);
     },
 
     editParameter(parameter: ConfigParameter) {
@@ -123,16 +123,16 @@ export default Vue.extend({
 
     deleteParameter(parameter: ConfigParameter) {
       this.closeModal();
-      ipcRenderer.send("deleteConfigParameter", parameter.id);
+      ipcRenderer.send('deleteConfigParameter', parameter.id);
     },
 
     deleteAll() {
-      ipcRenderer.send("deleteAllConfigParameter");
+      ipcRenderer.send('deleteAllConfigParameter');
     },
 
     matchesSearch(parameter: ConfigParameter): boolean {
       return (
-        this.searchValue === "" ||
+        this.searchValue === '' ||
         parameter.name.toLowerCase().includes(this.searchValue.toLowerCase()) ||
         parameter.defaultValue
           .toLowerCase()
@@ -143,7 +143,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .config-list {
   .actions {
     text-align: right;
