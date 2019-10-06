@@ -2,7 +2,7 @@ import { ConfigSetup } from '../entity/ConfigSetup';
 import { getRepository } from 'typeorm';
 import { ConfigParameter } from '../entity/ConfigParameter';
 import { ParameterMod } from '../entity/ParameterMod';
-import { dialog, app } from 'electron';
+import { dialog } from 'electron';
 import * as fs from 'fs';
 
 export class SetupController {

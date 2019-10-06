@@ -13,9 +13,11 @@ import {
 import { ConfigParameter } from './db/entity/ConfigParameter';
 import { ConfigSetup } from './db/entity/ConfigSetup';
 import { ParameterMod } from './db/entity/ParameterMod';
+import { Setting } from './db/entity/Setting';
 import { ConfigParameterController } from './db/controller/ConfigParameterController';
 import { SetupController } from './db/controller/SetupController';
 import { SettingController } from './db/controller/SettingController';
+import { SettingModel } from './models/Setting.model';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -57,7 +59,7 @@ function createWindow() {
         logging: false,
         logger: 'simple-console',
         database: 'db.sqlite',
-        entities: [ConfigParameter, ConfigSetup, ParameterMod]
+        entities: [ConfigParameter, ConfigSetup, ParameterMod, Setting]
     })
         .then(async (connection) => {
             await init_db(connection);
@@ -174,4 +176,14 @@ ipcMain.on('downloadSetup', async (event: any, args: number) => {
 ipcMain.on('openFilePath', async (event: any) => {
     const filePath = await SettingController.openFilePath();
     event.reply('replyFilePath', filePath);
+});
+
+ipcMain.on('getSetting', async (event: any) => {
+    const setting = await SettingController.getSetting();
+    event.reply('replySetting', setting);
+});
+
+ipcMain.on('saveSetting', async (event: any, newSetting: SettingModel) => {
+    const setting = await SettingController.saveSetting(newSetting);
+    event.reply('replySetting', setting);
 });
