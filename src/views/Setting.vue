@@ -102,6 +102,11 @@ export default Vue.extend({
   .actions {
     text-align: right;
   }
+
+  label {
+      text-align: left;
+  }
+
   .subtitle {
     text-align: left;
     font-size: 1.6rem;
