@@ -87,7 +87,7 @@ export default Vue.extend({
         if (status === true) {
             console.log('was saved');
         }
-    })
+    });
   },
 
   destroyed() {
