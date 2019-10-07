@@ -167,7 +167,7 @@ export class SetupController {
                 // open save file dialog
                 savePath = await dialog.showSaveDialog({
                     defaultPath: setting.filePath + setting.fileName,
-                    filters: [{ name: 'config', extensions: ['properties'] }]
+                    filters: [{ name: 'config', extensions: ['properties', 'txt'] }]
                 });
             }
 
