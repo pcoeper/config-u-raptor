@@ -26,7 +26,7 @@ export default new Router({
             component: SetupList
         },
         {
-            path: 'setups/:id',
+            path: '/setups/:id',
             name: 'setup-detail',
             component: SetupDetail
         },
