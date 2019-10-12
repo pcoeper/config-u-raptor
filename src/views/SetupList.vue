@@ -16,14 +16,14 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th class='column-statistics'></th>
+            <th class='column-descriptions'>Beschreibung</th>
             <th class='column-actions'></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for='setup in filteredSetupList' :key='setup.id'>
             <td>{{setup.name}}</td>
-            <td></td>
+            <td>{{setup.description}}</td>
             <td>
               <button class='button' @click='navigateToDetail(setup.id)'>
                 <v-icon name='pencil-alt' />
@@ -136,8 +136,8 @@ export default Vue.extend({
       table-layout: fixed;
 
       th {
-        &.column-statistics {
-          width: 30%;
+        &.column-descriptions {
+          width: 60%;
         }
 
         &.column-actions {

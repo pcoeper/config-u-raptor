@@ -31,7 +31,7 @@ export class SetupController {
 
     public static getSetup = async (
         setupId: number
-    ): Promise<{ name: string, parameters: ConfigParameter[] }> => {
+    ): Promise<{ name: string, description: string, parameters: ConfigParameter[] }> => {
         const setupRepo = getRepository(ConfigSetup);
         const parameterRepo = getRepository(ConfigParameter);
         const modRepo = getRepository(ParameterMod);
@@ -41,12 +41,13 @@ export class SetupController {
             const availableParameters = await parameterRepo.find();
 
             if (setupId === 0) {
-                resolve({ name: '', parameters: availableParameters });
+                resolve({ name: '', description: '', parameters: availableParameters });
             }
 
             const setup = await setupRepo.findOne(setupId);
 
             const setupName = setup ? setup.name : '';
+            const setupDescription = setup ? setup.description : '';
 
             const setupModifications = await modRepo.find({
                 where: { configSetup: setup },
@@ -65,13 +66,14 @@ export class SetupController {
                 }
             });
 
-            resolve({ name: setupName, parameters: availableParameters });
+            resolve({ name: setupName, description: setupDescription, parameters: availableParameters });
         });
     }
 
     public static saveSetupParameter = async (
         setupId: number,
         setupName: string,
+        setupDescription: string,
         setupParameters: ConfigParameter[]
     ): Promise<boolean> => {
         const parameterRepo = getRepository(ConfigParameter);
@@ -88,6 +90,7 @@ export class SetupController {
             }
 
             setup.name = setupName;
+            setup.description = setupDescription;
             setupRepo.save(setup);
 
             // get all available parameters

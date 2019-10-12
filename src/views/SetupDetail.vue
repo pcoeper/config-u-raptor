@@ -6,8 +6,17 @@
     </div>
     <div class='parameter-meta'>
       <div class='subtitle'>Setup Name</div>
-      <div class='control'>
-        <input class='input' type='text' placeholder='Name' v-model='setupName' />
+      <div class="columns">
+          <div class="column is-full">
+            <div class='control'>
+                <input class='input' type='text' placeholder='Name' v-model='setupName' />
+            </div>
+          </div>
+        </div>
+      <div class='columns'>
+        <div class='column is-full'>
+            <textarea class='textarea' placeholder='Beschreibung' v-model='setupDescription'></textarea>
+        </div>
       </div>
     </div>
     <div class='parameter-list'>
@@ -71,6 +80,7 @@ export default Vue.extend({
       parameters: [] as ConfigParameter[],
       setupId: 0 as number,
       setupName: '' as string,
+      setupDescription: '' as string,
       searchValue: '' as string
     };
   },
@@ -90,8 +100,9 @@ export default Vue.extend({
     ipcRenderer.send('getSetup', this.setupId);
     ipcRenderer.on(
       'replySetup',
-      (_: any, args: { name: string; parameters: ConfigParameter[] }) => {
+      (_: any, args: { name: string; description: string; parameters: ConfigParameter[] }) => {
         this.setupName = args.name;
+        this.setupDescription = args.description;
         this.parameters = args.parameters;
       }
     );
@@ -111,6 +122,7 @@ export default Vue.extend({
       ipcRenderer.send('saveSetupParameter', {
         setupId: this.setupId,
         setupName: this.setupName,
+        setupDescription: this.setupDescription,
         parameters: this.parameters
       });
     },

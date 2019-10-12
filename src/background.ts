@@ -154,11 +154,11 @@ ipcMain.on('getAllConfigSetups', async (event: any, args: any) => {
 
 ipcMain.on('getSetup', async (event: any, setupId: number) => {
     const setup = await SetupController.getSetup(setupId);
-    event.reply('replySetup', { name: setup.name, parameters: setup.parameters });
+    event.reply('replySetup', { name: setup.name, description: setup.description, parameters: setup.parameters });
 });
 
 ipcMain.on('saveSetupParameter', async (event: any, args: any) => {
-    await SetupController.saveSetupParameter(args.setupId, args.setupName, args.parameters);
+    await SetupController.saveSetupParameter(args.setupId, args.setupName, args.setupDescription, args.parameters);
     event.reply('navigateBack');
 });
 
