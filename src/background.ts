@@ -35,10 +35,10 @@ function createWindow() {
     win = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true
-        }
-    });
+        },
+        width: 1200, height: 750
 
-    win.maximize();
+    });
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
