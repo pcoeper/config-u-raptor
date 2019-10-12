@@ -1,7 +1,7 @@
 'use strict';
 
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
+import { createConnection, getConnection, Connection } from 'typeorm';
 
 import { init_db } from './init_db';
 
@@ -78,6 +78,9 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
     }
+
+    // close db connection
+    getConnection().close();
 });
 
 app.on('activate', () => {
