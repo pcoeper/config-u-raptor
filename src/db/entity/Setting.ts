@@ -13,4 +13,7 @@ export class Setting {
 
     @Column('text')
     public fileExtension: string = '.properties';
+
+    @Column('boolean')
+    public saveModificationsOnly: boolean = false;
 }

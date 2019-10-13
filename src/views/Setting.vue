@@ -38,6 +38,14 @@
         </div>
       </div>
     </div>
+    <div class="columns">
+        <div class="column is-fullwidth has-text-left">
+            <label class="checkbox">
+                <input type="checkbox" v-model='setting.saveModificationsOnly'>
+                Ausschließlich modifizierte Parameter in die Konfigurations-Datei schreiben
+            </label>
+        </div>
+    </div>
   </div>
 </template>
 

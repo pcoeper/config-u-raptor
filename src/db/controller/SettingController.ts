@@ -26,6 +26,7 @@ export class SettingController {
             setting.filePath = newSetting.filePath;
             setting.fileName = newSetting.fileName;
             setting.fileExtension = newSetting.fileExtension;
+            setting.saveModificationsOnly = newSetting.saveModificationsOnly;
             await settingRepo.save(setting);
             resolve(setting);
         });
