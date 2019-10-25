@@ -48,7 +48,6 @@
 <script lang='ts'>
 import Vue from 'vue';
 import { ipcRenderer } from 'electron';
-import { ConfigSetup } from '@/db/entity/ConfigSetup';
 import router from '@/router';
 import SearchBar from '@/components/SearchBar.vue';
 import Icon from 'vue-awesome/components/Icon.vue';
@@ -56,11 +55,12 @@ import 'vue-awesome/icons/download';
 import 'vue-awesome/icons/trash-alt';
 import 'vue-awesome/icons/plus';
 import 'vue-awesome/icons/pencil-alt';
+import { ConfigSetupModel } from '@/models/ConfigSetup.model';
 
 export default Vue.extend({
   data() {
     return {
-      setups: [] as ConfigSetup[],
+      setups: [] as ConfigSetupModel[],
       searchValue: '' as string
     };
   },
@@ -71,8 +71,8 @@ export default Vue.extend({
   },
 
   computed: {
-    filteredSetupList(): ConfigSetup[] {
-      return this.setups.filter((setup: ConfigSetup) =>
+    filteredSetupList(): ConfigSetupModel[] {
+      return this.setups.filter((setup: ConfigSetupModel) =>
         this.matchesSearch(setup)
       );
     }
@@ -80,7 +80,7 @@ export default Vue.extend({
 
   created() {
     ipcRenderer.send('getAllConfigSetups');
-    ipcRenderer.on('replyAllConfigSetups', (_: any, args: ConfigSetup[]) => {
+    ipcRenderer.on('replyAllConfigSetups', (_: any, args: ConfigSetupModel[]) => {
       this.setups = args;
     });
     ipcRenderer.on('replyDownload', (_: any, status: boolean) => {
@@ -109,7 +109,7 @@ export default Vue.extend({
       ipcRenderer.send('deleteSetup', setupId);
     },
 
-    matchesSearch(setup: ConfigSetup): boolean {
+    matchesSearch(setup: ConfigSetupModel): boolean {
       return (
         this.searchValue === '' ||
         setup.name.toLowerCase().includes(this.searchValue.toLowerCase())
