@@ -17,6 +17,7 @@
           <tr>
             <th>Name</th>
             <th class='column-descriptions'>Beschreibung</th>
+            <th class='column-modifications'>Modifikationen</th>
             <th class='column-actions'></th>
           </tr>
         </thead>
@@ -24,6 +25,7 @@
           <tr v-for='setup in filteredSetupList' :key='setup.id'>
             <td>{{setup.name}}</td>
             <td>{{setup.description}}</td>
+            <td>{{getModificationCount(setup.id)}}</td>
             <td>
               <button class='button' @click='navigateToDetail(setup.id)'>
                 <v-icon name='pencil-alt' />
@@ -56,6 +58,7 @@ import 'vue-awesome/icons/trash-alt';
 import 'vue-awesome/icons/plus';
 import 'vue-awesome/icons/pencil-alt';
 import { ConfigSetupModel } from '@/models/ConfigSetup.model';
+import { ConfigParameterModel } from '../models/ConfigParameter.model';
 
 export default Vue.extend({
   data() {
@@ -114,6 +117,16 @@ export default Vue.extend({
         this.searchValue === '' ||
         setup.name.toLowerCase().includes(this.searchValue.toLowerCase())
       );
+    },
+
+    getModificationCount(setupId: number): number {
+        let count = 0;
+        const setup = this.setups.find((setup: ConfigSetupModel) => setup.id === setupId)
+        if (setup) {
+            count = setup.parameters.filter((param: ConfigParameterModel) => param.isModification).length;
+        }
+        return count;
+
     }
   }
 });
@@ -137,7 +150,11 @@ export default Vue.extend({
 
       th {
         &.column-descriptions {
-          width: 60%;
+          width: 55%;
+        }
+
+        &.column-modifications {
+            width: 10%;
         }
 
         &.column-actions {

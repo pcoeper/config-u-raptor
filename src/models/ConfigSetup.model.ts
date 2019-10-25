@@ -6,6 +6,7 @@ export class ConfigSetupModel {
     public name: string = '';
     public description: string = '';
     public parameters: ConfigParameterModel[] = [];
+    public modificationCount: number = 0;
 
     constructor(configSetup?: ConfigSetup) {
         if (configSetup) {

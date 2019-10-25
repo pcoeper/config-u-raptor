@@ -4,31 +4,37 @@ import { ConfigParameter } from '../entity/ConfigParameter';
 import { ParameterMod } from '../entity/ParameterMod';
 import { dialog } from 'electron';
 import * as fs from 'fs';
-import { Setting } from '../entity/Setting';
 import { SettingController } from './SettingController';
 import { ConfigSetupModel } from '../../models/ConfigSetup.model';
 import { ConfigParameterModel } from '../../models/ConfigParameter.model';
 
 export class SetupController {
-    public static getAll = async (): Promise<ConfigSetup[]> => {
+    public static getAll = async (): Promise<ConfigSetupModel[]> => {
         const setupRepo = getRepository(ConfigSetup);
-        return await setupRepo.find();
-    }
-
-    public static getSetupName = async (setupId: number): Promise<string> => {
-        const setupRepo = getRepository(ConfigSetup);
-
+        const setups = await setupRepo.find();
         return new Promise(async (resolve, reject) => {
-            if (setupId === 0) {
-                resolve('');
-            } else {
-                const setup = await setupRepo.findOne(setupId);
-                if (setup) {
-                    resolve(setup.name);
-                }
-            }
+            const setupModels = await Promise.all(
+                setups.map(async (setup: ConfigSetup) => await SetupController.getSetup(setup.id)));
+            resolve(setupModels);
         });
+
+
     }
+
+    // public static getSetupName = async (setupId: number): Promise<string> => {
+    //     const setupRepo = getRepository(ConfigSetup);
+
+    //     return new Promise(async (resolve, reject) => {
+    //         if (setupId === 0) {
+    //             resolve('');
+    //         } else {
+    //             const setup = await setupRepo.findOne(setupId);
+    //             if (setup) {
+    //                 resolve(setup.name);
+    //             }
+    //         }
+    //     });
+    // }
 
 
     public static getSetup = async (
@@ -73,6 +79,9 @@ export class SetupController {
 
                 setupModel.parameters.push(paramModel);
             });
+
+            setupModel.modificationCount = setupModel.parameters
+                .filter((param: ConfigParameterModel) => param.isModification).length;
 
             resolve(setupModel);
         });
@@ -176,9 +185,10 @@ export class SetupController {
                 savePath = setting.filePath + setting.fileName + setting.fileExtension;
             } else {
                 // open save file dialog
+                const possibleExtensions = ['properties'];
                 savePath = await dialog.showSaveDialog({
                     defaultPath: setting.filePath + setting.fileName,
-                    filters: [{ name: 'config', extensions: ['properties', 'txt'] }]
+                    filters: [{ name: 'config', extensions: possibleExtensions }]
                 });
             }
 

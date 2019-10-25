@@ -157,7 +157,7 @@ ipcMain.on('getAllConfigSetups', async (event: any, args: any) => {
 
 ipcMain.on('getSetup', async (event: any, setupId: number) => {
     const setup = await SetupController.getSetup(setupId);
-    event.reply('replySetup', { name: setup.name, description: setup.description, parameters: setup.parameters });
+    event.reply('replySetup', setup);
 });
 
 ipcMain.on('saveSetupParameter', async (event: any, args: any) => {
