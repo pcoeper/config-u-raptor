@@ -9,13 +9,13 @@
       <div class="columns">
           <div class="column is-full">
             <div class='control'>
-                <input class='input' type='text' placeholder='Name' v-model='setupName' />
+                <input class='input' type='text' placeholder='Name' v-model='setup.name' />
             </div>
           </div>
         </div>
       <div class='columns'>
         <div class='column is-full'>
-            <textarea class='textarea' placeholder='Beschreibung' v-model='setupDescription'></textarea>
+            <textarea class='textarea' placeholder='Beschreibung' v-model='setup.description'></textarea>
         </div>
       </div>
     </div>
@@ -70,17 +70,15 @@
 <script lang='ts'>
 import Vue from 'vue';
 import { ipcRenderer } from 'electron';
-import { ConfigParameter } from '../db/entity/ConfigParameter';
 import router from '../router';
 import SearchBar from '../components/SearchBar.vue';
+import { ConfigSetupModel } from '../models/ConfigSetup.model';
+import { ConfigParameterModel } from '../models/ConfigParameter.model';
 
 export default Vue.extend({
   data() {
     return {
-      parameters: [] as ConfigParameter[],
-      setupId: 0 as number,
-      setupName: '' as string,
-      setupDescription: '' as string,
+      setup: new ConfigSetupModel() as ConfigSetupModel,
       searchValue: '' as string
     };
   },
@@ -88,22 +86,20 @@ export default Vue.extend({
   components: { SearchBar },
 
   computed: {
-    filteredParameterList(): ConfigParameter[] {
-      return this.parameters.filter((parameter: ConfigParameter) =>
+    filteredParameterList(): ConfigParameterModel[] {
+      return this.setup.parameters.filter((parameter: ConfigParameterModel) =>
         this.matchesSearch(parameter)
       );
     }
   },
 
   created() {
-    this.setupId = +this.$route.params.id;
-    ipcRenderer.send('getSetup', this.setupId);
+    this.setup.id = +this.$route.params.id;
+    ipcRenderer.send('getSetup', this.setup.id);
     ipcRenderer.on(
       'replySetup',
-      (_: any, args: { name: string; description: string; parameters: ConfigParameter[] }) => {
-        this.setupName = args.name;
-        this.setupDescription = args.description;
-        this.parameters = args.parameters;
+      (_: any, args: ConfigSetupModel) => {
+        this.setup = args;
       }
     );
     ipcRenderer.on('navigateBack', () => {
@@ -120,10 +116,10 @@ export default Vue.extend({
   methods: {
     submit() {
       ipcRenderer.send('saveSetupParameter', {
-        setupId: this.setupId,
-        setupName: this.setupName,
-        setupDescription: this.setupDescription,
-        parameters: this.parameters
+        setupId: this.setup.id,
+        setupName: this.setup.name,
+        setupDescription: this.setup.description,
+        parameters: this.setup.parameters
       });
     },
 
@@ -131,7 +127,7 @@ export default Vue.extend({
       router.push({ name: 'setup-list' });
     },
 
-    matchesSearch(parameter: ConfigParameter): boolean {
+    matchesSearch(parameter: ConfigParameterModel): boolean {
       return (
         this.searchValue === '' ||
         parameter.name.toLowerCase().includes(this.searchValue.toLowerCase()) ||

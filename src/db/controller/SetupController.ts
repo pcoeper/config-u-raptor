@@ -6,6 +6,8 @@ import { dialog } from 'electron';
 import * as fs from 'fs';
 import { Setting } from '../entity/Setting';
 import { SettingController } from './SettingController';
+import { ConfigSetupModel } from '../../models/ConfigSetup.model';
+import { ConfigParameterModel } from '../../models/ConfigParameter.model';
 
 export class SetupController {
     public static getAll = async (): Promise<ConfigSetup[]> => {
@@ -31,7 +33,7 @@ export class SetupController {
 
     public static getSetup = async (
         setupId: number
-    ): Promise<{ name: string, description: string, parameters: ConfigParameter[] }> => {
+    ): Promise<ConfigSetupModel> => {
         const setupRepo = getRepository(ConfigSetup);
         const parameterRepo = getRepository(ConfigParameter);
         const modRepo = getRepository(ParameterMod);
@@ -41,13 +43,15 @@ export class SetupController {
             const availableParameters = await parameterRepo.find();
 
             if (setupId === 0) {
-                resolve({ name: '', description: '', parameters: availableParameters });
+                const newSetup = new ConfigSetupModel();
+                newSetup.parameters = availableParameters
+                    .map((param: ConfigParameter) => new ConfigParameterModel(param));
+                resolve(newSetup);
             }
 
             const setup = await setupRepo.findOne(setupId);
 
-            const setupName = setup ? setup.name : '';
-            const setupDescription = setup ? setup.description : '';
+            const setupModel = new ConfigSetupModel(setup);
 
             const setupModifications = await modRepo.find({
                 where: { configSetup: setup },
@@ -55,6 +59,7 @@ export class SetupController {
             });
 
             availableParameters.forEach((param: ConfigParameter) => {
+                const paramModel = new ConfigParameterModel(param);
                 // try to find modification for this config parameter
                 const modification = setupModifications.find((mod: ParameterMod) => {
                     return mod.configParameter.id === param.id;
@@ -62,11 +67,14 @@ export class SetupController {
 
                 // if present, reset value of parameter
                 if (modification) {
-                    param.defaultValue = modification.value;
+                    paramModel.defaultValue = modification.value;
+                    paramModel.isModification = true;
                 }
+
+                setupModel.parameters.push(paramModel);
             });
 
-            resolve({ name: setupName, description: setupDescription, parameters: availableParameters });
+            resolve(setupModel);
         });
     }
 
@@ -181,7 +189,7 @@ export class SetupController {
                 const setup = await SetupController.getSetup(setupId);
 
                 let fileContent = '';
-                setup.parameters.forEach((parameter: ConfigParameter) => {
+                setup.parameters.forEach((parameter: ConfigParameterModel) => {
                     fileContent += `${parameter.name} = ${parameter.defaultValue}\n`;
                 });
 
