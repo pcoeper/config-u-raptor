@@ -26,8 +26,8 @@
             <td>{{parameter.name}}</td>
             <td>{{parameter.defaultValue}}</td>
             <td>
-              <button class='button' @click='editParameter(parameter)'>
-                <v-icon name='pencil-alt' />
+              <button class='button is-primary' @click='editParameter(parameter)'>
+                <v-icon name='arrow-circle-right' />
               </button>
             </td>
           </tr>
@@ -56,7 +56,7 @@ import ConfigParameterModal from '@/views/ConfigParameterModal.vue';
 import SearchBar from '@/components/SearchBar.vue';
 import Icon from 'vue-awesome/components/Icon.vue';
 import 'vue-awesome/icons/plus';
-import 'vue-awesome/icons/pencil-alt';
+import 'vue-awesome/icons/arrow-circle-right';
 
 export default Vue.extend({
   data() {

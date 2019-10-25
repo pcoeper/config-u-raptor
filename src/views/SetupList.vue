@@ -27,8 +27,8 @@
             <td>{{setup.description}}</td>
             <td>{{setup.modificationCount}}</td>
             <td>
-              <button class='button' @click='navigateToDetail(setup.id)'>
-                <v-icon name='pencil-alt' />
+              <button class='button is-primary' @click='navigateToDetail(setup.id)'>
+                <v-icon name='arrow-circle-right' />
               </button>
               <button class='button m-l-5' @click='downloadSetup(setup.id)'>
                 <v-icon name='download' />
@@ -56,7 +56,7 @@ import Icon from 'vue-awesome/components/Icon.vue';
 import 'vue-awesome/icons/download';
 import 'vue-awesome/icons/trash-alt';
 import 'vue-awesome/icons/plus';
-import 'vue-awesome/icons/pencil-alt';
+import 'vue-awesome/icons/arrow-circle-right';
 import { ConfigSetupModel } from '@/models/ConfigSetup.model';
 import { ConfigParameterModel } from '../models/ConfigParameter.model';
 
