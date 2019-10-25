@@ -22,6 +22,14 @@
     <div class='parameter-list'>
       <div class='subtitle'>Parameter</div>
       <SearchBar @update='searchValue=$event'></SearchBar>
+      <div class="columns">
+        <div class="column is-fullwidth has-text-left">
+            <label class="checkbox">
+                <input type="checkbox" v-model="showModificationsOnly">
+                Nur modifizierte Parameter anzeigen ({{setup.modificationCount}})
+            </label>
+        </div>
+    </div>
       <table class='table is-fullwidth is-striped is-hoverable'>
         <thead>
           <tr>
@@ -79,7 +87,8 @@ export default Vue.extend({
   data() {
     return {
       setup: new ConfigSetupModel() as ConfigSetupModel,
-      searchValue: '' as string
+      searchValue: '' as string,
+      showModificationsOnly: false as boolean
     };
   },
 
@@ -87,9 +96,13 @@ export default Vue.extend({
 
   computed: {
     filteredParameterList(): ConfigParameterModel[] {
-      return this.setup.parameters.filter((parameter: ConfigParameterModel) =>
-        this.matchesSearch(parameter)
-      );
+      return this.setup.parameters.filter((parameter: ConfigParameterModel) => {
+            if (this.showModificationsOnly && !parameter.isModification) {
+              return false;
+          }
+            return this.matchesSearch(parameter)
+        }
+        );
     }
   },
 

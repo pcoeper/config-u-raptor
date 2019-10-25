@@ -17,25 +17,7 @@ export class SetupController {
                 setups.map(async (setup: ConfigSetup) => await SetupController.getSetup(setup.id)));
             resolve(setupModels);
         });
-
-
     }
-
-    // public static getSetupName = async (setupId: number): Promise<string> => {
-    //     const setupRepo = getRepository(ConfigSetup);
-
-    //     return new Promise(async (resolve, reject) => {
-    //         if (setupId === 0) {
-    //             resolve('');
-    //         } else {
-    //             const setup = await setupRepo.findOne(setupId);
-    //             if (setup) {
-    //                 resolve(setup.name);
-    //             }
-    //         }
-    //     });
-    // }
-
 
     public static getSetup = async (
         setupId: number

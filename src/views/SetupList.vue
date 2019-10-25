@@ -25,7 +25,7 @@
           <tr v-for='setup in filteredSetupList' :key='setup.id'>
             <td>{{setup.name}}</td>
             <td>{{setup.description}}</td>
-            <td>{{getModificationCount(setup.id)}}</td>
+            <td>{{setup.modificationCount}}</td>
             <td>
               <button class='button' @click='navigateToDetail(setup.id)'>
                 <v-icon name='pencil-alt' />
@@ -117,16 +117,6 @@ export default Vue.extend({
         this.searchValue === '' ||
         setup.name.toLowerCase().includes(this.searchValue.toLowerCase())
       );
-    },
-
-    getModificationCount(setupId: number): number {
-        let count = 0;
-        const setup = this.setups.find((setup: ConfigSetupModel) => setup.id === setupId)
-        if (setup) {
-            count = setup.parameters.filter((param: ConfigParameterModel) => param.isModification).length;
-        }
-        return count;
-
     }
   }
 });
