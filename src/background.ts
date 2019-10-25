@@ -184,7 +184,7 @@ ipcMain.on('openFilePath', async (event: any) => {
 
 ipcMain.on('getSetting', async (event: any) => {
     const setting = await SettingController.getSetting();
-    event.reply('replySetting', setting);
+    event.reply('replySetting', new SettingModel(setting));
 });
 
 ipcMain.on('saveSetting', async (event: any, newSetting: SettingModel) => {

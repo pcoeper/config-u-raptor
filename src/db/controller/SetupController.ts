@@ -188,6 +188,10 @@ export class SetupController {
                 // define file content
                 const setup = await SetupController.getSetup(setupId);
 
+                if (setting.saveModificationsOnly) {
+                    setup.parameters = setup.parameters.filter((param: ConfigParameterModel) => param.isModification);
+                }
+
                 let fileContent = '';
                 setup.parameters.forEach((parameter: ConfigParameterModel) => {
                     fileContent += `${parameter.name} = ${parameter.defaultValue}\n`;
