@@ -15,7 +15,7 @@
       <table class='table is-fullwidth is-striped is-hoverable'>
         <thead>
           <tr>
-            <th>Name</th>
+            <th class='column-name'>Name</th>
             <th class='column-descriptions'>Beschreibung</th>
             <th class='column-modifications'>Modifikationen</th>
             <th class='column-actions'></th>
@@ -149,9 +149,9 @@ export default Vue.extend({
       table-layout: fixed;
 
       th {
-        &.column-descriptions {
-          width: 55%;
-        }
+          &.column-name {
+              width: 150px;
+          }
 
         &.column-modifications {
             width: 10%;
