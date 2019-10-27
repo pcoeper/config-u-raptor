@@ -18,8 +18,12 @@ import { ConfigParameterController } from './db/controller/ConfigParameterContro
 import { SetupController } from './db/controller/SetupController';
 import { SettingController } from './db/controller/SettingController';
 import { SettingModel } from './models/Setting.model';
+import path from 'path';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
+
+// path to db
+const dbPath = path.join(app.getPath('userData'), 'database', 'db.sqlite');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -58,7 +62,7 @@ function createWindow() {
         synchronize: true,
         logging: false,
         logger: 'simple-console',
-        database: 'db.sqlite',
+        database: dbPath,
         entities: [ConfigParameter, ConfigSetup, ParameterMod, Setting]
     })
         .then(async (connection) => {
