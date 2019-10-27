@@ -17,7 +17,7 @@
           <tr>
             <th class='column-name'>Name</th>
             <th class='column-descriptions'>Beschreibung</th>
-            <th class='column-modifications'></th>
+            <th class='column-modifications'><v-icon name='star' /></th>
             <th class='column-actions'></th>
           </tr>
         </thead>
@@ -25,7 +25,7 @@
           <tr v-for='setup in filteredSetupList' :key='setup.id'>
             <td>{{setup.name}}</td>
             <td>{{setup.description}}</td>
-            <td>{{setup.modificationCount}}</td>
+            <td class="column-modifications">{{setup.modificationCount}}</td>
             <td>
               <button class='button is-primary' @click='navigateToDetail(setup.id)'>
                 <v-icon name='arrow-circle-right' />
@@ -57,6 +57,7 @@ import 'vue-awesome/icons/download';
 import 'vue-awesome/icons/trash-alt';
 import 'vue-awesome/icons/plus';
 import 'vue-awesome/icons/arrow-circle-right';
+import 'vue-awesome/icons/star';
 import { ConfigSetupModel } from '@/models/ConfigSetup.model';
 import { ConfigParameterModel } from '../models/ConfigParameter.model';
 
@@ -145,6 +146,7 @@ export default Vue.extend({
 
         &.column-modifications {
             width: 5%;
+                color: orange;
         }
 
         &.column-actions {
@@ -154,6 +156,10 @@ export default Vue.extend({
 
       td {
         vertical-align: middle;
+
+        &.column-modifications {
+            text-align: center;
+        }
       }
     }
   }

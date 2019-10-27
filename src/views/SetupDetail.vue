@@ -39,7 +39,7 @@
         </thead>
         <tbody>
           <tr v-for='parameter in filteredParameterList' :key='parameter.id'>
-            <td>{{parameter.name}}</td>
+            <td>{{parameter.name}} <span v-show="parameter.isModification" class="modification-icon"><v-icon name='star' /></span></td>
             <td class='column-values'>
               <div v-if='parameter.type === "string"'>
                 <div class='control'>
@@ -82,6 +82,8 @@ import router from '../router';
 import SearchBar from '../components/SearchBar.vue';
 import { ConfigSetupModel } from '../models/ConfigSetup.model';
 import { ConfigParameterModel } from '../models/ConfigParameter.model';
+import Icon from 'vue-awesome/components/Icon.vue';
+import 'vue-awesome/icons/star';
 
 export default Vue.extend({
   data() {
@@ -92,7 +94,10 @@ export default Vue.extend({
     };
   },
 
-  components: { SearchBar },
+  components: {
+      'v-icon': Icon,
+      SearchBar
+    },
 
   computed: {
     filteredParameterList(): ConfigParameterModel[] {
@@ -100,7 +105,7 @@ export default Vue.extend({
             if (this.showModificationsOnly && !parameter.isModification) {
               return false;
           }
-            return this.matchesSearch(parameter)
+            return this.matchesSearch(parameter);
         }
         );
     }
@@ -173,6 +178,10 @@ table {
 
   td {
     vertical-align: middle;
+
+    span.modification-icon {
+        color: orange;
+    }
   }
 
   .column-values {
