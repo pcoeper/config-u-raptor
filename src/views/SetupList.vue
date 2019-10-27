@@ -17,7 +17,7 @@
           <tr>
             <th class='column-name'>Name</th>
             <th class='column-descriptions'>Beschreibung</th>
-            <th class='column-modifications'>Modifikationen</th>
+            <th class='column-modifications'></th>
             <th class='column-actions'></th>
           </tr>
         </thead>
@@ -144,7 +144,7 @@ export default Vue.extend({
           }
 
         &.column-modifications {
-            width: 10%;
+            width: 5%;
         }
 
         &.column-actions {
