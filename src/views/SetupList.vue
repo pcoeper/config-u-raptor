@@ -1,5 +1,10 @@
 <template>
   <div class='setups'>
+      <div v-show="downloadSuccessNotification" class="notification is-success">
+          Die Datei wurde erfolgreich heruntergeladen
+          <div class="bar"></div>
+          <button class="delete" @click="closeDownloadSuccessNotification"></button>
+      </div>
     <div class='actions'>
       <button class='button' @click='navigateToDetail(0)'>
         <span class='icon'>
@@ -65,7 +70,8 @@ export default Vue.extend({
   data() {
     return {
       setups: [] as ConfigSetupModel[],
-      searchValue: '' as string
+      searchValue: '' as string,
+      downloadSuccessNotification: false as boolean
     };
   },
 
@@ -89,7 +95,10 @@ export default Vue.extend({
     });
     ipcRenderer.on('replyDownload', (_: any, status: boolean) => {
         if (status === true) {
-            console.log('was saved');
+            this.downloadSuccessNotification = true;
+            setTimeout(() => {
+                this.downloadSuccessNotification = false;
+            }, 5000);
         }
     });
   },
@@ -113,6 +122,10 @@ export default Vue.extend({
       ipcRenderer.send('deleteSetup', setupId);
     },
 
+    closeDownloadSuccessNotification(): void {
+        this.downloadSuccessNotification = false;
+    },
+
     matchesSearch(setup: ConfigSetupModel): boolean {
       return (
         this.searchValue === '' ||
@@ -124,7 +137,24 @@ export default Vue.extend({
 </script>
 
 <style lang='scss' scoped>
+@keyframes progressBar {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%
+    }
+}
 .setups {
+    .notification {
+        .bar {
+            height: 2px;
+            background-color: rgba(0, 0, 0, 0.35);
+            margin-top: 20px;
+            animation: 4.5s ease-out 0s 1 progressBar;
+        }
+    }
+
   .actions {
     text-align: right;
   }
