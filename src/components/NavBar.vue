@@ -5,11 +5,11 @@
       <img alt='Vue logo' src='../assets/logo.png' />
     </div>
     <div class='nav-list'>
-      <div class='nav-item'>
+      <!-- <div class='nav-item'>
         <router-link to='/'>
           <v-icon name='home' scale='1.5' />
         </router-link>
-      </div>
+      </div> -->
       <div class='nav-item'>
         <router-link to='/config-list'>
           <v-icon name='list-ul' scale='1.5' />
