@@ -12,8 +12,7 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'home',
-            component: SetupList
+            redirect: '/setup-list'
         },
         {
             path: '/config-list',
