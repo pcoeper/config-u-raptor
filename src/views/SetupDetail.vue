@@ -33,13 +33,15 @@
       <table class='table is-fullwidth is-striped is-hoverable'>
         <thead>
           <tr>
+            <th class="column-indicator"></th>
             <th>Name</th>
             <th class='column-values'>Wert</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for='parameter in filteredParameterList' :key='parameter.id'>
-            <td>{{parameter.name}} <span v-show="parameter.isModification" class="modification-icon"><v-icon name='star' /></span></td>
+            <td class="column-indicator"><span v-show="parameter.isModification"><v-icon name='highlighter' /></span></td>
+            <td>{{parameter.name}}</td>
             <td class='column-values'>
               <div v-if='parameter.type === "string"'>
                 <div class='control'>
@@ -84,6 +86,7 @@ import { ConfigSetupModel } from '../models/ConfigSetup.model';
 import { ConfigParameterModel } from '../models/ConfigParameter.model';
 import Icon from 'vue-awesome/components/Icon.vue';
 import 'vue-awesome/icons/star';
+import 'vue-awesome/icons/highlighter';
 
 export default Vue.extend({
   data() {
@@ -178,10 +181,11 @@ table {
 
   td {
     vertical-align: middle;
+  }
 
-    span.modification-icon {
-        color: orange;
-    }
+  .column-indicator {
+      width: 40px;
+      text-align: center;
   }
 
   .column-values {

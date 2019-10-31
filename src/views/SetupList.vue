@@ -22,7 +22,7 @@
           <tr>
             <th class='column-name'>Name</th>
             <th class='column-descriptions'>Beschreibung</th>
-            <th class='column-modifications'><v-icon name='star' /></th>
+            <th class='column-modifications'><v-icon name='highlighter' /></th>
             <th class='column-actions'></th>
           </tr>
         </thead>
@@ -63,6 +63,7 @@ import 'vue-awesome/icons/trash-alt';
 import 'vue-awesome/icons/plus';
 import 'vue-awesome/icons/arrow-circle-right';
 import 'vue-awesome/icons/star';
+import 'vue-awesome/icons/highlighter';
 import { ConfigSetupModel } from '@/models/ConfigSetup.model';
 import { ConfigParameterModel } from '../models/ConfigParameter.model';
 
