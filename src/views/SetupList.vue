@@ -140,18 +140,21 @@ export default Vue.extend({
 <style lang='scss' scoped>
 @keyframes progressBar {
     0% {
-        width: 0;
+        right: 100%;
     }
     100% {
-        width: 100%
+        right: 5px;
     }
 }
 .setups {
     .notification {
         .bar {
+            position: absolute;
+            left: 5px;
+            right: 5px;
+            bottom: 0;
             height: 2px;
             background-color: rgba(0, 0, 0, 0.35);
-            margin-top: 20px;
             animation: 4.5s ease-out 0s 1 progressBar;
         }
     }
