@@ -176,8 +176,8 @@ export default Vue.extend({
           }
 
         &.column-modifications {
-            width: 5%;
-                color: orange;
+            width: 40px;
+            text-align: center;
         }
 
         &.column-actions {
